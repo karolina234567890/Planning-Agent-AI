@@ -9,33 +9,22 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#09090b;
-  --s1:#111113;
-  --s2:#18181b;
-  --s3:#202024;
-  --b1:#27272a;
-  --b2:#3f3f46;
-  --t1:#fafafa;
-  --t2:#a1a1aa;
-  --t3:#71717a;
-  --acc:#6366f1;
-  --acc2:#4f46e5;
-  --acc-bg:rgba(99,102,241,.12);
-  --green:#22c55e;
-  --green-bg:rgba(34,197,94,.1);
-  --amber:#f59e0b;
-  --red:#ef4444;
-  --r:8px;
-  --r2:6px;
+  --bg:#09090b;--s1:#111113;--s2:#18181b;--s3:#202024;
+  --b1:#27272a;--b2:#3f3f46;
+  --t1:#fafafa;--t2:#a1a1aa;--t3:#71717a;
+  --acc:#6366f1;--acc2:#4f46e5;--acc-bg:rgba(99,102,241,.12);
+  --green:#22c55e;--green-bg:rgba(34,197,94,.1);
+  --amber:#f59e0b;--red:#ef4444;
+  --r:8px;--r2:6px;
 }
 html,body{height:100%;overflow:hidden;}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);font-size:13px;line-height:1.5;-webkit-font-smoothing:antialiased;}
 
-/* ── TOPBAR ── */
-.topbar{height:48px;background:var(--s1);border-bottom:1px solid var(--b1);display:flex;align-items:center;padding:0 16px;gap:0;flex-shrink:0;z-index:100;}
+/* TOPBAR */
+.topbar{height:48px;background:var(--s1);border-bottom:1px solid var(--b1);display:flex;align-items:center;padding:0 16px;flex-shrink:0;z-index:100;}
 .logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;color:var(--t1);margin-right:20px;text-decoration:none;}
 .logo-icon{width:26px;height:26px;background:var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;}
-.steps{display:flex;align-items:center;gap:0;}
+.steps{display:flex;align-items:center;}
 .step{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:var(--r2);cursor:pointer;color:var(--t3);font-size:12px;font-weight:500;transition:all .15s;}
 .step:hover{color:var(--t2);}
 .step.active{color:var(--t1);background:var(--s3);}
@@ -47,12 +36,15 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);font-si
 .topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
 .avatar{width:28px;height:28px;border-radius:50%;background:var(--acc-bg);border:1px solid var(--acc);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--acc);}
 
-/* ── SCREEN SYSTEM ── */
+/* SCREENS */
 .screen{display:none;height:calc(100vh - 48px);overflow:hidden;}
 .screen.active{display:flex;flex-direction:column;}
-
-/* ── SCREEN 1: HOME ── */
 #s1{align-items:center;justify-content:center;}
+#s2{align-items:center;justify-content:center;}
+#s3{overflow:hidden;}
+#s4{flex-direction:row;overflow:hidden;}
+
+/* HOME */
 .home-wrap{display:flex;flex-direction:column;align-items:center;gap:24px;max-width:480px;width:100%;padding:0 20px;}
 .home-eyebrow{font-size:11px;font-weight:600;color:var(--acc);letter-spacing:.08em;text-transform:uppercase;background:var(--acc-bg);padding:4px 12px;border-radius:20px;}
 .home-title{font-size:30px;font-weight:800;text-align:center;letter-spacing:-.02em;line-height:1.2;}
@@ -70,8 +62,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);font-si
 .badge-green{background:var(--green-bg);color:var(--green);}
 .badge-blue{background:var(--acc-bg);color:var(--acc);}
 
-/* ── SCREEN 2: UPLOAD ── */
-#s2{align-items:center;justify-content:center;}
+/* UPLOAD */
 .upload-card{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:28px 32px;width:520px;}
 .card-title{font-size:17px;font-weight:700;margin-bottom:4px;letter-spacing:-.01em;}
 .card-sub{color:var(--t2);font-size:13px;margin-bottom:20px;}
@@ -91,8 +82,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);font-si
 .btn-ghost:hover{border-color:var(--b2);color:var(--t1);}
 .row-btns{display:flex;gap:8px;margin-top:16px;}
 
-/* ── SCREEN 3: Q&A ── */
-#s3{overflow:hidden;}
+/* Q&A */
 .qa-body{flex:1;display:flex;overflow:hidden;}
 .qa-left{width:280px;flex-shrink:0;background:var(--s2);border-right:1px solid var(--b1);overflow-y:auto;padding:16px;}
 .qa-left h3{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;}
@@ -127,97 +117,142 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);font-si
 .btn-send:hover{background:var(--acc2);}
 .qa-footer{padding:12px 20px;border-top:1px solid var(--b1);display:flex;justify-content:flex-end;gap:8px;background:var(--s2);}
 
-/* ── SCREEN 4: PLAN ── */
-#s4{flex-direction:row;overflow:hidden;}
+/* PLAN LAYOUT */
 .plan-left{flex:1;overflow-y:auto;background:var(--bg);}
-.plan-content{padding:20px 24px;max-width:900px;}
+.plan-content{padding:20px 24px;max-width:920px;}
 .plan-right{width:340px;flex-shrink:0;background:var(--s1);border-left:1px solid var(--b1);display:flex;flex-direction:column;overflow:hidden;height:100%;}
 
-/* plan header */
+/* PLAN HEADER */
 .plan-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid var(--b1);}
 .plan-kicker{font-size:10px;font-weight:600;color:var(--acc);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;}
 .plan-title{font-size:20px;font-weight:800;letter-spacing:-.02em;line-height:1.2;}
-.plan-meta{font-size:11px;color:var(--t3);margin-top:4px;display:flex;align-items:center;gap:8px;}
+.plan-meta{font-size:11px;color:var(--t3);margin-top:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .plan-meta-dot{width:4px;height:4px;border-radius:50%;background:var(--b2);}
 .plan-actions{display:flex;gap:6px;flex-shrink:0;margin-top:2px;}
 .btn-sm{background:var(--s2);border:1px solid var(--b1);color:var(--t1);padding:6px 12px;border-radius:var(--r2);font-size:12px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .15s;}
 .btn-sm:hover{border-color:var(--b2);background:var(--s3);}
 
-/* variants */
+/* SCENARIO CARDS */
 .variants-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
 .var-card{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:14px;cursor:pointer;transition:all .15s;position:relative;}
 .var-card:hover{border-color:var(--b2);}
 .var-card.sel{border-color:var(--acc);background:rgba(99,102,241,.07);}
 .var-rec{position:absolute;top:-8px;right:10px;background:var(--green);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;text-transform:uppercase;letter-spacing:.04em;}
-.var-label{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
-.var-name{font-size:13px;font-weight:700;margin-bottom:10px;color:var(--t1);}
-.var-budget{font-size:18px;font-weight:800;color:var(--acc);margin-bottom:8px;letter-spacing:-.01em;}
-.var-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.var-kpi-lbl{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
+.var-name{font-size:13px;font-weight:700;margin-bottom:8px;color:var(--t1);}
+.var-hero{font-size:22px;font-weight:800;color:var(--acc);letter-spacing:-.02em;line-height:1;}
+.var-hero-sub{font-size:10px;color:var(--t2);margin-top:2px;margin-bottom:8px;}
+.var-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
 .var-m-label{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.04em;}
-.var-m-val{font-size:13px;font-weight:700;}
+.var-m-val{font-size:12px;font-weight:700;}
 
-/* sections */
+/* SECTIONS */
 .section{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:14px 16px;margin-bottom:12px;}
 .sec-title{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
 .sec-title-left{display:flex;align-items:center;gap:6px;}
-.sec-dot{width:5px;height:5px;border-radius:50%;background:var(--acc);}
-.ai-tag{font-size:9px;font-weight:600;color:var(--acc);background:var(--acc-bg);padding:2px 7px;border-radius:4px;display:flex;align-items:center;gap:4px;}
+.sec-dot{width:5px;height:5px;border-radius:50%;background:var(--acc);flex-shrink:0;}
+.ai-tag{font-size:9px;font-weight:600;color:var(--acc);background:var(--acc-bg);padding:2px 7px;border-radius:4px;}
+.live-tag{font-size:9px;font-weight:600;color:var(--green);}
 
-/* exec summary */
-.exec-ta{width:100%;background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);color:var(--t1);padding:10px 12px;font-size:12.5px;font-family:'Inter',sans-serif;resize:vertical;min-height:82px;line-height:1.6;transition:border-color .15s;}
-.exec-ta:focus{outline:none;border-color:var(--acc);}
+/* CAMPAIGN PARAMS */
+.param-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.param-item{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:9px 11px;}
+.param-label{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:4px;}
+.param-val{font-size:12px;font-weight:500;color:var(--t1);cursor:pointer;border-bottom:1px dashed transparent;display:inline-block;}
+.param-val:hover{border-bottom-color:var(--b2);color:var(--acc);}
 
-/* metrics grid */
+/* PILLS */
+.pill-row{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;}
+.pill{padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600;background:var(--s2);border:1px solid var(--b1);color:var(--t3);cursor:pointer;transition:all .1s;}
+.pill:hover{border-color:var(--b2);color:var(--t2);}
+.pill.active{background:var(--acc-bg);border-color:var(--acc);color:var(--acc);}
+
+/* METRICS */
 .metrics-g{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
 .metric{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:10px 12px;}
 .metric-l{font-size:10px;color:var(--t3);margin-bottom:4px;}
 .metric-v{font-size:17px;font-weight:700;letter-spacing:-.01em;}
-.metric-v.editable{cursor:pointer;padding-bottom:1px;border-bottom:1px dashed var(--b2);}
+.metric-v.editable{cursor:pointer;border-bottom:1px dashed var(--b2);}
 .metric-v.editable:hover{color:var(--acc);border-color:var(--acc);}
 .metric-sub{font-size:10px;color:var(--t3);margin-top:2px;}
 
-/* budget allocation */
+/* BUDGET BARS */
 .alloc-wrap{display:flex;gap:20px;align-items:flex-start;}
 .alloc-bars{flex:1;}
 .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
 .bar-lbl{width:88px;font-size:11px;color:var(--t2);text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .bar-track{flex:1;background:var(--s1);border-radius:3px;height:16px;overflow:hidden;}
-.bar-fill{height:100%;border-radius:3px;display:flex;align-items:center;padding-left:7px;font-size:10px;font-weight:600;color:rgba(255,255,255,.9);white-space:nowrap;transition:width .6s cubic-bezier(.4,0,.2,1);}
-.bar-pct{width:30px;font-size:11px;color:var(--t3);text-align:right;flex-shrink:0;}
+.bar-fill{height:100%;border-radius:3px;display:flex;align-items:center;padding-left:7px;font-size:10px;font-weight:600;color:rgba(255,255,255,.9);white-space:nowrap;transition:width .5s cubic-bezier(.4,0,.2,1);}
+.bar-pct{width:36px;font-size:11px;color:var(--t2);text-align:right;flex-shrink:0;cursor:pointer;}
+.bar-pct:hover{color:var(--acc);}
 .pie-wrap{flex-shrink:0;width:110px;display:flex;flex-direction:column;align-items:center;gap:10px;}
 .pie-legend{display:flex;flex-direction:column;gap:4px;width:100%;}
 .pie-li{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--t2);}
 .pie-li-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
 
-/* table */
+/* CURVE BADGES */
+.curve-cell{display:flex;align-items:center;gap:4px;flex-wrap:nowrap;}
+.cb{display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;}
+.cb-default{background:rgba(113,113,122,.2);color:#a1a1aa;}
+.cb-client{background:rgba(99,102,241,.15);color:#818cf8;}
+.cb-custom{background:rgba(34,197,94,.15);color:#4ade80;}
+.why-btn{width:14px;height:14px;border-radius:50%;background:var(--b1);color:var(--t3);font-size:9px;cursor:pointer;border:none;display:inline-flex;align-items:center;justify-content:center;transition:all .1s;flex-shrink:0;line-height:1;}
+.why-btn:hover{background:var(--acc-bg);color:var(--acc);}
+.upload-btn{font-size:9px;color:var(--t3);background:transparent;border:1px solid var(--b1);border-radius:3px;cursor:pointer;padding:2px 6px;white-space:nowrap;transition:all .1s;}
+.upload-btn:hover{border-color:var(--acc);color:var(--acc);}
+
+/* TOOLTIP */
+#tooltip{position:fixed;background:var(--s3);border:1px solid var(--acc);border-radius:var(--r);padding:10px 13px;font-size:11.5px;line-height:1.6;color:var(--t2);max-width:240px;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.5);pointer-events:none;display:none;}
+#tooltip.show{display:block;}
+
+/* TABLE */
 .tbl-wrap{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;font-size:12px;}
-th{text-align:left;padding:7px 10px;color:var(--t3);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--b1);white-space:nowrap;}
-td{padding:8px 10px;border-bottom:1px solid rgba(39,39,42,.6);vertical-align:middle;}
+th{text-align:left;padding:6px 8px;color:var(--t3);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--b1);white-space:nowrap;}
+td{padding:7px 8px;border-bottom:1px solid rgba(39,39,42,.6);vertical-align:middle;}
 tr:last-child td{border-bottom:none;}
 tbody tr:hover td{background:var(--s3);}
-.group-tr td{background:var(--s1);color:var(--t3);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:5px 10px;}
+.group-tr td{background:var(--s1);color:var(--t3);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:5px 8px;}
 .ch-name{display:flex;align-items:center;gap:7px;font-weight:600;}
 .ch-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
-.cell-edit{cursor:pointer;padding-bottom:1px;border-bottom:1px dashed transparent;}
+.cell-edit{cursor:pointer;border-bottom:1px dashed transparent;}
 .cell-edit:hover{border-color:var(--acc);color:var(--acc);}
 .bud-hi{font-weight:700;color:var(--acc);}
 .mbadge{padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700;text-transform:uppercase;}
 .mb-grp{background:rgba(168,85,247,.15);color:#a855f7;}
 .mb-cpm{background:var(--acc-bg);color:var(--acc);}
 .mb-cpp{background:rgba(245,158,11,.12);color:var(--amber);}
-.tbl-total td{background:var(--s3);font-weight:700;font-size:12px;}
+.tbl-total td{background:var(--s3);font-weight:700;}
+.cin{background:var(--s1);border:1px solid var(--b1);border-radius:3px;color:var(--t3);font-size:10px;width:58px;padding:3px 5px;text-align:center;font-family:'Inter',sans-serif;}
+.cin:focus{outline:none;border-color:var(--acc);color:var(--t1);}
 
-/* charts */
-.charts-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.chart-box{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:12px;}
-.chart-box-title{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
+/* COLORS */
+.c1{background:#6366f1;}.c2{background:#06b6d4;}.c3{background:#f59e0b;}
+.c4{background:#22c55e;}.c5{background:#ec4899;}.c6{background:#8b5cf6;}.c7{background:#ef4444;}
 
-/* color chips */
-.c1{background:#6366f1;} .c2{background:#06b6d4;} .c3{background:#f59e0b;}
-.c4{background:#22c55e;} .c5{background:#ec4899;} .c6{background:#8b5cf6;} .c7{background:#ef4444;}
+/* FLIGHTING */
+.flight-chart-box{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:12px;margin-bottom:10px;}
+.flight-grid-wrap{overflow-x:auto;}
+.fg{border-collapse:collapse;font-size:11px;min-width:680px;width:100%;}
+.fg th{padding:4px 5px;color:var(--t3);font-size:9px;font-weight:600;text-transform:uppercase;border-bottom:1px solid var(--b1);text-align:center;white-space:nowrap;}
+.fg th:first-child{text-align:left;min-width:86px;}
+.fg th:last-child{text-align:right;}
+.fg td{padding:4px 5px;border-bottom:1px solid rgba(39,39,42,.5);text-align:center;font-size:11px;font-variant-numeric:tabular-nums;}
+.fg td:first-child{text-align:left;font-weight:600;}
+.fg td:last-child{text-align:right;font-weight:700;color:var(--acc);}
+.fg tbody tr:hover td{background:var(--s3);}
+.fg-total td{background:var(--s2);font-weight:700;border-top:1px solid var(--b1);}
+.fc{cursor:pointer;padding:1px 3px;border-radius:2px;border:1px solid transparent;min-width:28px;display:inline-block;transition:border-color .1s;}
+.fc:hover{border-color:var(--acc);color:var(--acc);}
 
-/* ── RIGHT CHAT PANEL ── */
+/* KPI FORECAST */
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.kpi-box{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:12px;}
+.kpi-box-title{font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;}
+.kpi-box-val{font-size:20px;font-weight:800;letter-spacing:-.02em;line-height:1.1;}
+.kpi-box-sub{font-size:10px;color:var(--t2);margin-bottom:8px;}
+
+/* RIGHT CHAT */
 .chat-panel-header{padding:14px 16px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
 .chat-panel-title{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;}
 .online-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 2px rgba(34,197,94,.2);}
@@ -233,22 +268,21 @@ tbody tr:hover td{background:var(--s3);}
 .p-msg.user .p-msg-bubble{background:var(--acc);color:#fff;}
 .chat-hint{font-size:11px;color:var(--t2);background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.2);border-radius:6px;padding:8px 10px;line-height:1.5;}
 .chat-panel-input{padding:12px;border-top:1px solid var(--b1);flex-shrink:0;background:var(--s1);}
-.chat-panel-input textarea{width:100%;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);color:var(--t1);padding:9px 12px;font-size:12px;font-family:'Inter',sans-serif;resize:none;min-height:70px;transition:border-color .15s;line-height:1.5;}
+.chat-panel-input textarea{width:100%;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);color:var(--t1);padding:9px 12px;font-size:12px;font-family:'Inter',sans-serif;resize:none;min-height:68px;transition:border-color .15s;line-height:1.5;}
 .chat-panel-input textarea:focus{outline:none;border-color:var(--acc);}
 .chat-panel-input textarea::placeholder{color:var(--t3);}
 .chat-send-row{display:flex;justify-content:space-between;align-items:center;margin-top:8px;}
-.chat-hint-chips{display:flex;gap:5px;flex-wrap:wrap;}
-.hint-chip{background:var(--s3);border:1px solid var(--b1);border-radius:4px;padding:3px 8px;font-size:10px;color:var(--t2);cursor:pointer;transition:all .1s;}
-.hint-chip:hover{border-color:var(--acc);color:var(--acc);}
+.chips{display:flex;gap:5px;flex-wrap:wrap;}
+.chip{background:var(--s3);border:1px solid var(--b1);border-radius:4px;padding:3px 8px;font-size:10px;color:var(--t2);cursor:pointer;transition:all .1s;}
+.chip:hover{border-color:var(--acc);color:var(--acc);}
 
-/* ── LOADING ── */
+/* LOADING */
 .loading{position:fixed;inset:0;background:rgba(9,9,11,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:999;backdrop-filter:blur(4px);}
 .loading-spinner{width:40px;height:40px;border:3px solid var(--b1);border-top-color:var(--acc);border-radius:50%;animation:spin 1s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-text{font-size:15px;font-weight:600;}
 .loading-sub{font-size:12px;color:var(--t2);}
 
-/* scrollbar */
 ::-webkit-scrollbar{width:5px;height:5px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--b1);border-radius:3px;}
@@ -257,7 +291,7 @@ tbody tr:hover td{background:var(--s3);}
 </head>
 <body>
 
-<!-- TOP BAR -->
+<!-- TOPBAR -->
 <div class="topbar">
   <a class="logo" href="#"><div class="logo-icon">⚡</div>Planning Agent</a>
   <div class="steps">
@@ -272,12 +306,15 @@ tbody tr:hover td{background:var(--s3);}
   <div class="topbar-right"><div class="avatar">KW</div></div>
 </div>
 
-<!-- ══════ SCREEN 1: HOME ══════ -->
+<!-- TOOLTIP -->
+<div id="tooltip"></div>
+
+<!-- ══ SCREEN 1: HOME ══ -->
 <div class="screen active" id="s1">
   <div class="home-wrap" style="margin:auto;">
     <div class="home-eyebrow">AI-Powered Media Planning</div>
     <h1 class="home-title">Build media plans<br>10× faster with AI</h1>
-    <p class="home-sub">Upload a client brief and our AI will generate a full media plan — channel mix, budget allocation, and strategic rationale — in seconds.</p>
+    <p class="home-sub">Upload a client brief and AI generates a complete media plan — channels, budgets, flighting, and reach forecasts — in one unified workspace.</p>
     <button class="btn-lg" onclick="go(2)">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
       New Plan
@@ -296,18 +333,18 @@ tbody tr:hover td{background:var(--s3);}
   </div>
 </div>
 
-<!-- ══════ SCREEN 2: UPLOAD ══════ -->
-<div class="screen" id="s2" style="align-items:center;justify-content:center;">
+<!-- ══ SCREEN 2: UPLOAD ══ -->
+<div class="screen" id="s2">
   <div class="upload-card">
     <div class="card-title">Upload your campaign brief</div>
-    <div class="card-sub">AI will read the brief and ask a few clarifying questions before generating the plan.</div>
+    <div class="card-sub">AI will read the brief, ask a few clarifying questions, then generate a complete draft plan.</div>
     <div class="dropzone" id="dz" onclick="uploadFile()">
       <div class="dz-icon">📄</div>
       <div class="dz-text">Drop your brief here or <span>browse files</span></div>
       <div class="dz-hint">PDF, Word, PowerPoint · max 50 MB</div>
     </div>
-    <label class="field-label">Additional context for AI <span style="font-weight:400;color:var(--t3);">(optional)</span></label>
-    <textarea class="textarea" placeholder="e.g. Budget is net of agency fee, we prefer video-heavy channels, exclude TikTok…"></textarea>
+    <label class="field-label">Additional context <span style="font-weight:400;color:var(--t3);">(optional)</span></label>
+    <textarea class="textarea" placeholder="e.g. Budget is net of agency fee, exclude TikTok, we have a TVN deal…"></textarea>
     <div class="row-btns">
       <button class="btn-ghost" onclick="go(1)">Back</button>
       <button class="btn-primary" style="flex:1;justify-content:center;" onclick="startAnalysis()">Analyse Brief →</button>
@@ -315,9 +352,9 @@ tbody tr:hover td{background:var(--s3);}
   </div>
 </div>
 
-<!-- ══════ SCREEN 3: CLARIFICATION ══════ -->
+<!-- ══ SCREEN 3: CLARIFICATION ══ -->
 <div class="screen" id="s3">
-  <div class="qa-body" style="flex:1;">
+  <div class="qa-body">
     <div class="qa-left">
       <h3>📄 Extracted Brief Data</h3>
       <div class="brief-item"><div class="brief-item-label">Client / Brand</div><div class="brief-item-val">Lactima</div></div>
@@ -333,17 +370,17 @@ tbody tr:hover td{background:var(--s3);}
     <div class="qa-right">
       <div class="qa-top">
         <div class="qa-top-title">AI is clarifying your brief</div>
-        <div class="qa-top-sub">Answer a few questions to make the plan as accurate as possible</div>
+        <div class="qa-top-sub">Answer a few questions to improve plan accuracy</div>
       </div>
       <div class="chat-msgs" id="qaMsgs">
-        <div class="msg ai"><div class="msg-label">AI Planner</div><div class="msg-bubble">I've read the Lactima brief. Before I generate the plan, I have a few quick questions.</div></div>
+        <div class="msg ai"><div class="msg-label">AI Planner</div><div class="msg-bubble">I've read the Lactima brief. Before generating the plan, I have a few quick questions.</div></div>
         <div class="msg ai"><div class="msg-label">AI Planner</div><div class="msg-bubble">The budget is listed as <strong>500 000 PLN</strong> — is this <strong>net</strong> (excluding agency fee and VAT) or <strong>gross</strong>?</div></div>
         <div class="msg user" id="a1" style="display:none;"><div class="msg-label">You</div><div class="msg-bubble">Net, excluding agency fee</div></div>
         <div class="msg ai" id="q2" style="display:none;"><div class="msg-label">AI Planner</div><div class="msg-bubble">Got it. The campaign runs July–September. Are there any <strong>weeks to intensify or avoid</strong>? E.g. summer holidays, back-to-school?</div></div>
         <div class="msg user" id="a2" style="display:none;"><div class="msg-label">You</div><div class="msg-bubble">Boost the last 2 weeks of September — back to school is key for Lactima</div></div>
-        <div class="msg ai" id="q3" style="display:none;"><div class="msg-label">AI Planner</div><div class="msg-bubble">Noted. Last question — are there any <strong>channels to exclude</strong>, or any that must be included due to publisher deals?</div></div>
+        <div class="msg ai" id="q3" style="display:none;"><div class="msg-label">AI Planner</div><div class="msg-bubble">Noted. Last question — any <strong>channels to exclude</strong>, or must-include publisher deals?</div></div>
         <div class="msg user" id="a3" style="display:none;"><div class="msg-label">You</div><div class="msg-bubble">We have a TVN deal — minimum 30% of TV budget. Otherwise free hand.</div></div>
-        <div class="msg ai" id="q4" style="display:none;"><div class="msg-label">AI Planner</div><div class="msg-bubble">Perfect, I have everything I need. I'll now generate a full media plan with 3 strategic variants. Ready?</div></div>
+        <div class="msg ai" id="q4" style="display:none;"><div class="msg-label">AI Planner</div><div class="msg-bubble">Perfect. I have everything I need. I'll generate a full media plan with 3 optimisation variants. Ready?</div></div>
       </div>
       <div class="chat-input-row">
         <input class="chat-input" id="qaIn" placeholder="Reply to AI…" onkeypress="if(event.key==='Enter')qaReply()">
@@ -357,13 +394,14 @@ tbody tr:hover td{background:var(--s3);}
   </div>
 </div>
 
-<!-- ══════ SCREEN 4: MEDIA PLAN ══════ -->
+<!-- ══ SCREEN 4: MEDIA PLAN ══ -->
 <div class="screen" id="s4">
 
   <!-- LEFT: scrollable plan -->
   <div class="plan-left">
     <div class="plan-content">
 
+      <!-- Header -->
       <div class="plan-header">
         <div>
           <div class="plan-kicker">Media Plan · Wizard of Oz Prototype</div>
@@ -371,7 +409,7 @@ tbody tr:hover td{background:var(--s3);}
           <div class="plan-meta">
             <span>AI-generated</span><span class="plan-meta-dot"></span>
             <span>500 000 PLN net</span><span class="plan-meta-dot"></span>
-            <span>Jul 1 – Sep 30, 2026</span>
+            <span>Jul 1 – Sep 30, 2026 · 13 weeks</span>
           </div>
         </div>
         <div class="plan-actions">
@@ -380,77 +418,126 @@ tbody tr:hover td{background:var(--s3);}
         </div>
       </div>
 
-      <!-- Variants -->
+      <!-- Scenario selector -->
       <div class="variants-row">
-        <div class="var-card" onclick="pickVar(this)">
-          <div class="var-label">Variant A</div>
-          <div class="var-name">📺 TV Heavy</div>
-          <div class="var-budget">500 000 PLN</div>
+        <div class="var-card" onclick="pickVar(this,'maxReach')">
+          <div class="var-kpi-lbl">Optimise for: Reach</div>
+          <div class="var-name">📡 Maximize Reach</div>
+          <div class="var-hero">78%</div>
+          <div class="var-hero-sub">Reach 1+ · Est. Rev: 1.2M PLN</div>
           <div class="var-grid">
-            <div><div class="var-m-label">Reach 1+</div><div class="var-m-val">63%</div></div>
-            <div><div class="var-m-label">GRP</div><div class="var-m-val">420</div></div>
-            <div><div class="var-m-label">Avg CPM</div><div class="var-m-val">28 PLN</div></div>
-            <div><div class="var-m-label">Channels</div><div class="var-m-val">5</div></div>
-          </div>
-        </div>
-        <div class="var-card sel" onclick="pickVar(this)">
-          <div class="var-rec">Recommended</div>
-          <div class="var-label">Variant B</div>
-          <div class="var-name">⚖️ Balanced</div>
-          <div class="var-budget">500 000 PLN</div>
-          <div class="var-grid">
-            <div><div class="var-m-label">Reach 1+</div><div class="var-m-val">71%</div></div>
-            <div><div class="var-m-label">GRP</div><div class="var-m-val">380</div></div>
-            <div><div class="var-m-label">Avg CPM</div><div class="var-m-val">24 PLN</div></div>
+            <div><div class="var-m-label">GRP</div><div class="var-m-val">450</div></div>
+            <div><div class="var-m-label">Avg CPM</div><div class="var-m-val">21 PLN</div></div>
+            <div><div class="var-m-label">Frequency</div><div class="var-m-val">1.9×</div></div>
             <div><div class="var-m-label">Channels</div><div class="var-m-val">7</div></div>
           </div>
         </div>
-        <div class="var-card" onclick="pickVar(this)">
-          <div class="var-label">Variant C</div>
-          <div class="var-name">📱 Digital First</div>
-          <div class="var-budget">500 000 PLN</div>
+        <div class="var-card" onclick="pickVar(this,'maxRevenue')">
+          <div class="var-kpi-lbl">Optimise for: Revenue</div>
+          <div class="var-name">💰 Maximize Revenue</div>
+          <div class="var-hero">2.8M</div>
+          <div class="var-hero-sub">Est. Revenue PLN · Reach: 61%</div>
           <div class="var-grid">
-            <div><div class="var-m-label">Reach 1+</div><div class="var-m-val">68%</div></div>
-            <div><div class="var-m-label">GRP</div><div class="var-m-val">290</div></div>
-            <div><div class="var-m-label">Avg CPM</div><div class="var-m-val">18 PLN</div></div>
-            <div><div class="var-m-label">Channels</div><div class="var-m-val">8</div></div>
+            <div><div class="var-m-label">GRP</div><div class="var-m-val">310</div></div>
+            <div><div class="var-m-label">Avg CPM</div><div class="var-m-val">28 PLN</div></div>
+            <div><div class="var-m-label">Frequency</div><div class="var-m-val">3.4×</div></div>
+            <div><div class="var-m-label">Channels</div><div class="var-m-val">6</div></div>
+          </div>
+        </div>
+        <div class="var-card sel" onclick="pickVar(this,'balanced')">
+          <div class="var-rec">★ Recommended</div>
+          <div class="var-kpi-lbl">Optimise for: Reach + Revenue</div>
+          <div class="var-name">⚖️ Balanced</div>
+          <div class="var-hero">71%</div>
+          <div class="var-hero-sub">Reach 1+ · Est. Rev: 2.1M PLN</div>
+          <div class="var-grid">
+            <div><div class="var-m-label">GRP</div><div class="var-m-val">380</div></div>
+            <div><div class="var-m-label">Avg CPM</div><div class="var-m-val">24 PLN</div></div>
+            <div><div class="var-m-label">Frequency</div><div class="var-m-val">2.6×</div></div>
+            <div><div class="var-m-label">Channels</div><div class="var-m-val">7</div></div>
           </div>
         </div>
       </div>
 
-      <!-- Executive Summary -->
+      <!-- Campaign Params -->
       <div class="section">
-        <div class="sec-title"><div class="sec-title-left"><div class="sec-dot"></div>Executive Summary</div><div class="ai-tag">✨ AI-generated</div></div>
-        <textarea class="exec-ta">The Lactima Q3 2026 campaign targets women aged 25–45 with a brand awareness message during the summer and back-to-school season. Variant B (Balanced) is recommended — it combines mass reach through TV (TVN, Polsat) with the precision of digital (YouTube, Meta). Boosting spend in the last 2 weeks of September will effectively reach mothers with school-age children during the back-to-school moment. Estimated reach 1+: 71% of the target audience at an average CPM of 24 PLN.</textarea>
+        <div class="sec-title">
+          <div class="sec-title-left"><div class="sec-dot"></div>Campaign Parameters</div>
+          <div class="ai-tag">✨ AI-filled · all editable</div>
+        </div>
+        <div class="param-grid">
+          <div class="param-item">
+            <div class="param-label">Client / Brand</div>
+            <span class="param-val" onclick="editParam(this)">Lactima</span>
+          </div>
+          <div class="param-item">
+            <div class="param-label">Total Budget</div>
+            <span class="param-val" onclick="editParam(this)">500 000 PLN net</span>
+          </div>
+          <div class="param-item">
+            <div class="param-label">Campaign Period</div>
+            <span class="param-val" onclick="editParam(this)">Jul 1 – Sep 30, 2026</span>
+          </div>
+          <div class="param-item">
+            <div class="param-label">Target Audience</div>
+            <span class="param-val" onclick="editParam(this)">Women 25–45</span>
+          </div>
+          <div class="param-item">
+            <div class="param-label">KPI Mode</div>
+            <div class="pill-row">
+              <span class="pill" onclick="setPill(this,'.pill-row')">Reach</span>
+              <span class="pill" onclick="setPill(this,'.pill-row')">Revenue</span>
+              <span class="pill active" onclick="setPill(this,'.pill-row')">Both</span>
+            </div>
+          </div>
+          <div class="param-item">
+            <div class="param-label">Frequency Target</div>
+            <div class="pill-row" id="freqRow">
+              <span class="pill" onclick="setPill(this,'#freqRow')">1+</span>
+              <span class="pill active" onclick="setPill(this,'#freqRow')">2+</span>
+              <span class="pill" onclick="setPill(this,'#freqRow')">3+</span>
+              <span class="pill" onclick="setPill(this,'#freqRow')">4+</span>
+              <span class="pill" onclick="setPill(this,'#freqRow')">5+</span>
+              <span class="pill" onclick="setPill(this,'#freqRow')">7+</span>
+              <span class="pill" onclick="setPill(this,'#freqRow')">10+</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Plan Summary -->
       <div class="section">
-        <div class="sec-title"><div class="sec-title-left"><div class="sec-dot"></div>Plan Summary</div></div>
+        <div class="sec-title">
+          <div class="sec-title-left"><div class="sec-dot"></div>Plan Summary</div>
+          <div class="live-tag">● Updates live</div>
+        </div>
         <div class="metrics-g">
           <div class="metric"><div class="metric-l">Total Budget</div><div class="metric-v editable" onclick="editV(this)">500 000 PLN</div><div class="metric-sub">net</div></div>
           <div class="metric"><div class="metric-l">Total Impressions</div><div class="metric-v editable" onclick="editV(this)">20.8M</div><div class="metric-sub">estimated</div></div>
           <div class="metric"><div class="metric-l">Avg. CPM</div><div class="metric-v editable" onclick="editV(this)">24.10 PLN</div><div class="metric-sub">weighted</div></div>
-          <div class="metric"><div class="metric-l">Avg. Frequency</div><div class="metric-v editable" onclick="editV(this)">3.8×</div><div class="metric-sub">per person</div></div>
-          <div class="metric"><div class="metric-l">Cumulative Reach</div><div class="metric-v editable" onclick="editV(this)">71%</div><div class="metric-sub">1+ contact</div></div>
+          <div class="metric"><div class="metric-l">Avg. Frequency</div><div class="metric-v editable" onclick="editV(this)">2.6×</div><div class="metric-sub">per person</div></div>
+          <div class="metric"><div class="metric-l">Cumulative Reach</div><div class="metric-v editable" onclick="editV(this)" style="color:var(--acc)">71%</div><div class="metric-sub">1+ contact, W25-45</div></div>
+          <div class="metric"><div class="metric-l">Estimated Revenue</div><div class="metric-v" style="font-size:14px;font-weight:700;color:var(--green);">2.1M PLN</div><div class="metric-sub">model forecast</div></div>
           <div class="metric"><div class="metric-l">Total GRP</div><div class="metric-v editable" onclick="editV(this)">380</div><div class="metric-sub">TV + Radio</div></div>
-          <div class="metric"><div class="metric-l">Campaign Period</div><div class="metric-v" style="font-size:13px;">Jul 1 – Sep 30</div><div class="metric-sub">13 weeks</div></div>
           <div class="metric"><div class="metric-l">Channels</div><div class="metric-v">7</div><div class="metric-sub">publishers</div></div>
         </div>
       </div>
 
       <!-- Budget Allocation -->
       <div class="section">
-        <div class="sec-title"><div class="sec-title-left"><div class="sec-dot"></div>Budget Allocation by Partner</div></div>
+        <div class="sec-title">
+          <div class="sec-title-left"><div class="sec-dot"></div>Budget Allocation</div>
+          <div style="font-size:9px;color:var(--t3);">click % to edit · drag bar to adjust</div>
+        </div>
         <div class="alloc-wrap">
           <div class="alloc-bars">
-            <div class="bar-row"><div class="bar-lbl">TVN</div><div class="bar-track"><div class="bar-fill c1" style="width:32%">160k PLN</div></div><div class="bar-pct">32%</div></div>
-            <div class="bar-row"><div class="bar-lbl">Polsat</div><div class="bar-track"><div class="bar-fill c2" style="width:18%">90k PLN</div></div><div class="bar-pct">18%</div></div>
-            <div class="bar-row"><div class="bar-lbl">YouTube</div><div class="bar-track"><div class="bar-fill c3" style="width:20%">100k PLN</div></div><div class="bar-pct">20%</div></div>
-            <div class="bar-row"><div class="bar-lbl">Meta</div><div class="bar-track"><div class="bar-fill c4" style="width:15%">75k PLN</div></div><div class="bar-pct">15%</div></div>
-            <div class="bar-row"><div class="bar-lbl">OOH AMS</div><div class="bar-track"><div class="bar-fill c5" style="width:8%">40k</div></div><div class="bar-pct">8%</div></div>
-            <div class="bar-row"><div class="bar-lbl">RMF FM</div><div class="bar-track"><div class="bar-fill c6" style="width:5%">25k</div></div><div class="bar-pct">5%</div></div>
-            <div class="bar-row"><div class="bar-lbl">Programmatic</div><div class="bar-track"><div class="bar-fill c7" style="width:2%"></div></div><div class="bar-pct">2%</div></div>
+            <div class="bar-row"><div class="bar-lbl">TVN</div><div class="bar-track"><div class="bar-fill c1" style="width:32%">160k PLN</div></div><div class="bar-pct" onclick="editPct(this)">32%</div></div>
+            <div class="bar-row"><div class="bar-lbl">Polsat</div><div class="bar-track"><div class="bar-fill c2" style="width:18%">90k PLN</div></div><div class="bar-pct" onclick="editPct(this)">18%</div></div>
+            <div class="bar-row"><div class="bar-lbl">YouTube</div><div class="bar-track"><div class="bar-fill c3" style="width:20%">100k PLN</div></div><div class="bar-pct" onclick="editPct(this)">20%</div></div>
+            <div class="bar-row"><div class="bar-lbl">Meta</div><div class="bar-track"><div class="bar-fill c4" style="width:15%">75k PLN</div></div><div class="bar-pct" onclick="editPct(this)">15%</div></div>
+            <div class="bar-row"><div class="bar-lbl">OOH AMS</div><div class="bar-track"><div class="bar-fill c5" style="width:8%">40k</div></div><div class="bar-pct" onclick="editPct(this)">8%</div></div>
+            <div class="bar-row"><div class="bar-lbl">RMF FM</div><div class="bar-track"><div class="bar-fill c6" style="width:5%">25k</div></div><div class="bar-pct" onclick="editPct(this)">5%</div></div>
+            <div class="bar-row"><div class="bar-lbl">Programmatic</div><div class="bar-track"><div class="bar-fill c7" style="width:2%"></div></div><div class="bar-pct" onclick="editPct(this)">2%</div></div>
           </div>
           <div class="pie-wrap">
             <svg viewBox="0 0 100 100" width="100" height="100">
@@ -475,98 +562,223 @@ tbody tr:hover td{background:var(--s3);}
         </div>
       </div>
 
-      <!-- Channel Selection -->
+      <!-- Channel Mix & Reach Curves -->
       <div class="section">
-        <div class="sec-title"><div class="sec-title-left"><div class="sec-dot"></div>1. Channel Selection</div></div>
+        <div class="sec-title">
+          <div class="sec-title-left"><div class="sec-dot"></div>Channel Mix &amp; Reach Curves</div>
+          <div class="ai-tag">✨ AI-assigned · all editable</div>
+        </div>
         <div class="tbl-wrap">
           <table>
-            <thead><tr><th>Channel</th><th>Format</th><th>CPM</th><th>GRP</th><th>Max Reach</th><th>Budget</th><th>Budget %</th><th>Method</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Channel</th>
+                <th>Format</th>
+                <th>CPM/CPP</th>
+                <th>Reach Curve</th>
+                <th>Min Budget</th>
+                <th>Max Budget</th>
+                <th>Budget</th>
+                <th>%</th>
+              </tr>
+            </thead>
             <tbody>
               <tr class="group-tr"><td colspan="8">📺 TV — 50%</td></tr>
-              <tr><td><div class="ch-name"><div class="ch-dot c1"></div>TVN</div></td><td>Spot 30"</td><td class="cell-edit">38 PLN</td><td class="cell-edit">180</td><td>52%</td><td class="bud-hi cell-edit">160 000 PLN</td><td class="cell-edit">32%</td><td><span class="mbadge mb-grp">GRP</span></td></tr>
-              <tr><td><div class="ch-name"><div class="ch-dot c2"></div>Polsat</div></td><td>Spot 30"</td><td class="cell-edit">30 PLN</td><td class="cell-edit">110</td><td>41%</td><td class="bud-hi cell-edit">90 000 PLN</td><td class="cell-edit">18%</td><td><span class="mbadge mb-grp">GRP</span></td></tr>
+              <tr>
+                <td><div class="ch-name"><div class="ch-dot c1"></div>TVN</div></td>
+                <td>Spot 30"</td>
+                <td class="cell-edit">38 PLN</td>
+                <td><div class="curve-cell">
+                  <span class="cb cb-client" id="cb-tvn">CLIENT</span>
+                  <button class="why-btn" onclick="showWhy(event,'tvn')">?</button>
+                  <button class="upload-btn" onclick="uploadCurve(this,'tvn')">↑ Upload</button>
+                </div></td>
+                <td><input class="cin" value="100 000" /></td>
+                <td><input class="cin" value="200 000" /></td>
+                <td class="bud-hi cell-edit">160 000 PLN</td>
+                <td class="cell-edit">32%</td>
+              </tr>
+              <tr>
+                <td><div class="ch-name"><div class="ch-dot c2"></div>Polsat</div></td>
+                <td>Spot 30"</td>
+                <td class="cell-edit">30 PLN</td>
+                <td><div class="curve-cell">
+                  <span class="cb cb-default" id="cb-polsat">DEFAULT</span>
+                  <button class="why-btn" onclick="showWhy(event,'polsat')">?</button>
+                  <button class="upload-btn" onclick="uploadCurve(this,'polsat')">↑ Upload</button>
+                </div></td>
+                <td><input class="cin" value="50 000" /></td>
+                <td><input class="cin" value="150 000" /></td>
+                <td class="bud-hi cell-edit">90 000 PLN</td>
+                <td class="cell-edit">18%</td>
+              </tr>
               <tr class="group-tr"><td colspan="8">📱 Digital — 37%</td></tr>
-              <tr><td><div class="ch-name"><div class="ch-dot c3"></div>YouTube</div></td><td>TrueView In-stream</td><td class="cell-edit">18 PLN</td><td>—</td><td>55%</td><td class="bud-hi cell-edit">100 000 PLN</td><td class="cell-edit">20%</td><td><span class="mbadge mb-cpm">CPM</span></td></tr>
-              <tr><td><div class="ch-name"><div class="ch-dot c4"></div>Meta</div></td><td>Video + Stories</td><td class="cell-edit">14 PLN</td><td>—</td><td>48%</td><td class="bud-hi cell-edit">75 000 PLN</td><td class="cell-edit">15%</td><td><span class="mbadge mb-cpm">CPM</span></td></tr>
-              <tr><td><div class="ch-name"><div class="ch-dot c7"></div>Programmatic</div></td><td>Display + Video</td><td class="cell-edit">9 PLN</td><td>—</td><td>35%</td><td class="bud-hi cell-edit">10 000 PLN</td><td class="cell-edit">2%</td><td><span class="mbadge mb-cpm">CPM</span></td></tr>
+              <tr>
+                <td><div class="ch-name"><div class="ch-dot c3"></div>YouTube</div></td>
+                <td>TrueView In-stream</td>
+                <td class="cell-edit">18 PLN</td>
+                <td><div class="curve-cell">
+                  <span class="cb cb-client" id="cb-youtube">CLIENT</span>
+                  <button class="why-btn" onclick="showWhy(event,'youtube')">?</button>
+                  <button class="upload-btn" onclick="uploadCurve(this,'youtube')">↑ Upload</button>
+                </div></td>
+                <td><input class="cin" value="50 000" /></td>
+                <td><input class="cin" value="150 000" /></td>
+                <td class="bud-hi cell-edit">100 000 PLN</td>
+                <td class="cell-edit">20%</td>
+              </tr>
+              <tr>
+                <td><div class="ch-name"><div class="ch-dot c4"></div>Meta</div></td>
+                <td>Video + Stories</td>
+                <td class="cell-edit">14 PLN</td>
+                <td><div class="curve-cell">
+                  <span class="cb cb-default" id="cb-meta">DEFAULT</span>
+                  <button class="why-btn" onclick="showWhy(event,'meta')">?</button>
+                  <button class="upload-btn" onclick="uploadCurve(this,'meta')">↑ Upload</button>
+                </div></td>
+                <td><input class="cin" value="25 000" /></td>
+                <td><input class="cin" value="100 000" /></td>
+                <td class="bud-hi cell-edit">75 000 PLN</td>
+                <td class="cell-edit">15%</td>
+              </tr>
+              <tr>
+                <td><div class="ch-name"><div class="ch-dot c7"></div>Programmatic</div></td>
+                <td>Display + Video</td>
+                <td class="cell-edit">9 PLN</td>
+                <td><div class="curve-cell">
+                  <span class="cb cb-default" id="cb-prog">DEFAULT</span>
+                  <button class="why-btn" onclick="showWhy(event,'prog')">?</button>
+                  <button class="upload-btn" onclick="uploadCurve(this,'prog')">↑ Upload</button>
+                </div></td>
+                <td><input class="cin" value="0" /></td>
+                <td><input class="cin" value="30 000" /></td>
+                <td class="bud-hi cell-edit">10 000 PLN</td>
+                <td class="cell-edit">2%</td>
+              </tr>
               <tr class="group-tr"><td colspan="8">🏙 OOH + Audio — 13%</td></tr>
-              <tr><td><div class="ch-name"><div class="ch-dot c5"></div>OOH AMS</div></td><td>Billboard + City Light</td><td class="cell-edit">45 PLN</td><td>—</td><td>28%</td><td class="bud-hi cell-edit">40 000 PLN</td><td class="cell-edit">8%</td><td><span class="mbadge mb-cpp">CPP</span></td></tr>
-              <tr><td><div class="ch-name"><div class="ch-dot c6"></div>RMF FM</div></td><td>Radio Spot 30"</td><td class="cell-edit">8 PLN</td><td class="cell-edit">90</td><td>32%</td><td class="bud-hi cell-edit">25 000 PLN</td><td class="cell-edit">5%</td><td><span class="mbadge mb-grp">GRP</span></td></tr>
-              <tr class="tbl-total"><td colspan="4"><strong>TOTAL</strong></td><td></td><td class="bud-hi"><strong>500 000 PLN</strong></td><td><strong>100%</strong></td><td></td></tr>
+              <tr>
+                <td><div class="ch-name"><div class="ch-dot c5"></div>OOH AMS</div></td>
+                <td>Billboard + CityLight</td>
+                <td class="cell-edit">45 PLN</td>
+                <td><div class="curve-cell">
+                  <span class="cb cb-custom" id="cb-ooh">CUSTOM</span>
+                  <button class="why-btn" onclick="showWhy(event,'ooh')">?</button>
+                  <button class="upload-btn" onclick="uploadCurve(this,'ooh')">↑ Re-upload</button>
+                </div></td>
+                <td><input class="cin" value="20 000" /></td>
+                <td><input class="cin" value="80 000" /></td>
+                <td class="bud-hi cell-edit">40 000 PLN</td>
+                <td class="cell-edit">8%</td>
+              </tr>
+              <tr>
+                <td><div class="ch-name"><div class="ch-dot c6"></div>RMF FM</div></td>
+                <td>Radio Spot 30"</td>
+                <td class="cell-edit">8 PLN</td>
+                <td><div class="curve-cell">
+                  <span class="cb cb-default" id="cb-rmf">DEFAULT</span>
+                  <button class="why-btn" onclick="showWhy(event,'rmf')">?</button>
+                  <button class="upload-btn" onclick="uploadCurve(this,'rmf')">↑ Upload</button>
+                </div></td>
+                <td><input class="cin" value="10 000" /></td>
+                <td><input class="cin" value="50 000" /></td>
+                <td class="bud-hi cell-edit">25 000 PLN</td>
+                <td class="cell-edit">5%</td>
+              </tr>
+              <tr class="tbl-total">
+                <td colspan="6"><strong>TOTAL</strong></td>
+                <td class="bud-hi"><strong>500 000 PLN</strong></td>
+                <td><strong>100%</strong></td>
+              </tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <!-- Insights -->
+      <!-- Flighting -->
       <div class="section">
-        <div class="sec-title"><div class="sec-title-left"><div class="sec-dot"></div>Insights</div><div class="ai-tag">✨ AI-generated</div></div>
-        <textarea class="exec-ta" style="min-height:68px;">The TV (50%) + Digital (37%) mix ensures optimal coverage of the W25–45 target. Boosting digital spend in weeks 12–13 (Sep 16–30) by 20% will increase effectiveness during the back-to-school moment. YouTube TrueView combined with the TV spot creates audio-visual synergy, improving ad recall by an estimated 15%.</textarea>
-      </div>
+        <div class="sec-title">
+          <div class="sec-title-left"><div class="sec-dot"></div>Flighting — Weekly Budget Distribution</div>
+          <div style="font-size:9px;color:var(--t3);">values in 000 PLN · click to edit</div>
+        </div>
 
-      <!-- Charts -->
-      <div class="charts-2">
-        <div class="chart-box">
-          <div class="chart-box-title">Cumulative Reach by Channel</div>
-          <svg width="100%" height="120" viewBox="0 0 380 120" preserveAspectRatio="none">
-            <polyline points="0,105 40,88 80,72 120,60 160,50 200,43 240,37 280,33 320,29 360,27 380,26" fill="none" stroke="#6366f1" stroke-width="2.5" stroke-linejoin="round"/>
-            <polyline points="0,105 40,94 80,83 120,74 160,67 200,61 240,57 280,53 320,51 360,49 380,49" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linejoin="round"/>
-            <polyline points="0,105 40,96 80,87 120,81 160,76 200,73 240,71 280,69 320,68 360,67 380,67" fill="none" stroke="#22c55e" stroke-width="2" stroke-linejoin="round" stroke-dasharray="5,3"/>
-            <polyline points="0,105 40,99 80,93 120,88 160,85 200,83 240,82 280,81 320,80 360,80 380,80" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="3,4"/>
-            <text x="0" y="118" fill="#52525b" font-size="9" font-family="Inter">W1</text>
-            <text x="90" y="118" fill="#52525b" font-size="9" font-family="Inter">W5</text>
-            <text x="185" y="118" fill="#52525b" font-size="9" font-family="Inter">W9</text>
-            <text x="270" y="118" fill="#52525b" font-size="9" font-family="Inter">W12</text>
-            <text x="350" y="118" fill="#52525b" font-size="9" font-family="Inter">W13</text>
-          </svg>
-          <div style="display:flex;gap:12px;margin-top:6px;flex-wrap:wrap;">
-            <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--t3)"><svg width="16" height="3"><line x1="0" y1="1.5" x2="16" y2="1.5" stroke="#6366f1" stroke-width="2.5"/></svg>TVN</div>
-            <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--t3)"><svg width="16" height="3"><line x1="0" y1="1.5" x2="16" y2="1.5" stroke="#06b6d4" stroke-width="2"/></svg>Polsat</div>
-            <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--t3)"><svg width="16" height="3"><line x1="0" y1="1.5" x2="16" y2="1.5" stroke="#22c55e" stroke-width="2" stroke-dasharray="5,3"/></svg>YouTube</div>
-            <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--t3)"><svg width="16" height="3"><line x1="0" y1="1.5" x2="16" y2="1.5" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3,4"/></svg>Meta</div>
+        <div class="flight-chart-box">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <span style="font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;">Weekly Total (000 PLN)</span>
+            <span style="font-size:9px;color:var(--amber);font-weight:700;">▲ W12–W13 boosted — back-to-school</span>
+          </div>
+          <svg id="flightSvg" width="100%" height="90" viewBox="0 0 546 90" preserveAspectRatio="none"></svg>
+          <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:3px;font-size:9px;color:var(--t3)"><div style="width:8px;height:8px;border-radius:1px;background:#6366f1"></div>TVN</div>
+            <div style="display:flex;align-items:center;gap:3px;font-size:9px;color:var(--t3)"><div style="width:8px;height:8px;border-radius:1px;background:#06b6d4"></div>Polsat</div>
+            <div style="display:flex;align-items:center;gap:3px;font-size:9px;color:var(--t3)"><div style="width:8px;height:8px;border-radius:1px;background:#f59e0b"></div>YouTube</div>
+            <div style="display:flex;align-items:center;gap:3px;font-size:9px;color:var(--t3)"><div style="width:8px;height:8px;border-radius:1px;background:#22c55e"></div>Meta</div>
+            <div style="display:flex;align-items:center;gap:3px;font-size:9px;color:var(--t3)"><div style="width:8px;height:8px;border-radius:1px;background:#ec4899"></div>OOH</div>
+            <div style="display:flex;align-items:center;gap:3px;font-size:9px;color:var(--t3)"><div style="width:8px;height:8px;border-radius:1px;background:#8b5cf6"></div>Radio</div>
+            <div style="display:flex;align-items:center;gap:3px;font-size:9px;color:var(--t3)"><div style="width:8px;height:8px;border-radius:1px;background:#ef4444"></div>Prog.</div>
           </div>
         </div>
-        <div class="chart-box">
-          <div class="chart-box-title">Weekly GRP by Channel (Sep boost)</div>
-          <svg width="100%" height="120" viewBox="0 0 380 120" preserveAspectRatio="none">
-            <rect x="4"   y="60" width="10" height="48" fill="#6366f1" rx="1" opacity=".9"/>
-            <rect x="16"  y="72" width="10" height="36" fill="#06b6d4" rx="1" opacity=".9"/>
-            <rect x="28"  y="84" width="10" height="24" fill="#8b5cf6" rx="1" opacity=".9"/>
-            <rect x="34"  y="62" width="10" height="46" fill="#6366f1" rx="1" opacity=".9" transform="translate(14)"/>
-            <rect x="46"  y="74" width="10" height="34" fill="#06b6d4" rx="1" opacity=".9" transform="translate(14)"/>
-            <rect x="58"  y="86" width="10" height="22" fill="#8b5cf6" rx="1" opacity=".9" transform="translate(14)"/>
-            <rect x="64"  y="59" width="10" height="49" fill="#6366f1" rx="1" opacity=".9" transform="translate(28)"/>
-            <rect x="76"  y="71" width="10" height="37" fill="#06b6d4" rx="1" opacity=".9" transform="translate(28)"/>
-            <rect x="88"  y="83" width="10" height="25" fill="#8b5cf6" rx="1" opacity=".9" transform="translate(28)"/>
-            <rect x="94"  y="61" width="10" height="47" fill="#6366f1" rx="1" opacity=".9" transform="translate(42)"/>
-            <rect x="106" y="73" width="10" height="35" fill="#06b6d4" rx="1" opacity=".9" transform="translate(42)"/>
-            <rect x="118" y="85" width="10" height="23" fill="#8b5cf6" rx="1" opacity=".9" transform="translate(42)"/>
-            <rect x="124" y="60" width="10" height="48" fill="#6366f1" rx="1" opacity=".9" transform="translate(56)"/>
-            <rect x="136" y="72" width="10" height="36" fill="#06b6d4" rx="1" opacity=".9" transform="translate(56)"/>
-            <rect x="154" y="62" width="10" height="46" fill="#6366f1" rx="1" opacity=".9" transform="translate(70)"/>
-            <rect x="166" y="74" width="10" height="34" fill="#06b6d4" rx="1" opacity=".9" transform="translate(70)"/>
-            <rect x="184" y="58" width="10" height="50" fill="#6366f1" rx="1" opacity=".9" transform="translate(84)"/>
-            <rect x="196" y="70" width="10" height="38" fill="#06b6d4" rx="1" opacity=".9" transform="translate(84)"/>
-            <rect x="214" y="62" width="10" height="46" fill="#6366f1" rx="1" opacity=".9" transform="translate(98)"/>
-            <rect x="226" y="74" width="10" height="34" fill="#06b6d4" rx="1" opacity=".9" transform="translate(98)"/>
-            <!-- W12 BOOSTED -->
-            <rect x="296" y="28" width="12" height="80" fill="#6366f1" rx="1"/>
-            <rect x="310" y="42" width="12" height="66" fill="#06b6d4" rx="1"/>
-            <rect x="324" y="58" width="12" height="50" fill="#8b5cf6" rx="1"/>
-            <!-- W13 BOOSTED -->
-            <rect x="340" y="18" width="12" height="90" fill="#6366f1" rx="1"/>
-            <rect x="354" y="32" width="12" height="76" fill="#06b6d4" rx="1"/>
-            <text x="290" y="118" fill="#f59e0b" font-size="8" font-family="Inter" font-weight="700">▲ Sep boost</text>
-            <text x="0"   y="118" fill="#52525b" font-size="9" font-family="Inter">W1</text>
-            <text x="155" y="118" fill="#52525b" font-size="9" font-family="Inter">W7</text>
-          </svg>
+
+        <div class="flight-grid-wrap">
+          <table class="fg" id="flightGrid"></table>
         </div>
       </div>
+
+      <!-- KPI Forecast -->
+      <div class="section">
+        <div class="sec-title">
+          <div class="sec-title-left"><div class="sec-dot"></div>KPI Forecast</div>
+          <div class="live-tag">● Updates on every edit</div>
+        </div>
+        <div class="kpi-grid">
+          <div class="kpi-box">
+            <div class="kpi-box-title">Cumulative Reach 1+</div>
+            <div class="kpi-box-val" style="color:var(--acc)">71%</div>
+            <div class="kpi-box-sub">of Women 25–45</div>
+            <svg width="100%" height="72" viewBox="0 0 200 72">
+              <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6366f1" stop-opacity=".25"/><stop offset="100%" stop-color="#6366f1" stop-opacity="0"/></linearGradient></defs>
+              <path d="M0,68 C14,64 26,57 40,50 C54,43 66,37 82,31 C96,26 112,22 128,20 C144,18 158,17 172,16 C182,15 192,15 200,14" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round"/>
+              <path d="M0,68 C14,64 26,57 40,50 C54,43 66,37 82,31 C96,26 112,22 128,20 C144,18 158,17 172,16 C182,15 192,15 200,14 L200,72 L0,72Z" fill="url(#g1)"/>
+              <line x1="0" y1="14" x2="200" y2="14" stroke="#3f3f46" stroke-width="0.5" stroke-dasharray="3,3"/>
+              <text x="3" y="11" fill="#71717a" font-size="7" font-family="Inter">71%</text>
+              <text x="2" y="71" fill="#52525b" font-size="7" font-family="Inter">W1</text>
+              <text x="88" y="71" fill="#52525b" font-size="7" font-family="Inter">W7</text>
+              <text x="183" y="71" fill="#52525b" font-size="7" font-family="Inter">W13</text>
+            </svg>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-box-title">Reach with Decay</div>
+            <div class="kpi-box-val" style="color:var(--amber)">58%</div>
+            <div class="kpi-box-sub">effective reach (forgetting model)</div>
+            <svg width="100%" height="72" viewBox="0 0 200 72">
+              <defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f59e0b" stop-opacity=".25"/><stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/></linearGradient></defs>
+              <path d="M0,68 C12,63 22,57 36,51 C50,45 62,39 78,34 C92,30 108,27 124,25 C138,23 152,24 164,26 C176,28 188,32 200,29" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
+              <path d="M0,68 C12,63 22,57 36,51 C50,45 62,39 78,34 C92,30 108,27 124,25 C138,23 152,24 164,26 C176,28 188,32 200,29 L200,72 L0,72Z" fill="url(#g2)"/>
+              <text x="2" y="71" fill="#52525b" font-size="7" font-family="Inter">W1</text>
+              <text x="88" y="71" fill="#52525b" font-size="7" font-family="Inter">W7</text>
+              <text x="183" y="71" fill="#52525b" font-size="7" font-family="Inter">W13</text>
+            </svg>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-box-title">Estimated Revenue</div>
+            <div class="kpi-box-val" style="color:var(--green)">2.1M PLN</div>
+            <div class="kpi-box-sub">cumulative model forecast</div>
+            <svg width="100%" height="72" viewBox="0 0 200 72">
+              <defs><linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22c55e" stop-opacity=".25"/><stop offset="100%" stop-color="#22c55e" stop-opacity="0"/></linearGradient></defs>
+              <path d="M0,70 C14,67 26,62 40,55 C54,48 68,40 84,33 C98,27 114,21 130,17 C144,14 158,13 172,12 C182,11 192,11 200,10" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round"/>
+              <path d="M0,70 C14,67 26,62 40,55 C54,48 68,40 84,33 C98,27 114,21 130,17 C144,14 158,13 172,12 C182,11 192,11 200,10 L200,72 L0,72Z" fill="url(#g3)"/>
+              <text x="2" y="71" fill="#52525b" font-size="7" font-family="Inter">W1</text>
+              <text x="88" y="71" fill="#52525b" font-size="7" font-family="Inter">W7</text>
+              <text x="183" y="71" fill="#52525b" font-size="7" font-family="Inter">W13</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
       <div style="height:24px;"></div>
     </div>
   </div>
 
-  <!-- RIGHT: AI Chat — always open, full height -->
+  <!-- RIGHT: AI Chat — full height -->
   <div class="plan-right">
     <div class="chat-panel-header">
       <div>
@@ -577,17 +789,17 @@ tbody tr:hover td{background:var(--s3);}
     <div class="chat-panel-msgs" id="planMsgs">
       <div class="p-msg ai">
         <div class="p-msg-lbl">AI Planner</div>
-        <div class="p-msg-bubble">I've generated the media plan based on your brief and answers. <strong>Variant B (Balanced)</strong> is recommended — see the rationale in the executive summary.<br><br>You can edit any value directly in the plan, or ask me to make changes here.</div>
+        <div class="p-msg-bubble">I've generated the media plan based on your brief. <strong>Balanced</strong> is recommended — it optimises for both reach and revenue.<br><br>I assigned <strong>CLIENT curves</strong> to TVN and YouTube (agency library Dairy FMCG data), and used your <strong>CUSTOM curve</strong> for OOH AMS. Click the <strong>?</strong> next to any curve badge to see why.</div>
       </div>
-      <div class="chat-hint">💡 Try: "Increase TV to 60%", "Add TikTok", "Reduce frequency to 3×", "Shift 20k from OOH to digital"</div>
+      <div class="chat-hint">💡 Try: "Increase TV to 40%", "Move 20k from OOH to Meta", "Boost W12–W13 by 15%", "What if we add TikTok?"</div>
     </div>
     <div class="chat-panel-input">
       <textarea id="planIn" placeholder="Ask AI to modify the plan…" rows="3" onkeypress="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();planSend();}"></textarea>
       <div class="chat-send-row">
-        <div class="chat-hint-chips">
-          <div class="hint-chip" onclick="setMsg('Increase TV budget to 60%')">TV 60%</div>
-          <div class="hint-chip" onclick="setMsg('Add TikTok to the mix')">+ TikTok</div>
-          <div class="hint-chip" onclick="setMsg('Reduce frequency to 3×')">Freq 3×</div>
+        <div class="chips">
+          <div class="chip" onclick="setMsg('Increase TV budget to 40%')">TV 40%</div>
+          <div class="chip" onclick="setMsg('Boost W12–W13 by 15%')">↑ Sept</div>
+          <div class="chip" onclick="setMsg('Add TikTok to the mix')">+ TikTok</div>
         </div>
         <button class="btn-send" onclick="planSend()">Send</button>
       </div>
@@ -599,10 +811,35 @@ tbody tr:hover td{background:var(--s3);}
 <div class="loading" id="loader" style="display:none;">
   <div class="loading-spinner"></div>
   <div class="loading-text">AI is generating your media plan…</div>
-  <div class="loading-sub">Analysing brief · Selecting channels · Allocating budget</div>
+  <div class="loading-sub">Selecting channels · Assigning curves · Allocating budget</div>
 </div>
 
 <script>
+// ── Data ──────────────────────────────────────────────
+const CH = ['TVN','Polsat','YouTube','Meta','OOH AMS','RMF FM','Programmatic'];
+const CC = ['#6366f1','#06b6d4','#f59e0b','#22c55e','#ec4899','#8b5cf6','#ef4444'];
+
+const FLIGHT = [
+  [12,12,12,12,12,12,12,12,12,12,12,16,20],
+  [ 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8],
+  [ 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+  [ 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 7],
+  [ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4],
+  [ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
+  [ 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+];
+
+const WHY_TEXT = {
+  tvn:     '<strong style="color:#fafafa">CLIENT curve</strong> — Agency library Dairy FMCG W25-45 curve selected. Outperforms Default by 2.1×. Upload your own empirical data to override.',
+  polsat:  '<strong style="color:#fafafa">DEFAULT curve</strong> — No agency library match found. Using Nielsen Connection Survey generic curve. Upload custom data to improve accuracy.',
+  youtube: '<strong style="color:#fafafa">CLIENT curve</strong> — Agency library Digital Video FMCG curve selected. Better frequency distribution for W25-45 vs Default.',
+  meta:    '<strong style="color:#fafafa">DEFAULT curve</strong> — Using Meta API reach estimates. No specific FMCG curve in library. Upload empirical data to improve.',
+  ooh:     '<strong style="color:#fafafa">CUSTOM curve ✓</strong> — Your AMS OOH empirical data (uploaded Feb 2026). Outperforms agency library by 1.8×. Highest-priority source.',
+  rmf:     '<strong style="color:#fafafa">DEFAULT curve</strong> — Using Nielsen Radex national radio curve. Consider uploading RMF-specific campaign data.',
+  prog:    '<strong style="color:#fafafa">DEFAULT curve</strong> — Using DV360 platform reach estimates. No agency curve for programmatic.',
+};
+
+// ── Navigation ────────────────────────────────────────
 let qaStep = 0;
 
 function go(n) {
@@ -616,22 +853,24 @@ function go(n) {
     else num.textContent = i + 1;
   });
   if (n === 3 && qaStep === 0) qaStep = 1;
+  if (n === 4) { renderFlightChart(); renderFlightGrid(); }
 }
 
+// ── Upload / Analysis ─────────────────────────────────
 function uploadFile() {
   const dz = document.getElementById('dz');
   dz.style.borderColor = 'var(--green)';
   dz.style.background = 'var(--green-bg)';
   dz.innerHTML = '<div class="dz-icon">✅</div><div class="dz-text" style="color:var(--green);font-weight:600;">brief_q3_lactima.pdf uploaded</div><div class="dz-hint">2.4 MB · ready</div>';
 }
-
 function startAnalysis() { uploadFile(); go(3); }
 
+// ── Q&A Flow ──────────────────────────────────────────
 function qaReply() {
   const inp = document.getElementById('qaIn');
-  const msgs = document.getElementById('qaMsgs');
   inp.value = '';
-  const show = (id) => { const e = document.getElementById(id); if (e) e.style.display = 'flex'; };
+  const msgs = document.getElementById('qaMsgs');
+  const show = id => { const e = document.getElementById(id); if (e) e.style.display = 'flex'; };
   const delay = (id, ms) => setTimeout(() => { show(id); msgs.scrollTop = msgs.scrollHeight; }, ms);
   if (qaStep === 1) { show('a1'); delay('q2', 700); qaStep = 2; }
   else if (qaStep === 2) { show('a2'); delay('q3', 700); qaStep = 3; }
@@ -650,15 +889,17 @@ function generatePlan() {
   setTimeout(() => { l.style.display = 'none'; go(4); }, 2200);
 }
 
+// ── Scenario picker ───────────────────────────────────
 function pickVar(el) {
   document.querySelectorAll('.var-card').forEach(c => c.classList.remove('sel'));
   el.classList.add('sel');
 }
 
+// ── Inline editing ────────────────────────────────────
 function editV(el) {
   const inp = document.createElement('input');
   inp.value = el.textContent;
-  inp.style.cssText = 'background:var(--s1);border:1px solid var(--acc);border-radius:4px;color:var(--t1);font-size:17px;font-weight:700;width:100%;padding:2px 6px;font-family:Inter,sans-serif;';
+  inp.style.cssText = 'background:var(--s1);border:1px solid var(--acc);border-radius:4px;color:var(--t1);font-size:16px;font-weight:700;width:100%;padding:2px 6px;font-family:Inter,sans-serif;';
   el.replaceWith(inp);
   inp.focus(); inp.select();
   const done = () => {
@@ -672,7 +913,136 @@ function editV(el) {
   inp.onkeypress = e => { if (e.key === 'Enter') inp.blur(); };
 }
 
+function editParam(el) {
+  const orig = el.textContent;
+  const inp = document.createElement('input');
+  inp.value = orig;
+  inp.style.cssText = 'background:var(--s1);border:1px solid var(--acc);border-radius:4px;color:var(--t1);font-size:12px;font-weight:500;width:100%;padding:2px 6px;font-family:Inter,sans-serif;';
+  el.replaceWith(inp);
+  inp.focus(); inp.select();
+  const done = () => {
+    const s = document.createElement('span');
+    s.className = 'param-val';
+    s.textContent = inp.value || orig;
+    s.onclick = () => editParam(s);
+    inp.replaceWith(s);
+  };
+  inp.onblur = done;
+  inp.onkeypress = e => { if (e.key === 'Enter') inp.blur(); };
+}
+
+function editPct(el) {
+  const orig = el.textContent;
+  const row = el.closest('.bar-row');
+  const fill = row ? row.querySelector('.bar-fill') : null;
+  const inp = document.createElement('input');
+  inp.value = orig.replace('%','');
+  inp.style.cssText = 'background:var(--s1);border:1px solid var(--acc);border-radius:4px;color:var(--t1);font-size:11px;font-weight:600;width:34px;padding:2px 4px;font-family:Inter,sans-serif;text-align:right;';
+  el.replaceWith(inp);
+  inp.focus(); inp.select();
+  const done = () => {
+    const val = parseInt(inp.value) || parseInt(orig);
+    const d = document.createElement('div');
+    d.className = 'bar-pct';
+    d.textContent = val + '%';
+    d.onclick = () => editPct(d);
+    inp.replaceWith(d);
+    if (fill) fill.style.width = val + '%';
+  };
+  inp.onblur = done;
+  inp.onkeypress = e => { if (e.key === 'Enter') inp.blur(); };
+}
+
+// ── Pills ─────────────────────────────────────────────
+function setPill(el, scope) {
+  const container = typeof scope === 'string' ? (scope.startsWith('#') ? document.getElementById(scope.slice(1)) : el.closest('.param-item').querySelector('.pill-row')) : scope;
+  if (container) container.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ── Curve badges ──────────────────────────────────────
+const tooltip = document.getElementById('tooltip');
+
+function showWhy(e, key) {
+  e.stopPropagation();
+  const text = WHY_TEXT[key] || '';
+  tooltip.innerHTML = text;
+  tooltip.classList.add('show');
+  const x = Math.min(e.clientX + 10, window.innerWidth - 260);
+  const y = Math.min(e.clientY + 10, window.innerHeight - 120);
+  tooltip.style.left = x + 'px';
+  tooltip.style.top = y + 'px';
+}
+
+document.addEventListener('click', () => tooltip.classList.remove('show'));
+
+function uploadCurve(btn, key) {
+  const badge = document.getElementById('cb-' + key);
+  if (!badge) return;
+  badge.textContent = 'CUSTOM';
+  badge.className = 'cb cb-custom';
+  btn.textContent = '↑ Re-upload';
+  addPlanMsg('Curve for ' + key.toUpperCase() + ' updated to CUSTOM. Your empirical data is now active — reach forecasts recalculated.');
+}
+
+// ── Flighting ─────────────────────────────────────────
+function renderFlightChart() {
+  const svg = document.getElementById('flightSvg');
+  if (!svg) return;
+  const W = 13, barW = 38, gap = 4, padL = 2, maxH = 80;
+  const totals = Array.from({length:W}, (_,w) => FLIGHT.reduce((s,r) => s + (r[w]||0), 0));
+  const maxT = Math.max(...totals);
+  let html = '';
+  for (let w = 0; w < W; w++) {
+    const x = padL + w * (barW + gap);
+    let stackY = 88;
+    for (let c = 0; c < CH.length; c++) {
+      const v = FLIGHT[c][w] || 0;
+      if (!v) continue;
+      const h = Math.round((v / maxT) * maxH);
+      stackY -= h;
+      html += `<rect x="${x}" y="${stackY}" width="${barW}" height="${h}" fill="${CC[c]}" rx="1" opacity="0.85"/>`;
+    }
+    const wLabel = 'W' + (w + 1);
+    html += `<text x="${x + barW/2}" y="90" fill="#52525b" font-size="8" font-family="Inter" text-anchor="middle">${wLabel}</text>`;
+  }
+  svg.innerHTML = html;
+}
+
+function renderFlightGrid() {
+  const grid = document.getElementById('flightGrid');
+  if (!grid) return;
+  const W = 13;
+  let html = '<thead><tr><th>Channel</th>';
+  for (let w = 1; w <= W; w++) html += `<th>W${w}</th>`;
+  html += '<th>Total</th></tr></thead><tbody>';
+
+  for (let c = 0; c < CH.length; c++) {
+    const total = FLIGHT[c].reduce((s,v) => s+v, 0);
+    html += `<tr><td><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${CC[c]};margin-right:5px;"></span>${CH[c]}</td>`;
+    for (let w = 0; w < W; w++) {
+      html += `<td><span class="fc" contenteditable="true">${FLIGHT[c][w]}</span></td>`;
+    }
+    html += `<td>${total}</td></tr>`;
+  }
+
+  const weekTotals = Array.from({length:W}, (_,w) => FLIGHT.reduce((s,r) => s + (r[w]||0), 0));
+  const grandTotal = weekTotals.reduce((s,v) => s+v, 0);
+  html += '<tr class="fg-total"><td>TOTAL</td>';
+  weekTotals.forEach(t => { html += `<td>${t}</td>`; });
+  html += `<td>${grandTotal}</td></tr>`;
+  html += '</tbody>';
+  grid.innerHTML = html;
+}
+
+// ── Plan chat ─────────────────────────────────────────
 function setMsg(t) { const i = document.getElementById('planIn'); i.value = t; i.focus(); }
+
+function addPlanMsg(text) {
+  const msgs = document.getElementById('planMsgs');
+  msgs.innerHTML += `<div class="p-msg ai"><div class="p-msg-lbl">AI Planner</div><div class="p-msg-bubble">${text}</div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+}
 
 function planSend() {
   const inp = document.getElementById('planIn');
@@ -685,7 +1055,7 @@ function planSend() {
   inp.value = '';
   setTimeout(() => {
     const t = document.getElementById('typ');
-    if (t) t.outerHTML = `<div class="p-msg ai"><div class="p-msg-lbl">AI Planner</div><div class="p-msg-bubble">Done — I've updated the plan. The figures in the table and charts have been revised. Let me know if you'd like further adjustments.</div></div>`;
+    if (t) t.outerHTML = `<div class="p-msg ai"><div class="p-msg-lbl">AI Planner</div><div class="p-msg-bubble">Done — I've updated the plan. The channel table, flighting grid, and KPI forecasts have been revised. Let me know if you'd like further adjustments.</div></div>`;
     msgs.scrollTop = msgs.scrollHeight;
   }, 1600);
 }
