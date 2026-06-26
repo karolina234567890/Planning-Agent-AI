@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planning Agent AI — Wireframe</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0d1117;
+    --bg2: #161b22;
+    --bg3: #1c2128;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text2: #8b949e;
+    --accent: #3b82f6;
+    --accent2: #1d4ed8;
+    --green: #22c55e;
+    --yellow: #eab308;
+    --red: #ef4444;
+    --purple: #a855f7;
+  }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; }
+
+  /* NAV */
+  .nav { display: flex; align-items: center; gap: 8px; padding: 12px 20px; background: var(--bg2); border-bottom: 1px solid var(--border); }
+  .nav-logo { font-size: 15px; font-weight: 700; color: var(--accent); margin-right: 16px; }
+  .nav-step { padding: 6px 14px; border-radius: 6px; cursor: pointer; color: var(--text2); font-size: 12px; display: flex; align-items: center; gap: 6px; }
+  .nav-step.active { background: var(--accent); color: white; }
+  .nav-step.done { color: var(--green); }
+  .nav-step .num { width: 18px; height: 18px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; }
+  .nav-step.active .num { background: rgba(255,255,255,0.3); }
+  .nav-step.done .num { background: var(--green); color: white; }
+  .nav-sep { color: var(--border); }
+
+  /* SCREENS */
+  .screen { display: none; min-height: calc(100vh - 49px); }
+  .screen.active { display: flex; flex-direction: column; }
+
+  /* SCREEN 1 — START */
+  .start-screen { align-items: center; justify-content: center; gap: 24px; padding: 60px 20px; }
+  .start-logo { font-size: 32px; font-weight: 800; color: var(--accent); text-align: center; }
+  .start-sub { color: var(--text2); text-align: center; max-width: 400px; line-height: 1.6; }
+  .btn-primary { background: var(--accent); color: white; border: none; padding: 12px 28px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+  .btn-primary:hover { background: var(--accent2); }
+  .btn-secondary { background: var(--bg3); color: var(--text); border: 1px solid var(--border); padding: 10px 20px; border-radius: 8px; font-size: 13px; cursor: pointer; }
+  .recent { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 16px; width: 400px; }
+  .recent h3 { font-size: 12px; color: var(--text2); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .recent-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .recent-item:last-child { border-bottom: none; }
+  .recent-item-name { color: var(--text); font-weight: 500; }
+  .recent-item-meta { color: var(--text2); font-size: 11px; }
+  .badge { padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; }
+  .badge-green { background: rgba(34,197,94,0.15); color: var(--green); }
+  .badge-blue { background: rgba(59,130,246,0.15); color: var(--accent); }
+
+  /* SCREEN 2 — UPLOAD */
+  .upload-screen { flex-direction: column; align-items: center; justify-content: center; gap: 20px; padding: 40px 20px; }
+  .upload-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 32px; width: 560px; }
+  .upload-card h2 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .upload-card p { color: var(--text2); margin-bottom: 20px; }
+  .dropzone { border: 2px dashed var(--border); border-radius: 8px; padding: 40px 20px; text-align: center; cursor: pointer; transition: border-color 0.2s; margin-bottom: 16px; }
+  .dropzone:hover { border-color: var(--accent); }
+  .dropzone-icon { font-size: 36px; margin-bottom: 8px; }
+  .dropzone-text { color: var(--text2); }
+  .dropzone-text span { color: var(--accent); font-weight: 600; }
+  .form-label { display: block; color: var(--text2); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; margin-top: 14px; }
+  .form-textarea { width: 100%; background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; color: var(--text); padding: 10px 12px; font-size: 13px; resize: vertical; min-height: 80px; font-family: inherit; }
+  .form-textarea:focus { outline: none; border-color: var(--accent); }
+  .file-uploaded { display: flex; align-items: center; gap: 10px; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); border-radius: 6px; padding: 10px 12px; margin-bottom: 16px; }
+  .file-icon { font-size: 20px; }
+  .file-name { font-weight: 500; }
+  .file-size { color: var(--text2); font-size: 11px; }
+  .btn-full { width: 100%; padding: 12px; font-size: 14px; margin-top: 16px; }
+
+  /* SCREEN 3 — Q&A */
+  .qa-screen { flex-direction: column; align-items: center; padding: 30px 20px; gap: 16px; }
+  .qa-header { text-align: center; }
+  .qa-header h2 { font-size: 20px; font-weight: 700; }
+  .qa-header p { color: var(--text2); margin-top: 4px; }
+  .qa-container { display: flex; gap: 20px; width: 100%; max-width: 900px; }
+  .brief-preview { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 16px; width: 300px; flex-shrink: 0; }
+  .brief-preview h3 { font-size: 12px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+  .brief-field { margin-bottom: 10px; }
+  .brief-field label { display: block; font-size: 10px; color: var(--text2); margin-bottom: 3px; }
+  .brief-field-value { background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; padding: 6px 8px; font-size: 12px; color: var(--text); }
+  .chat-panel { flex: 1; background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; min-height: 420px; }
+  .chat-messages { flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; }
+  .msg { max-width: 80%; }
+  .msg-ai { align-self: flex-start; }
+  .msg-user { align-self: flex-end; }
+  .msg-bubble { padding: 10px 14px; border-radius: 10px; line-height: 1.5; }
+  .msg-ai .msg-bubble { background: var(--bg3); border: 1px solid var(--border); }
+  .msg-user .msg-bubble { background: var(--accent); color: white; }
+  .msg-sender { font-size: 10px; color: var(--text2); margin-bottom: 4px; }
+  .msg-user .msg-sender { text-align: right; }
+  .ai-typing { display: flex; align-items: center; gap: 6px; padding: 10px 14px; background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; max-width: 80px; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text2); animation: bounce 1.4s infinite; }
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce { 0%,80%,100% { transform: scale(0.8); opacity: 0.5; } 40% { transform: scale(1.2); opacity: 1; } }
+  .chat-input { display: flex; gap: 8px; padding: 12px; border-top: 1px solid var(--border); }
+  .chat-input input { flex: 1; background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; color: var(--text); padding: 8px 12px; font-size: 13px; font-family: inherit; }
+  .chat-input input:focus { outline: none; border-color: var(--accent); }
+  .btn-send { background: var(--accent); color: white; border: none; border-radius: 6px; padding: 8px 14px; cursor: pointer; font-size: 13px; }
+  .qa-actions { display: flex; justify-content: flex-end; width: 100%; max-width: 900px; gap: 10px; }
+
+  /* SCREEN 4 — PLAN */
+  .plan-screen { flex-direction: row; width: 100%; }
+  .plan-main { flex: 1; overflow-y: auto; padding: 16px 20px; }
+  .plan-sidebar { width: 340px; flex-shrink: 0; background: var(--bg2); border-left: 1px solid var(--border); display: flex; flex-direction: column; }
+  .plan-sidebar.collapsed { width: 0; overflow: hidden; }
+
+  /* Plan header */
+  .plan-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+  .plan-title { font-size: 18px; font-weight: 700; }
+  .plan-subtitle { color: var(--text2); font-size: 12px; margin-top: 2px; }
+  .plan-header-actions { display: flex; gap: 8px; align-items: center; }
+  .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); padding: 7px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-chat-toggle { background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 7px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+  .btn-chat-toggle:hover { border-color: var(--accent); }
+
+  /* Variants */
+  .variants { display: flex; gap: 10px; margin-bottom: 16px; }
+  .variant-card { flex: 1; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; cursor: pointer; transition: border-color 0.2s; position: relative; }
+  .variant-card:hover { border-color: var(--accent); }
+  .variant-card.selected { border-color: var(--accent); background: rgba(59,130,246,0.08); }
+  .variant-card .rec-badge { position: absolute; top: -8px; right: 8px; background: var(--green); color: white; font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+  .variant-name { font-weight: 700; font-size: 12px; margin-bottom: 6px; }
+  .variant-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  .variant-metric { }
+  .variant-metric-label { font-size: 9px; color: var(--text2); text-transform: uppercase; }
+  .variant-metric-value { font-size: 12px; font-weight: 600; }
+  .variant-budget { font-size: 14px; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+
+  /* Sections */
+  .section { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 12px; }
+  .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text2); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  .section-title .dot-accent { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
+
+  /* Executive summary */
+  .exec-summary { width: 100%; background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; color: var(--text); padding: 10px 12px; font-size: 12px; line-height: 1.6; resize: vertical; min-height: 80px; font-family: inherit; }
+  .exec-summary:focus { outline: none; border-color: var(--accent); }
+  .ai-label { font-size: 10px; color: var(--accent); margin-bottom: 6px; display: flex; align-items: center; gap: 4px; }
+
+  /* Plan summary metrics */
+  .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .metric-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 10px; }
+  .metric-label { font-size: 10px; color: var(--text2); margin-bottom: 4px; }
+  .metric-value { font-size: 16px; font-weight: 700; }
+  .metric-value.editable { cursor: pointer; border-bottom: 1px dashed var(--border); }
+  .metric-value.editable:hover { border-color: var(--accent); color: var(--accent); }
+  .metric-sub { font-size: 10px; color: var(--text2); margin-top: 2px; }
+
+  /* Budget charts */
+  .budget-charts { display: flex; gap: 16px; }
+  .budget-bars { flex: 1; }
+  .budget-bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .budget-bar-label { width: 80px; font-size: 11px; color: var(--text2); text-align: right; flex-shrink: 0; }
+  .budget-bar-track { flex: 1; background: var(--bg3); border-radius: 3px; height: 18px; overflow: hidden; }
+  .budget-bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; display: flex; align-items: center; padding-left: 6px; font-size: 10px; font-weight: 600; color: white; }
+  .budget-bar-pct { width: 32px; font-size: 11px; color: var(--text2); text-align: right; flex-shrink: 0; }
+  .pie-container { width: 120px; flex-shrink: 0; }
+  .pie-legend { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
+  .pie-legend-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--text2); }
+  .pie-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* Channel table */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  th { text-align: left; padding: 6px 8px; color: var(--text2); font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  td { padding: 7px 8px; border-bottom: 1px solid rgba(48,54,61,0.5); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(48,54,61,0.3); }
+  .td-editable { cursor: pointer; border-bottom: 1px dashed transparent; transition: border-color 0.2s; }
+  .td-editable:hover { border-color: var(--accent); color: var(--accent); }
+  .channel-name { font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .channel-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .group-row td { background: var(--bg3); color: var(--text2); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 5px 8px; }
+  .budget-highlight { font-weight: 700; color: var(--accent); }
+  .methodology-badge { padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: 600; }
+  .m-grp { background: rgba(168,85,247,0.15); color: #a855f7; }
+  .m-cpm { background: rgba(59,130,246,0.15); color: var(--accent); }
+  .m-cpp { background: rgba(234,179,8,0.15); color: var(--yellow); }
+
+  /* Chart stubs */
+  .chart-stub { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; height: 140px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 6px; color: var(--text2); font-size: 11px; }
+  .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* Insights */
+  .insights-text { width: 100%; background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; color: var(--text); padding: 10px 12px; font-size: 12px; line-height: 1.6; resize: vertical; min-height: 70px; font-family: inherit; }
+
+  /* Sidebar chat */
+  .sidebar-header { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .sidebar-title { font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 6px; }
+  .sidebar-title .ai-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+  .btn-close { background: none; border: none; color: var(--text2); cursor: pointer; font-size: 16px; line-height: 1; }
+  .sidebar-messages { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+  .sidebar-hint { font-size: 10px; color: var(--text2); padding: 8px 12px; background: rgba(59,130,246,0.08); border-radius: 6px; border: 1px solid rgba(59,130,246,0.2); margin-bottom: 4px; }
+  .sidebar-input { display: flex; gap: 6px; padding: 10px; border-top: 1px solid var(--border); }
+  .sidebar-input input { flex: 1; background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; color: var(--text); padding: 7px 10px; font-size: 12px; font-family: inherit; }
+  .sidebar-input input:focus { outline: none; border-color: var(--accent); }
+
+  /* Colors for channels */
+  .c1 { background: #ef4444; }
+  .c2 { background: #f97316; }
+  .c3 { background: #eab308; }
+  .c4 { background: #22c55e; }
+  .c5 { background: #06b6d4; }
+  .c6 { background: #3b82f6; }
+  .c7 { background: #8b5cf6; }
+  .c8 { background: #ec4899; }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<div class="nav">
+  <div class="nav-logo">⚡ Planning Agent</div>
+  <div class="nav-step done" onclick="showScreen(1)">
+    <div class="num">✓</div> Start
+  </div>
+  <div class="nav-sep">›</div>
+  <div class="nav-step done" onclick="showScreen(2)" id="step2">
+    <div class="num">✓</div> Upload briefu
+  </div>
+  <div class="nav-sep">›</div>
+  <div class="nav-step" onclick="showScreen(3)" id="step3">
+    <div class="num">3</div> Doprecyzowanie
+  </div>
+  <div class="nav-sep">›</div>
+  <div class="nav-step" onclick="showScreen(4)" id="step4">
+    <div class="num">4</div> Plan mediów
+  </div>
+  <div style="margin-left: auto; font-size: 11px; color: var(--text2);">🧪 Wireframe — Planning Agent AI MVP</div>
+</div>
+
+<!-- SCREEN 1: START -->
+<div class="screen active start-screen" id="screen1">
+  <div class="start-logo">⚡ Planning Agent AI</div>
+  <div class="start-sub">Twórz plany mediów 10× szybciej. Prześlij brief, a AI wygeneruje pełny plan mediów z alokacją budżetu i rekomendacjami kanałów.</div>
+  <button class="btn-primary" onclick="showScreen(2)">+ Nowy Plan</button>
+  <div class="recent">
+    <h3>Ostatnie plany</h3>
+    <div class="recent-item">
+      <div>
+        <div class="recent-item-name">Łaciate — Kampania Wiosna 2026</div>
+        <div class="recent-item-meta">Budżet: 850 000 PLN · TV + Digital</div>
+      </div>
+      <span class="badge badge-green">Gotowy</span>
+    </div>
+    <div class="recent-item">
+      <div>
+        <div class="recent-item-name">Danone Activia — Q2 2026</div>
+        <div class="recent-item-meta">Budżet: 1 200 000 PLN · Multi-channel</div>
+      </div>
+      <span class="badge badge-blue">W toku</span>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 2: UPLOAD -->
+<div class="screen upload-screen" id="screen2">
+  <div class="upload-card">
+    <h2>Prześlij brief kampanii</h2>
+    <p>AI przeanalizuje brief i zapyta o kluczowe szczegóły przed wygenerowaniem planu mediów.</p>
+
+    <div class="file-uploaded" id="fileUploaded" style="display:none;">
+      <div class="file-icon">📄</div>
+      <div>
+        <div class="file-name">brief_q3_lactima.pdf</div>
+        <div class="file-size">2.4 MB · PDF</div>
+      </div>
+      <span style="margin-left:auto; color: var(--green); font-size: 18px;">✓</span>
+    </div>
+
+    <div class="dropzone" id="dropzone" onclick="simulateUpload()">
+      <div class="dropzone-icon">📁</div>
+      <div class="dropzone-text">Przeciągnij brief tutaj lub <span>wybierz plik</span></div>
+      <div style="font-size:11px; color:var(--text2); margin-top:6px;">PDF, Word, PowerPoint</div>
+    </div>
+
+    <label class="form-label">Dodatkowy kontekst dla AI (opcjonalne)</label>
+    <textarea class="form-textarea" placeholder="np. Skupiamy się głównie na kobietach 30-45 lat, budżet jest netto, preferujemy digitalowe kanały wideo..."></textarea>
+
+    <button class="btn-primary btn-full" onclick="goToQA()">Analizuj brief →</button>
+  </div>
+</div>
+
+<!-- SCREEN 3: Q&A -->
+<div class="screen qa-screen" id="screen3">
+  <div class="qa-header">
+    <h2>AI analizuje brief i doprecyzowuje szczegóły</h2>
+    <p>Odpowiedz na pytania AI — pomoże to wygenerować dokładniejszy plan mediów</p>
+  </div>
+
+  <div class="qa-container">
+    <!-- Brief preview -->
+    <div class="brief-preview">
+      <h3>📄 Wyciągnięte dane z briefu</h3>
+      <div class="brief-field">
+        <label>Klient / Marka</label>
+        <div class="brief-field-value">Lactima</div>
+      </div>
+      <div class="brief-field">
+        <label>Kategoria</label>
+        <div class="brief-field-value">FMCG — Nabiał</div>
+      </div>
+      <div class="brief-field">
+        <label>Budżet</label>
+        <div class="brief-field-value">500 000 PLN</div>
+      </div>
+      <div class="brief-field">
+        <label>Okres kampanii</label>
+        <div class="brief-field-value">01 lip — 30 wrz 2026</div>
+      </div>
+      <div class="brief-field">
+        <label>Target</label>
+        <div class="brief-field-value">Kobiety 25-45 lat</div>
+      </div>
+      <div class="brief-field">
+        <label>Cel kampanii</label>
+        <div class="brief-field-value">Świadomość marki</div>
+      </div>
+      <div class="brief-field">
+        <label>KPI</label>
+        <div class="brief-field-value">Zasięg 1+ ≥ 60%</div>
+      </div>
+      <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+        <div style="font-size: 10px; color: var(--text2); margin-bottom: 6px;">EDYTUJ DANE BRIEFU</div>
+        <button class="btn-secondary" style="width:100%; font-size:11px;">✏️ Edytuj pola</button>
+      </div>
+    </div>
+
+    <!-- Chat -->
+    <div class="chat-panel">
+      <div class="chat-messages" id="qaMessages">
+        <div class="msg msg-ai">
+          <div class="msg-sender">🤖 AI Planner</div>
+          <div class="msg-bubble">Przeanalizowałem brief Lactima. Mam kilka pytań, żeby plan mediów był jak najdokładniejszy.</div>
+        </div>
+        <div class="msg msg-ai">
+          <div class="msg-sender">🤖 AI Planner</div>
+          <div class="msg-bubble">Budżet 500 000 PLN — czy to kwota <strong>netto</strong> (bez podatku) czy <strong>brutto</strong> (z podatkiem i prowizją agencji)?</div>
+        </div>
+        <div class="msg msg-user" id="answer1" style="display:none;">
+          <div class="msg-sender">Ty</div>
+          <div class="msg-bubble">Netto, bez prowizji agencji</div>
+        </div>
+        <div class="msg msg-ai" id="q2" style="display:none;">
+          <div class="msg-sender">🤖 AI Planner</div>
+          <div class="msg-bubble">Rozumiem. Kampania Q3 (lipiec–wrzesień) — czy są tygodnie, które chcemy <strong>wykluczyć</strong> lub wzmocnić? Np. wakacje szkolne, back-to-school?</div>
+        </div>
+        <div class="msg msg-user" id="answer2" style="display:none;">
+          <div class="msg-sender">Ty</div>
+          <div class="msg-bubble">Wzmocnij ostatnie 2 tygodnie września — back to school to ważny moment dla Lactimy</div>
+        </div>
+        <div class="msg msg-ai" id="q3" style="display:none;">
+          <div class="msg-sender">🤖 AI Planner</div>
+          <div class="msg-bubble">Świetnie. Ostatnie pytanie — czy są <strong>kanały do wykluczenia</strong> lub takie, które muszą być w planie (np. ze względu na umowy z wydawcami)?</div>
+        </div>
+        <div class="msg msg-user" id="answer3" style="display:none;">
+          <div class="msg-sender">Ty</div>
+          <div class="msg-bubble">Mamy umowę z TVN na minimum 30% budżetu TV. Poza tym wolna ręka.</div>
+        </div>
+        <div class="msg msg-ai" id="q4" style="display:none;">
+          <div class="msg-sender">🤖 AI Planner</div>
+          <div class="msg-bubble">Rozumiem. Mam wszystkie potrzebne informacje. Mogę teraz wygenerować pełny plan mediów z 3 wariantami strategii. Gotowy?</div>
+        </div>
+      </div>
+      <div class="chat-input">
+        <input type="text" id="qaInput" placeholder="Odpowiedz na pytanie AI..." onkeypress="if(event.key==='Enter') sendQaAnswer()">
+        <button class="btn-send" onclick="sendQaAnswer()">Wyślij</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa-actions">
+    <button class="btn-secondary" onclick="showScreen(2)">← Wróć</button>
+    <button class="btn-primary" onclick="showScreen(4)" id="generateBtn">Generuj Plan →</button>
+  </div>
+</div>
+
+<!-- SCREEN 4: PLAN -->
+<div class="screen plan-screen" id="screen4">
+  <!-- Main plan content -->
+  <div class="plan-main">
+
+    <!-- Header -->
+    <div class="plan-header">
+      <div>
+        <div class="plan-title">Lactima — Kampania Q3 2026</div>
+        <div class="plan-subtitle">Wygenerowano przez AI · 26 cze 2026 · Budżet: 500 000 PLN netto</div>
+      </div>
+      <div class="plan-header-actions">
+        <button class="btn-outline">⬇ Eksportuj PDF</button>
+        <button class="btn-outline">📊 Eksportuj Excel</button>
+        <button class="btn-chat-toggle" onclick="toggleSidebar()" id="chatToggleBtn">💬 Chat z AI <span id="chatArrow">›</span></button>
+      </div>
+    </div>
+
+    <!-- Variants -->
+    <div class="variants">
+      <div class="variant-card" onclick="selectVariant(this,'A')">
+        <div class="variant-name">📺 Wariant A — TV Heavy</div>
+        <div class="variant-budget">500 000 PLN</div>
+        <div class="variant-metrics">
+          <div class="variant-metric"><div class="variant-metric-label">Zasięg 1+</div><div class="variant-metric-value">63%</div></div>
+          <div class="variant-metric"><div class="variant-metric-label">GRP</div><div class="variant-metric-value">420</div></div>
+          <div class="variant-metric"><div class="variant-metric-label">Avg CPM</div><div class="variant-metric-value">28 PLN</div></div>
+          <div class="variant-metric"><div class="variant-metric-label">Kanały</div><div class="variant-metric-value">5</div></div>
+        </div>
+      </div>
+      <div class="variant-card selected" onclick="selectVariant(this,'B')">
+        <div class="rec-badge">REKOMENDOWANE</div>
+        <div class="variant-name">⚖️ Wariant B — Balanced</div>
+        <div class="variant-budget">500 000 PLN</div>
+        <div class="variant-metrics">
+          <div class="variant-metric"><div class="variant-metric-label">Zasięg 1+</div><div class="variant-metric-value">71%</div></div>
+          <div class="variant-metric"><div class="variant-metric-label">GRP</div><div class="variant-metric-value">380</div></div>
+          <div class="variant-metric"><div class="variant-metric-label">Avg CPM</div><div class="variant-metric-value">24 PLN</div></div>
+          <div class="variant-metric"><div class="variant-metric-label">Kanały</div><div class="variant-metric-value">7</div></div>
+        </div>
+      </div>
+      <div class="variant-card" onclick="selectVariant(this,'C')">
+        <div class="variant-name">📱 Wariant C — Digital First</div>
+        <div class="variant-budget">500 000 PLN</div>
+        <div class="variant-metrics">
+          <div class="variant-metric"><div class="variant-metric-label">Zasięg 1+</div><div class="variant-metric-value">68%</div></div>
+          <div class="variant-metric"><div class="variant-metric-label">GRP</div><div class="variant-metric-value">290</div></div>
+          <div class="variant-metric"><div class="variant-metric-label">Avg CPM</div><div class="variant-metric-value">18 PLN</div></div>
+          <div class="variant-metric"><div class="variant-metric-label">Kanały</div><div class="variant-metric-value">8</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Executive Summary -->
+    <div class="section">
+      <div class="section-title"><span class="dot-accent"></span> Executive Summary</div>
+      <div class="ai-label">✨ Wygenerowane przez AI · edytowalne</div>
+      <textarea class="exec-summary">Kampania Lactima Q3 2026 celuje w kobiety 25-45 lat z komunikatem budowania świadomości marki w kluczowym sezonie letnim i back-to-school. Wariant B (Balanced) rekomendujemy jako optymalny — łączy zasięg masowy telewizji (TVN, Polsat) z precyzją digitalu (YouTube, Meta). Wzmocnienie komunikacji w ostatnich 2 tygodniach września (back-to-school) pozwoli na efektywne dotarcie do matek z dziećmi w wieku szkolnym. Szacowany zasięg 1+: 71% grupy docelowej przy CPM 24 PLN.</textarea>
+    </div>
+
+    <!-- Plan Summary -->
+    <div class="section">
+      <div class="section-title"><span class="dot-accent"></span> Plan Summary</div>
+      <div class="metrics-grid">
+        <div class="metric-box">
+          <div class="metric-label">Całkowity budżet</div>
+          <div class="metric-value editable" onclick="editMetric(this)">500 000 PLN</div>
+          <div class="metric-sub">netto</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">Impresje łącznie</div>
+          <div class="metric-value editable" onclick="editMetric(this)">20,8M</div>
+          <div class="metric-sub">szacowane</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">Avg. CPM</div>
+          <div class="metric-value editable" onclick="editMetric(this)">24,10 PLN</div>
+          <div class="metric-sub">ważone</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">Avg. Frequency</div>
+          <div class="metric-value editable" onclick="editMetric(this)">3,8x</div>
+          <div class="metric-sub">na osobę</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">Zasięg kumulatywny</div>
+          <div class="metric-value editable" onclick="editMetric(this)">71%</div>
+          <div class="metric-sub">1+ kontakt</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">Łączne GRP</div>
+          <div class="metric-value editable" onclick="editMetric(this)">380</div>
+          <div class="metric-sub">TV + Radio</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">Okres kampanii</div>
+          <div class="metric-value" style="font-size:12px;">1 lip – 30 wrz</div>
+          <div class="metric-sub">13 tygodni</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-label">Liczba kanałów</div>
+          <div class="metric-value">7</div>
+          <div class="metric-sub">wydawców</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Budget allocation -->
+    <div class="section">
+      <div class="section-title"><span class="dot-accent"></span> Alokacja budżetu per partner</div>
+      <div class="budget-charts">
+        <div class="budget-bars">
+          <div class="budget-bar-row">
+            <div class="budget-bar-label">TVN</div>
+            <div class="budget-bar-track"><div class="budget-bar-fill c1" style="width:32%">160 000</div></div>
+            <div class="budget-bar-pct">32%</div>
+          </div>
+          <div class="budget-bar-row">
+            <div class="budget-bar-label">Polsat</div>
+            <div class="budget-bar-track"><div class="budget-bar-fill c2" style="width:18%">90 000</div></div>
+            <div class="budget-bar-pct">18%</div>
+          </div>
+          <div class="budget-bar-row">
+            <div class="budget-bar-label">YouTube</div>
+            <div class="budget-bar-track"><div class="budget-bar-fill c3" style="width:20%">100 000</div></div>
+            <div class="budget-bar-pct">20%</div>
+          </div>
+          <div class="budget-bar-row">
+            <div class="budget-bar-label">Meta</div>
+            <div class="budget-bar-track"><div class="budget-bar-fill c4" style="width:15%">75 000</div></div>
+            <div class="budget-bar-pct">15%</div>
+          </div>
+          <div class="budget-bar-row">
+            <div class="budget-bar-label">OOH AMS</div>
+            <div class="budget-bar-track"><div class="budget-bar-fill c5" style="width:8%">40 000</div></div>
+            <div class="budget-bar-pct">8%</div>
+          </div>
+          <div class="budget-bar-row">
+            <div class="budget-bar-label">RMF FM</div>
+            <div class="budget-bar-track"><div class="budget-bar-fill c6" style="width:5%">25 000</div></div>
+            <div class="budget-bar-pct">5%</div>
+          </div>
+          <div class="budget-bar-row">
+            <div class="budget-bar-label">Programmatic</div>
+            <div class="budget-bar-track"><div class="budget-bar-fill c7" style="width:4%">10 000</div></div>
+            <div class="budget-bar-pct">2%</div>
+          </div>
+        </div>
+        <div class="pie-container">
+          <svg viewBox="0 0 100 100" width="110" height="110">
+            <circle cx="50" cy="50" r="40" fill="none" stroke="#ef4444" stroke-width="20" stroke-dasharray="80.4 172.2" stroke-dashoffset="0"/>
+            <circle cx="50" cy="50" r="40" fill="none" stroke="#f97316" stroke-width="20" stroke-dasharray="45.2 207.4" stroke-dashoffset="-80.4"/>
+            <circle cx="50" cy="50" r="40" fill="none" stroke="#eab308" stroke-width="20" stroke-dasharray="50.2 202.4" stroke-dashoffset="-125.6"/>
+            <circle cx="50" cy="50" r="40" fill="none" stroke="#22c55e" stroke-width="20" stroke-dasharray="37.7 214.9" stroke-dashoffset="-175.8"/>
+            <circle cx="50" cy="50" r="40" fill="none" stroke="#06b6d4" stroke-width="20" stroke-dasharray="20.1 232.5" stroke-dashoffset="-213.5"/>
+            <circle cx="50" cy="50" r="40" fill="none" stroke="#3b82f6" stroke-width="20" stroke-dasharray="12.5 240.1" stroke-dashoffset="-233.6"/>
+            <circle cx="50" cy="50" r="35" fill="var(--bg2)"/>
+          </svg>
+          <div class="pie-legend">
+            <div class="pie-legend-item"><div class="pie-dot c1"></div>TVN 32%</div>
+            <div class="pie-legend-item"><div class="pie-dot c2"></div>Polsat 18%</div>
+            <div class="pie-legend-item"><div class="pie-dot c3"></div>YT 20%</div>
+            <div class="pie-legend-item"><div class="pie-dot c4"></div>Meta 15%</div>
+            <div class="pie-legend-item"><div class="pie-dot c5"></div>OOH 8%</div>
+            <div class="pie-legend-item"><div class="pie-dot c6"></div>Radio 5%</div>
+            <div class="pie-legend-item"><div class="pie-dot c7"></div>Prog. 2%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Channel selection table -->
+    <div class="section">
+      <div class="section-title"><span class="dot-accent"></span> 1. Dobór kanałów</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Kanał</th>
+              <th>Format</th>
+              <th>CPM</th>
+              <th>GRP</th>
+              <th>Max zasięg</th>
+              <th>Budżet</th>
+              <th>Budżet %</th>
+              <th>Metodologia</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="group-row"><td colspan="8">📺 TV (50%)</td></tr>
+            <tr>
+              <td><div class="channel-name"><div class="channel-dot c1"></div>TVN</div></td>
+              <td>Spot 30"</td>
+              <td class="td-editable">38 PLN</td>
+              <td class="td-editable">180</td>
+              <td>52%</td>
+              <td class="budget-highlight td-editable">160 000 PLN</td>
+              <td class="td-editable">32%</td>
+              <td><span class="methodology-badge m-grp">GRP</span></td>
+            </tr>
+            <tr>
+              <td><div class="channel-name"><div class="channel-dot c2"></div>Polsat</div></td>
+              <td>Spot 30"</td>
+              <td class="td-editable">30 PLN</td>
+              <td class="td-editable">110</td>
+              <td>41%</td>
+              <td class="budget-highlight td-editable">90 000 PLN</td>
+              <td class="td-editable">18%</td>
+              <td><span class="methodology-badge m-grp">GRP</span></td>
+            </tr>
+            <tr class="group-row"><td colspan="8">📱 Digital (37%)</td></tr>
+            <tr>
+              <td><div class="channel-name"><div class="channel-dot c3"></div>YouTube</div></td>
+              <td>TrueView In-stream</td>
+              <td class="td-editable">18 PLN</td>
+              <td>—</td>
+              <td>55%</td>
+              <td class="budget-highlight td-editable">100 000 PLN</td>
+              <td class="td-editable">20%</td>
+              <td><span class="methodology-badge m-cpm">CPM</span></td>
+            </tr>
+            <tr>
+              <td><div class="channel-name"><div class="channel-dot c4"></div>Meta</div></td>
+              <td>Video + Stories</td>
+              <td class="td-editable">14 PLN</td>
+              <td>—</td>
+              <td>48%</td>
+              <td class="budget-highlight td-editable">75 000 PLN</td>
+              <td class="td-editable">15%</td>
+              <td><span class="methodology-badge m-cpm">CPM</span></td>
+            </tr>
+            <tr>
+              <td><div class="channel-name"><div class="channel-dot c7"></div>Programmatic</div></td>
+              <td>Display + Video</td>
+              <td class="td-editable">9 PLN</td>
+              <td>—</td>
+              <td>35%</td>
+              <td class="budget-highlight td-editable">10 000 PLN</td>
+              <td class="td-editable">2%</td>
+              <td><span class="methodology-badge m-cpm">CPM</span></td>
+            </tr>
+            <tr class="group-row"><td colspan="8">🏙 OOH + Audio (13%)</td></tr>
+            <tr>
+              <td><div class="channel-name"><div class="channel-dot c5"></div>OOH AMS</div></td>
+              <td>Billboard + City Light</td>
+              <td class="td-editable">45 PLN</td>
+              <td>—</td>
+              <td>28%</td>
+              <td class="budget-highlight td-editable">40 000 PLN</td>
+              <td class="td-editable">8%</td>
+              <td><span class="methodology-badge m-cpp">CPP</span></td>
+            </tr>
+            <tr>
+              <td><div class="channel-name"><div class="channel-dot c6"></div>RMF FM</div></td>
+              <td>Spot 30" Radio</td>
+              <td class="td-editable">8 PLN</td>
+              <td class="td-editable">90</td>
+              <td>32%</td>
+              <td class="budget-highlight td-editable">25 000 PLN</td>
+              <td class="td-editable">5%</td>
+              <td><span class="methodology-badge m-grp">GRP</span></td>
+            </tr>
+            <tr style="background: var(--bg3);">
+              <td colspan="5" style="font-weight:700;">TOTAL</td>
+              <td class="budget-highlight" style="font-weight:700;">500 000 PLN</td>
+              <td style="font-weight:700;">100%</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Insights -->
+    <div class="section">
+      <div class="section-title"><span class="dot-accent"></span> Insights</div>
+      <div class="ai-label">✨ Wygenerowane przez AI · edytowalne</div>
+      <textarea class="insights-text">Mix TV (50%) + Digital (37%) zapewnia optymalny coverage grupy docelowej K25-45. Wzmocnienie tyg. 12-13 (16-30 wrz) o 20% budżetu digitalowego zwiększy efektywność w kluczowym momencie back-to-school. YouTube TrueView w połączeniu ze spotem TV buduje synergię A/V i poprawia zapamiętywalność komunikatu o est. 15%.</textarea>
+    </div>
+
+    <!-- Charts row -->
+    <div class="charts-row">
+      <div class="section">
+        <div class="section-title"><span class="dot-accent"></span> Zasięg kumulatywny</div>
+        <div class="chart-stub">
+          <svg width="100%" height="100" viewBox="0 0 400 100" style="position:absolute; opacity:0.8;">
+            <polyline points="0,90 40,75 80,62 120,52 160,44 200,38 240,33 280,29 320,26 360,24 400,23" fill="none" stroke="#3b82f6" stroke-width="2.5"/>
+            <polyline points="0,90 40,80 80,70 120,63 160,57 200,52 240,48 280,45 320,43 360,42 400,41" fill="none" stroke="#ef4444" stroke-width="2"/>
+            <polyline points="0,90 40,82 80,74 120,68 160,64 200,61 240,59 280,57 320,56 360,55 400,55" fill="none" stroke="#22c55e" stroke-width="2"/>
+            <polyline points="0,90 40,85 80,80 120,76 160,74 200,72 240,71 280,70 320,69 360,69 400,68" fill="none" stroke="#eab308" stroke-width="1.5"/>
+          </svg>
+          <span style="position:relative">📈 Zasięg kumulatywny po tygodniach</span>
+          <span style="position:relative; font-size:10px">— TVN — Polsat — YouTube — Meta</span>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><span class="dot-accent"></span> Tygodniowe GRP per kanał</div>
+        <div class="chart-stub" style="position:relative;">
+          <svg width="100%" height="100" viewBox="0 0 400 100" style="position:absolute; opacity:0.8;">
+            <rect x="20" y="55" width="20" height="35" fill="#ef4444" opacity="0.8"/>
+            <rect x="42" y="65" width="20" height="25" fill="#f97316" opacity="0.8"/>
+            <rect x="64" y="75" width="20" height="15" fill="#3b82f6" opacity="0.8"/>
+            <rect x="86" y="80" width="20" height="10" fill="#22c55e" opacity="0.8"/>
+            <rect x="120" y="50" width="20" height="40" fill="#ef4444" opacity="0.8"/>
+            <rect x="142" y="60" width="20" height="30" fill="#f97316" opacity="0.8"/>
+            <rect x="164" y="70" width="20" height="20" fill="#3b82f6" opacity="0.8"/>
+            <rect x="186" y="75" width="20" height="15" fill="#22c55e" opacity="0.8"/>
+            <rect x="220" y="45" width="20" height="45" fill="#ef4444" opacity="0.8"/>
+            <rect x="242" y="55" width="20" height="35" fill="#f97316" opacity="0.8"/>
+            <rect x="264" y="65" width="20" height="25" fill="#3b82f6" opacity="0.8"/>
+            <rect x="286" y="70" width="20" height="20" fill="#22c55e" opacity="0.8"/>
+            <rect x="320" y="30" width="20" height="60" fill="#ef4444" opacity="0.9"/>
+            <rect x="342" y="40" width="20" height="50" fill="#f97316" opacity="0.9"/>
+            <rect x="364" y="55" width="20" height="35" fill="#3b82f6" opacity="0.9"/>
+          </svg>
+          <span style="position:relative">📊 GRP tygodniowe · wzmocnienie wrz</span>
+          <span style="position:relative; font-size:10px">— TVN — Polsat — RMF FM — inne</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="height: 20px;"></div>
+  </div>
+
+  <!-- Sidebar chat -->
+  <div class="plan-sidebar" id="planSidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-title"><div class="ai-dot"></div>Chat z AI</div>
+      <button class="btn-close" onclick="toggleSidebar()">×</button>
+    </div>
+    <div class="sidebar-messages" id="sidebarMessages">
+      <div class="msg msg-ai">
+        <div class="msg-sender">🤖 AI Planner</div>
+        <div class="msg-bubble" style="font-size:12px;">Plan wygenerowany na podstawie Twojego briefu i odpowiedzi. Mogę zmodyfikować dowolne elementy — powiedz co chcesz zmienić.</div>
+      </div>
+      <div class="sidebar-hint">💡 Przykłady: "Zwiększ budżet TV do 60%", "Dodaj TikTok", "Zmniejsz częstotliwość do 3x"</div>
+    </div>
+    <div class="sidebar-input">
+      <input type="text" id="sidebarInput" placeholder="Poproś AI o zmianę..." onkeypress="if(event.key==='Enter') sendSidebarMsg()">
+      <button class="btn-send" onclick="sendSidebarMsg()">→</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentScreen = 1;
+let qaStep = 0;
+
+function showScreen(n) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen' + n).classList.add('active');
+  document.querySelectorAll('.nav-step').forEach((s, i) => {
+    s.classList.remove('active');
+    if (i + 1 < n) s.classList.add('done');
+    else s.classList.remove('done');
+    if (i + 1 === n) s.classList.add('active');
+  });
+  currentScreen = n;
+  if (n === 3 && qaStep === 0) {
+    setTimeout(() => startQA(), 600);
+  }
+}
+
+function simulateUpload() {
+  const dz = document.getElementById('dropzone');
+  const fu = document.getElementById('fileUploaded');
+  dz.style.display = 'none';
+  fu.style.display = 'flex';
+}
+
+function goToQA() {
+  simulateUpload();
+  showScreen(3);
+}
+
+function startQA() {
+  qaStep = 1;
+}
+
+function sendQaAnswer() {
+  const input = document.getElementById('qaInput');
+  const val = input.value.trim();
+  if (!val && qaStep > 3) return;
+  input.value = '';
+
+  if (qaStep === 1) {
+    document.getElementById('answer1').style.display = 'flex';
+    setTimeout(() => {
+      document.getElementById('q2').style.display = 'flex';
+      qaStep = 2;
+      scrollMessages();
+    }, 800);
+  } else if (qaStep === 2) {
+    document.getElementById('answer2').style.display = 'flex';
+    setTimeout(() => {
+      document.getElementById('q3').style.display = 'flex';
+      qaStep = 3;
+      scrollMessages();
+    }, 800);
+  } else if (qaStep === 3) {
+    document.getElementById('answer3').style.display = 'flex';
+    setTimeout(() => {
+      document.getElementById('q4').style.display = 'flex';
+      qaStep = 4;
+      document.getElementById('generateBtn').style.background = '#22c55e';
+      scrollMessages();
+    }, 800);
+  }
+}
+
+function scrollMessages() {
+  const msgs = document.getElementById('qaMessages');
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function selectVariant(el, v) {
+  document.querySelectorAll('.variant-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+let sidebarOpen = true;
+function toggleSidebar() {
+  const sidebar = document.getElementById('planSidebar');
+  const arrow = document.getElementById('chatArrow');
+  const btn = document.getElementById('chatToggleBtn');
+  sidebarOpen = !sidebarOpen;
+  if (sidebarOpen) {
+    sidebar.style.width = '340px';
+    sidebar.style.overflow = '';
+    arrow.textContent = '›';
+    btn.style.background = 'rgba(59,130,246,0.15)';
+    btn.style.borderColor = 'var(--accent)';
+  } else {
+    sidebar.style.width = '0';
+    sidebar.style.overflow = 'hidden';
+    arrow.textContent = '‹';
+    btn.style.background = '';
+    btn.style.borderColor = '';
+  }
+}
+
+function sendSidebarMsg() {
+  const input = document.getElementById('sidebarInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  const msgs = document.getElementById('sidebarMessages');
+  msgs.innerHTML += `<div class="msg msg-user"><div class="msg-sender">Ty</div><div class="msg-bubble" style="font-size:12px;">${msg}</div></div>`;
+  msgs.innerHTML += `<div class="ai-typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+  input.value = '';
+  setTimeout(() => {
+    msgs.querySelector('.ai-typing').outerHTML = `<div class="msg msg-ai"><div class="msg-sender">🤖 AI Planner</div><div class="msg-bubble" style="font-size:12px;">Rozumiem — aktualizuję plan zgodnie z Twoją prośbą. Zmiany widoczne w tabeli i wykresach.</div></div>`;
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 1500);
+}
+
+function editMetric(el) {
+  const cur = el.textContent;
+  const input = document.createElement('input');
+  input.value = cur;
+  input.style.cssText = 'background:var(--bg); border:1px solid var(--accent); border-radius:4px; color:var(--text); font-size:16px; font-weight:700; width:100%; padding:2px 4px;';
+  el.replaceWith(input);
+  input.focus();
+  input.onblur = () => {
+    const newEl = document.createElement('div');
+    newEl.className = 'metric-value editable';
+    newEl.textContent = input.value;
+    newEl.onclick = () => editMetric(newEl);
+    input.replaceWith(newEl);
+  };
+}
+
+// Init
+document.addEventListener('DOMContentLoaded', () => {
+  showScreen(1);
+});
+</script>
+</body>
+</html>
