@@ -134,7 +134,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);font-si
 
 /* ── PLAN LAYOUT ── */
 .plan-left{flex:1;overflow-y:auto;background:var(--bg);}
-.plan-content{padding:24px 28px;max-width:940px;}
+.plan-content{padding:24px 32px;max-width:none;width:100%;}
 .plan-right{width:348px;flex-shrink:0;background:var(--s1);border-left:1px solid var(--b1);display:flex;flex-direction:column;overflow:hidden;height:100%;}
 
 /* ── PLAN HEADER ── */
@@ -197,19 +197,27 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);font-si
 .metric-sub{font-size:10px;color:var(--t3);margin-top:5px;}
 
 /* ── BUDGET BARS ── */
-.alloc-wrap{display:flex;gap:22px;align-items:flex-start;}
-.alloc-bars{flex:1;}
-.bar-row{display:flex;align-items:center;gap:9px;margin-bottom:9px;}
-.bar-lbl{width:90px;font-size:11px;color:var(--t2);text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;}
-.bar-track{flex:1;background:var(--s1);border-radius:4px;height:20px;overflow:hidden;cursor:pointer;}
+.alloc-wrap{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch;}
+@media(max-width:1100px){.alloc-wrap{grid-template-columns:1fr;}}
+.alloc-card{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:20px 22px;}
+.alloc-card-head{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:18px;letter-spacing:-.01em;}
+.alloc-bars{display:flex;flex-direction:column;gap:13px;}
+.bar-row{display:flex;align-items:center;gap:12px;}
+.bar-lbl{width:104px;font-size:12px;color:var(--t1);text-align:left;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;}
+.bar-track{flex:1;background:var(--s1);border-radius:5px;height:9px;overflow:hidden;cursor:pointer;}
 .bar-track:hover .bar-fill{filter:brightness(1.15);}
-.bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:9px;font-size:10px;font-weight:700;color:rgba(255,255,255,.9);white-space:nowrap;transition:width .5s cubic-bezier(.4,0,.2,1);}
-.bar-pct{width:36px;font-size:11px;color:var(--t2);text-align:right;flex-shrink:0;cursor:pointer;font-weight:600;font-variant-numeric:tabular-nums;}
+.bar-fill{height:100%;border-radius:5px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+.bar-pct{width:40px;font-size:13px;color:var(--t1);text-align:right;flex-shrink:0;cursor:pointer;font-weight:600;font-variant-numeric:tabular-nums;}
 .bar-pct:hover{color:var(--acc3);}
-.pie-wrap{flex-shrink:0;width:112px;display:flex;flex-direction:column;align-items:center;gap:12px;}
-.pie-legend{display:flex;flex-direction:column;gap:5px;width:100%;}
-.pie-li{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--t2);font-weight:500;}
-.pie-li-dot{width:7px;height:7px;border-radius:2px;flex-shrink:0;}
+.pie-wrap{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:32px;height:100%;}
+.pie-svg-wrap{position:relative;flex-shrink:0;}
+.pie-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+.pie-center-val{font-size:22px;font-weight:800;color:var(--t1);letter-spacing:-.02em;}
+.pie-center-lbl{font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
+.pie-legend{display:flex;flex-direction:column;gap:9px;}
+.pie-li{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--t1);font-weight:500;}
+.pie-li-dot{width:9px;height:9px;border-radius:3px;flex-shrink:0;}
+.pie-li-pct{margin-left:auto;color:var(--t2);font-variant-numeric:tabular-nums;font-weight:600;}
 
 /* ── CURVE BADGES ── */
 .curve-cell{display:flex;align-items:center;gap:5px;flex-wrap:nowrap;}
@@ -561,33 +569,42 @@ tbody tr:hover td{background:var(--s3);}
           <div style="font-size:10px;color:var(--t3);">click % to edit</div>
         </div>
         <div class="alloc-wrap">
-          <div class="alloc-bars">
-            <div class="bar-row"><div class="bar-lbl">TVN</div><div class="bar-track"><div class="bar-fill c1" style="width:32%">160k PLN</div></div><div class="bar-pct" onclick="editPct(this)">32%</div></div>
-            <div class="bar-row"><div class="bar-lbl">Polsat</div><div class="bar-track"><div class="bar-fill c2" style="width:18%">90k PLN</div></div><div class="bar-pct" onclick="editPct(this)">18%</div></div>
-            <div class="bar-row"><div class="bar-lbl">YouTube</div><div class="bar-track"><div class="bar-fill c3" style="width:20%">100k PLN</div></div><div class="bar-pct" onclick="editPct(this)">20%</div></div>
-            <div class="bar-row"><div class="bar-lbl">Meta</div><div class="bar-track"><div class="bar-fill c4" style="width:15%">75k PLN</div></div><div class="bar-pct" onclick="editPct(this)">15%</div></div>
-            <div class="bar-row"><div class="bar-lbl">OOH AMS</div><div class="bar-track"><div class="bar-fill c5" style="width:8%">40k</div></div><div class="bar-pct" onclick="editPct(this)">8%</div></div>
-            <div class="bar-row"><div class="bar-lbl">RMF FM</div><div class="bar-track"><div class="bar-fill c6" style="width:5%">25k</div></div><div class="bar-pct" onclick="editPct(this)">5%</div></div>
-            <div class="bar-row"><div class="bar-lbl">Programmatic</div><div class="bar-track"><div class="bar-fill c7" style="width:2%"></div></div><div class="bar-pct" onclick="editPct(this)">2%</div></div>
+          <div class="alloc-card">
+            <div class="alloc-card-head">Budget allocation by channel</div>
+            <div class="alloc-bars">
+              <div class="bar-row"><div class="bar-lbl">TVN</div><div class="bar-track"><div class="bar-fill c1" style="width:32%"></div></div><div class="bar-pct" onclick="editPct(this)">32%</div></div>
+              <div class="bar-row"><div class="bar-lbl">Polsat</div><div class="bar-track"><div class="bar-fill c2" style="width:18%"></div></div><div class="bar-pct" onclick="editPct(this)">18%</div></div>
+              <div class="bar-row"><div class="bar-lbl">YouTube</div><div class="bar-track"><div class="bar-fill c3" style="width:20%"></div></div><div class="bar-pct" onclick="editPct(this)">20%</div></div>
+              <div class="bar-row"><div class="bar-lbl">Meta</div><div class="bar-track"><div class="bar-fill c4" style="width:15%"></div></div><div class="bar-pct" onclick="editPct(this)">15%</div></div>
+              <div class="bar-row"><div class="bar-lbl">OOH AMS</div><div class="bar-track"><div class="bar-fill c5" style="width:8%"></div></div><div class="bar-pct" onclick="editPct(this)">8%</div></div>
+              <div class="bar-row"><div class="bar-lbl">RMF FM</div><div class="bar-track"><div class="bar-fill c6" style="width:5%"></div></div><div class="bar-pct" onclick="editPct(this)">5%</div></div>
+              <div class="bar-row"><div class="bar-lbl">Programmatic</div><div class="bar-track"><div class="bar-fill c7" style="width:2%"></div></div><div class="bar-pct" onclick="editPct(this)">2%</div></div>
+            </div>
           </div>
-          <div class="pie-wrap">
-            <svg viewBox="0 0 100 100" width="104" height="104">
-              <circle cx="50" cy="50" r="38" fill="none" stroke="#6366f1" stroke-width="22" stroke-dasharray="76.5 162.1" stroke-dashoffset="0"/>
-              <circle cx="50" cy="50" r="38" fill="none" stroke="#06b6d4" stroke-width="22" stroke-dasharray="43.0 195.6" stroke-dashoffset="-76.5"/>
-              <circle cx="50" cy="50" r="38" fill="none" stroke="#f59e0b" stroke-width="22" stroke-dasharray="47.7 190.9" stroke-dashoffset="-119.5"/>
-              <circle cx="50" cy="50" r="38" fill="none" stroke="#22c55e" stroke-width="22" stroke-dasharray="35.8 202.8" stroke-dashoffset="-167.2"/>
-              <circle cx="50" cy="50" r="38" fill="none" stroke="#ec4899" stroke-width="22" stroke-dasharray="19.1 219.5" stroke-dashoffset="-203"/>
-              <circle cx="50" cy="50" r="38" fill="none" stroke="#8b5cf6" stroke-width="22" stroke-dasharray="11.9 226.7" stroke-dashoffset="-222.1"/>
-              <circle cx="50" cy="50" r="31" fill="var(--s2)"/>
-            </svg>
-            <div class="pie-legend">
-              <div class="pie-li"><div class="pie-li-dot c1"></div>TVN 32%</div>
-              <div class="pie-li"><div class="pie-li-dot c2"></div>Polsat 18%</div>
-              <div class="pie-li"><div class="pie-li-dot c3"></div>YouTube 20%</div>
-              <div class="pie-li"><div class="pie-li-dot c4"></div>Meta 15%</div>
-              <div class="pie-li"><div class="pie-li-dot c5"></div>OOH 8%</div>
-              <div class="pie-li"><div class="pie-li-dot c6"></div>Radio 5%</div>
-              <div class="pie-li"><div class="pie-li-dot c7"></div>Prog. 2%</div>
+          <div class="alloc-card">
+            <div class="alloc-card-head">Budget split by channel</div>
+            <div class="pie-wrap">
+              <div class="pie-svg-wrap">
+                <svg viewBox="0 0 100 100" width="172" height="172">
+                  <circle cx="50" cy="50" r="38" fill="none" stroke="#6366f1" stroke-width="16" stroke-dasharray="76.40 162.36" stroke-dashoffset="0" transform="rotate(-90 50 50)"/>
+                  <circle cx="50" cy="50" r="38" fill="none" stroke="#06b6d4" stroke-width="16" stroke-dasharray="42.98 195.78" stroke-dashoffset="-76.40" transform="rotate(-90 50 50)"/>
+                  <circle cx="50" cy="50" r="38" fill="none" stroke="#f59e0b" stroke-width="16" stroke-dasharray="47.75 191.01" stroke-dashoffset="-119.38" transform="rotate(-90 50 50)"/>
+                  <circle cx="50" cy="50" r="38" fill="none" stroke="#22c55e" stroke-width="16" stroke-dasharray="35.81 202.95" stroke-dashoffset="-167.13" transform="rotate(-90 50 50)"/>
+                  <circle cx="50" cy="50" r="38" fill="none" stroke="#ec4899" stroke-width="16" stroke-dasharray="19.10 219.66" stroke-dashoffset="-202.94" transform="rotate(-90 50 50)"/>
+                  <circle cx="50" cy="50" r="38" fill="none" stroke="#8b5cf6" stroke-width="16" stroke-dasharray="11.94 226.82" stroke-dashoffset="-222.04" transform="rotate(-90 50 50)"/>
+                  <circle cx="50" cy="50" r="38" fill="none" stroke="#ef4444" stroke-width="16" stroke-dasharray="4.78 233.98" stroke-dashoffset="-233.98" transform="rotate(-90 50 50)"/>
+                </svg>
+                <div class="pie-center"><div class="pie-center-val">500k</div><div class="pie-center-lbl">PLN total</div></div>
+              </div>
+              <div class="pie-legend">
+                <div class="pie-li"><div class="pie-li-dot c1"></div>TVN<span class="pie-li-pct">32%</span></div>
+                <div class="pie-li"><div class="pie-li-dot c2"></div>Polsat<span class="pie-li-pct">18%</span></div>
+                <div class="pie-li"><div class="pie-li-dot c3"></div>YouTube<span class="pie-li-pct">20%</span></div>
+                <div class="pie-li"><div class="pie-li-dot c4"></div>Meta<span class="pie-li-pct">15%</span></div>
+                <div class="pie-li"><div class="pie-li-dot c5"></div>OOH AMS<span class="pie-li-pct">8%</span></div>
+                <div class="pie-li"><div class="pie-li-dot c6"></div>RMF FM<span class="pie-li-pct">5%</span></div>
+                <div class="pie-li"><div class="pie-li-dot c7"></div>Programmatic<span class="pie-li-pct">2%</span></div>
+              </div>
             </div>
           </div>
         </div>
