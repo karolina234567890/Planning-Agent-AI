@@ -402,7 +402,7 @@ tbody tr:hover td{background:var(--s3);}
       <div class="brief-item"><div class="brief-item-label">Campaign Goal</div><div class="brief-item-val editable" onclick="editBrief(this)">Brand awareness</div></div>
       <div class="brief-item"><div class="brief-item-label">KPI</div><div class="brief-item-val editable" onclick="editBrief(this)">Reach 1+ ≥ 60%</div></div>
       <hr class="divider">
-      <button class="btn-ghost" style="width:100%;font-size:12px;" onclick="editAllBrief()">✏️ Edit brief fields</button>
+      <div style="font-size:11px;color:var(--t3);text-align:center;">✏️ Click any field above to edit</div>
     </div>
     <div class="qa-right">
       <div class="qa-top">
@@ -415,9 +415,21 @@ tbody tr:hover td{background:var(--s3);}
         <div class="msg user" id="a1" style="display:none;"><div class="msg-label">You</div><div class="msg-bubble">Net, excluding agency fee</div></div>
         <div class="msg ai" id="q2" style="display:none;"><div class="msg-label">AI Planner</div><div class="msg-bubble">Got it. The campaign runs July–September. Any <strong>weeks to intensify or avoid</strong>? E.g. summer holidays, back-to-school?</div></div>
         <div class="msg user" id="a2" style="display:none;"><div class="msg-label">You</div><div class="msg-bubble">Boost the last 2 weeks of September — back to school is key for Lactima</div></div>
-        <div class="msg ai" id="q3" style="display:none;"><div class="msg-label">AI Planner</div><div class="msg-bubble">Noted. Last question — any <strong>channels to exclude</strong>, or must-include publisher deals?</div></div>
+        <div class="msg ai" id="q3" style="display:none;"><div class="msg-label">AI Planner</div><div class="msg-bubble">Noted. Any <strong>channels to exclude</strong>, or must-include publisher deals?</div></div>
         <div class="msg user" id="a3" style="display:none;"><div class="msg-label">You</div><div class="msg-bubble">TVN deal — minimum 30% of TV budget. Otherwise free hand.</div></div>
-        <div class="msg ai" id="q4" style="display:none;"><div class="msg-label">AI Planner</div><div class="msg-bubble">Perfect. I have everything I need. I'll generate a full media plan with 3 optimisation variants — ready?</div></div>
+        <div class="msg ai" id="q4" style="display:none;"><div class="msg-label">AI Planner</div><div class="msg-bubble">Who are the main <strong>competitors</strong> we should out-share? Any share-of-voice target versus them?</div></div>
+        <div class="msg user" id="a4" style="display:none;"><div class="msg-label">You</div><div class="msg-bubble">Main rival is Mlekovita — we want to beat their TV SOV in the period.</div></div>
+        <div class="msg ai" id="q5" style="display:none;"><div class="msg-label">AI Planner</div><div class="msg-bubble">Within Women 25–45, is there a <strong>core target</strong> to prioritise reach against? E.g. mums with kids under 12?</div></div>
+        <div class="msg user" id="a5" style="display:none;"><div class="msg-label">You</div><div class="msg-bubble">Yes — prioritise mums with kids under 12.</div></div>
+        <div class="msg ai" id="q6" style="display:none;"><div class="msg-label">AI Planner</div><div class="msg-bubble">Which <strong>creative formats</strong> are ready? This affects which channels I can weight. 30s TVC, 6s bumpers, static social, OOH?</div></div>
+        <div class="msg user" id="a6" style="display:none;"><div class="msg-label">You</div><div class="msg-bubble">30s + 15s TVC, 6s YouTube bumpers, static social, OOH 6-sheet.</div></div>
+        <div class="msg ai" id="q7" style="display:none;"><div class="msg-label">AI Planner</div><div class="msg-bubble">Geographic focus — <strong>national coverage</strong>, or weight toward specific regions / cities?</div></div>
+        <div class="msg user" id="a7" style="display:none;"><div class="msg-label">You</div><div class="msg-bubble">National, with a slight skew to the top 5 metro areas.</div></div>
+        <div class="msg ai" id="q8" style="display:none;"><div class="msg-label">AI Planner</div><div class="msg-bubble">What <strong>effective frequency</strong> should I optimise for? I'll default to 3+ contacts unless you prefer otherwise.</div></div>
+        <div class="msg user" id="a8" style="display:none;"><div class="msg-label">You</div><div class="msg-bubble">3+ is fine.</div></div>
+        <div class="msg ai" id="q9" style="display:none;"><div class="msg-label">AI Planner</div><div class="msg-bubble">Last one — is this primarily an <strong>awareness</strong> play, or should I balance in some lower-funnel performance weight (e.g. Meta / Programmatic for traffic)?</div></div>
+        <div class="msg user" id="a9" style="display:none;"><div class="msg-label">You</div><div class="msg-bubble">Mostly awareness, but keep ~15% working budget for performance.</div></div>
+        <div class="msg ai" id="q10" style="display:none;"><div class="msg-label">AI Planner</div><div class="msg-bubble">Perfect. I have everything I need. I'll generate a full media plan with 3 optimisation variants — ready?</div></div>
       </div>
       <div class="chat-input-row">
         <input class="chat-input" id="qaIn" placeholder="Reply to AI…" onkeypress="if(event.key==='Enter')qaReply()">
@@ -884,19 +896,26 @@ function uploadFile() {
 }
 function startAnalysis() { uploadFile(); go(3); }
 
+const QA_SEQ = [
+  ['a1','q2'], ['a2','q3'], ['a3','q4'], ['a4','q5'], ['a5','q6'],
+  ['a6','q7'], ['a7','q8'], ['a8','q9'], ['a9','q10'],
+];
 function qaReply() {
   const inp = document.getElementById('qaIn');
   inp.value = '';
   const msgs = document.getElementById('qaMsgs');
   const show = id => { const e = document.getElementById(id); if (e) e.style.display = 'flex'; };
   const delay = (id, ms) => setTimeout(() => { show(id); msgs.scrollTop = msgs.scrollHeight; }, ms);
-  if (qaStep === 1) { show('a1'); delay('q2', 700); qaStep = 2; }
-  else if (qaStep === 2) { show('a2'); delay('q3', 700); qaStep = 3; }
-  else if (qaStep === 3) {
-    show('a3'); delay('q4', 700); qaStep = 4;
-    const g = document.getElementById('genBtn');
-    g.style.background = 'linear-gradient(135deg,#22c55e,#16a34a)';
-    g.style.boxShadow = '0 4px 16px rgba(34,197,94,.35)';
+  const step = QA_SEQ[qaStep - 1];
+  if (step) {
+    show(step[0]);
+    delay(step[1], 700);
+    qaStep++;
+    if (qaStep - 1 === QA_SEQ.length) {
+      const g = document.getElementById('genBtn');
+      g.style.background = 'linear-gradient(135deg,#22c55e,#16a34a)';
+      g.style.boxShadow = '0 4px 16px rgba(34,197,94,.35)';
+    }
   }
   msgs.scrollTop = msgs.scrollHeight;
 }
