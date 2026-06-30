@@ -287,6 +287,15 @@ tbody tr:hover td{background:var(--s3);}
 
 /* ── FLIGHTING ── */
 .flight-chart-box{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:14px;margin-bottom:12px;}
+.fl-chart{display:flex;align-items:flex-end;gap:6px;height:230px;padding-top:24px;}
+.fl-col{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;min-width:0;}
+.fl-stack{width:100%;max-width:46px;display:flex;flex-direction:column;justify-content:flex-end;flex:1;border-radius:5px;overflow:hidden;position:relative;transition:filter .15s;}
+.fl-col:hover .fl-stack{filter:brightness(1.12);}
+.fl-seg{width:100%;transition:height .5s cubic-bezier(.4,0,.2,1);}
+.fl-total{font-size:11px;font-weight:700;color:var(--t1);margin-bottom:6px;font-variant-numeric:tabular-nums;white-space:nowrap;}
+.fl-col.boost .fl-total{color:var(--amber);}
+.fl-wk{font-size:10px;color:var(--t3);font-weight:600;margin-top:8px;letter-spacing:.02em;}
+.fl-col.boost .fl-wk{color:var(--amber);}
 .flight-legend{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap;}
 .flight-legend-item{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--t3);font-weight:500;}
 .flight-legend-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
@@ -737,14 +746,14 @@ tbody tr:hover td{background:var(--s3);}
       <div class="section">
         <div class="sec-head">
           <div class="sec-title"><div class="sec-dot"></div>Flighting — Weekly Budget Distribution</div>
-          <div style="font-size:10px;color:var(--t3);">values in 000 PLN · click to edit</div>
+          <div style="font-size:10px;color:var(--t3);">values in thousands of PLN (k = 1 000 PLN) · click to edit</div>
         </div>
         <div class="flight-chart-box">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
             <span style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;">Weekly Total (000 PLN)</span>
             <span style="font-size:10px;color:var(--amber);font-weight:700;display:flex;align-items:center;gap:5px;">▲ W12–W13 boosted · back-to-school</span>
           </div>
-          <svg id="flightSvg" width="100%" height="220" viewBox="0 0 546 220" preserveAspectRatio="none"></svg>
+          <div id="flightChart" class="fl-chart"></div>
           <div class="flight-legend">
             <div class="flight-legend-item"><div class="flight-legend-dot c1"></div>TVN</div>
             <div class="flight-legend-item"><div class="flight-legend-dot c2"></div>Polsat</div>
@@ -1090,25 +1099,29 @@ function uploadCurve(btn, key) {
 }
 
 function renderFlightChart() {
-  const svg = document.getElementById('flightSvg');
-  if (!svg) return;
-  const W = 13, barW = 34, gap = 8, padL = 4, maxH = 188, baseY = 200;
+  const box = document.getElementById('flightChart');
+  if (!box) return;
+  const W = 13;
   const totals = Array.from({length:W}, (_,w) => FLIGHT.reduce((s,r) => s + (r[w]||0), 0));
   const maxT = Math.max(...totals);
   let html = '';
   for (let w = 0; w < W; w++) {
-    const x = padL + w * (barW + gap);
-    let stackY = baseY;
-    for (let c = 0; c < CH.length; c++) {
+    const boost = w >= 11;
+    let segs = '';
+    // top → bottom: render from last channel down so TVN (c0) sits at the bottom
+    for (let c = CH.length - 1; c >= 0; c--) {
       const v = FLIGHT[c][w] || 0;
       if (!v) continue;
-      const h = Math.round((v / maxT) * maxH);
-      stackY -= h;
-      html += `<rect x="${x}" y="${stackY}" width="${barW}" height="${h}" fill="${CC[c]}" rx="2.5" opacity="${w >= 11 ? '1' : '0.82'}"/>`;
+      const pct = (v / maxT) * 100;
+      segs += `<div class="fl-seg" style="height:${pct}%;background:${CC[c]};" title="${CH[c]}: ${v}k PLN"></div>`;
     }
-    html += `<text x="${x + barW/2}" y="${baseY + 14}" fill="#606070" font-size="9.5" font-family="Inter" text-anchor="middle" font-weight="500">W${w+1}</text>`;
+    html += `<div class="fl-col${boost?' boost':''}">
+      <div class="fl-total">${totals[w]}k</div>
+      <div class="fl-stack">${segs}</div>
+      <div class="fl-wk">W${w+1}</div>
+    </div>`;
   }
-  svg.innerHTML = html;
+  box.innerHTML = html;
 }
 
 function renderFlightGrid() {
@@ -1117,20 +1130,20 @@ function renderFlightGrid() {
   const W = 13;
   let html = '<thead><tr><th>Channel</th>';
   for (let w = 1; w <= W; w++) html += `<th>W${w}</th>`;
-  html += '<th>Total</th></tr></thead><tbody>';
+  html += '<th>Total (k PLN)</th></tr></thead><tbody>';
   for (let c = 0; c < CH.length; c++) {
     const total = FLIGHT[c].reduce((s,v) => s+v, 0);
     html += `<tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${CC[c]};margin-right:6px;flex-shrink:0;"></span>${CH[c]}</td>`;
     for (let w = 0; w < W; w++) {
       html += `<td><span class="fc" contenteditable="true">${FLIGHT[c][w] || 0}</span></td>`;
     }
-    html += `<td>${total}</td></tr>`;
+    html += `<td>${total}k</td></tr>`;
   }
   const weekTotals = Array.from({length:W}, (_,w) => FLIGHT.reduce((s,r) => s + (r[w]||0), 0));
   const grand = weekTotals.reduce((s,v) => s+v, 0);
   html += '<tr class="fg-total"><td>TOTAL</td>';
-  weekTotals.forEach(t => { html += `<td>${t}</td>`; });
-  html += `<td>${grand}</td></tr></tbody>`;
+  weekTotals.forEach(t => { html += `<td>${t}k</td>`; });
+  html += `<td>${grand}k</td></tr></tbody>`;
   grid.innerHTML = html;
 }
 
