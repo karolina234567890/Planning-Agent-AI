@@ -130,7 +130,33 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);font-si
 .chat-input::placeholder{color:var(--t3);}
 .btn-send{background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff;border:none;border-radius:var(--r2);padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0;}
 .btn-send:hover{filter:brightness(1.08);}
-.qa-footer{padding:14px 22px;border-top:1px solid var(--b1);display:flex;justify-content:flex-end;gap:9px;background:var(--s2);}
+.qa-footer{padding:14px 22px;border-top:1px solid var(--b1);display:flex;justify-content:flex-end;align-items:center;gap:9px;background:var(--s2);}
+
+/* ── CLARIFICATION WIZARD ── */
+.wiz-progress{height:4px;background:var(--s3);border-radius:3px;overflow:hidden;margin-bottom:16px;}
+.wiz-progress-bar{height:100%;background:linear-gradient(90deg,#6366f1,#818cf8);border-radius:3px;width:11%;transition:width .35s cubic-bezier(.4,0,.2,1);}
+.wiz-top-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px;}
+.wiz-count{font-size:11px;font-weight:700;color:var(--acc3);text-transform:uppercase;letter-spacing:.06em;flex-shrink:0;}
+.wiz-body{flex:1;overflow-y:auto;padding:36px 40px;display:flex;flex-direction:column;}
+.wiz-card{max-width:560px;width:100%;margin:auto 0;animation:wizIn .3s ease;}
+@keyframes wizIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+.wiz-kicker{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;}
+.wiz-q{font-size:23px;font-weight:800;letter-spacing:-.025em;line-height:1.3;color:var(--t1);margin-bottom:8px;}
+.wiz-hint{font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:26px;}
+.wiz-opts{display:flex;flex-direction:column;gap:10px;}
+.wiz-opts.row{flex-direction:row;flex-wrap:wrap;}
+.wiz-opt{display:flex;align-items:center;gap:11px;padding:14px 16px;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);cursor:pointer;font-size:14px;color:var(--t1);font-weight:500;transition:all .15s;text-align:left;}
+.wiz-opt:hover{border-color:var(--b3);background:var(--s3);}
+.wiz-opt.sel{border-color:var(--acc);background:var(--acc-bg);box-shadow:0 0 0 1px var(--acc) inset;}
+.wiz-opts.row .wiz-opt{flex:0 0 auto;padding:11px 18px;}
+.wiz-check{width:18px;height:18px;border-radius:50%;border:2px solid var(--b3);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.wiz-opt.sel .wiz-check{border-color:var(--acc);background:var(--acc);}
+.wiz-opt.sel .wiz-check::after{content:'';width:6px;height:6px;border-radius:50%;background:#fff;}
+.wiz-input{width:100%;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);color:var(--t1);padding:14px 16px;font-size:14px;font-family:'Inter',sans-serif;line-height:1.6;resize:vertical;min-height:96px;transition:border-color .15s;}
+.wiz-input:focus{outline:none;border-color:var(--acc);}
+.wiz-input::placeholder{color:var(--t3);}
+.wiz-suggest{margin-top:10px;font-size:12px;color:var(--t3);}
+.wiz-suggest b{color:var(--acc3);cursor:pointer;font-weight:600;}
 
 /* ── PLAN LAYOUT ── */
 .plan-left{flex:1;overflow-y:auto;background:var(--bg);}
@@ -406,40 +432,21 @@ tbody tr:hover td{background:var(--s3);}
     </div>
     <div class="qa-right">
       <div class="qa-top">
-        <div class="qa-top-title">AI is clarifying your brief</div>
-        <div class="qa-top-sub">9 questions AI may ask to fine-tune your plan — pre-answered for this demo</div>
+        <div class="wiz-progress"><div class="wiz-progress-bar" id="wizBar"></div></div>
+        <div class="wiz-top-row">
+          <div class="qa-top-title">Let's fine-tune your plan</div>
+          <div class="wiz-count" id="wizCount">Question 1 of 9</div>
+        </div>
+        <div class="qa-top-sub">AI asks a few questions to tailor the media plan to this brief</div>
       </div>
-      <div class="chat-msgs" id="qaMsgs">
-        <div class="msg ai"><div class="msg-label">AI Planner</div><div class="msg-bubble">I've read the Lactima brief. Before generating the plan, I have a few quick questions.</div></div>
-        <div class="msg ai"><div class="msg-label">AI Planner</div><div class="msg-bubble">The budget is listed as <strong>500 000 PLN</strong> — is this <strong>net</strong> (excluding agency fee and VAT) or <strong>gross</strong>?</div></div>
-        <div class="msg user" id="a1"><div class="msg-label">You</div><div class="msg-bubble">Net, excluding agency fee</div></div>
-        <div class="msg ai" id="q2"><div class="msg-label">AI Planner</div><div class="msg-bubble">Got it. The campaign runs July–September. Any <strong>weeks to intensify or avoid</strong>? E.g. summer holidays, back-to-school?</div></div>
-        <div class="msg user" id="a2"><div class="msg-label">You</div><div class="msg-bubble">Boost the last 2 weeks of September — back to school is key for Lactima</div></div>
-        <div class="msg ai" id="q3"><div class="msg-label">AI Planner</div><div class="msg-bubble">Noted. Any <strong>channels to exclude</strong>, or must-include publisher deals?</div></div>
-        <div class="msg user" id="a3"><div class="msg-label">You</div><div class="msg-bubble">TVN deal — minimum 30% of TV budget. Otherwise free hand.</div></div>
-        <div class="msg ai" id="q4"><div class="msg-label">AI Planner</div><div class="msg-bubble">Who are the main <strong>competitors</strong> we should out-share? Any share-of-voice target versus them?</div></div>
-        <div class="msg user" id="a4"><div class="msg-label">You</div><div class="msg-bubble">Main rival is Mlekovita — we want to beat their TV SOV in the period.</div></div>
-        <div class="msg ai" id="q5"><div class="msg-label">AI Planner</div><div class="msg-bubble">Within Women 25–45, is there a <strong>core target</strong> to prioritise reach against? E.g. mums with kids under 12?</div></div>
-        <div class="msg user" id="a5"><div class="msg-label">You</div><div class="msg-bubble">Yes — prioritise mums with kids under 12.</div></div>
-        <div class="msg ai" id="q6"><div class="msg-label">AI Planner</div><div class="msg-bubble">Which <strong>creative formats</strong> are ready? This affects which channels I can weight. 30s TVC, 6s bumpers, static social, OOH?</div></div>
-        <div class="msg user" id="a6"><div class="msg-label">You</div><div class="msg-bubble">30s + 15s TVC, 6s YouTube bumpers, static social, OOH 6-sheet.</div></div>
-        <div class="msg ai" id="q7"><div class="msg-label">AI Planner</div><div class="msg-bubble">Geographic focus — <strong>national coverage</strong>, or weight toward specific regions / cities?</div></div>
-        <div class="msg user" id="a7"><div class="msg-label">You</div><div class="msg-bubble">National, with a slight skew to the top 5 metro areas.</div></div>
-        <div class="msg ai" id="q8"><div class="msg-label">AI Planner</div><div class="msg-bubble">What <strong>effective frequency</strong> should I optimise for? I'll default to 3+ contacts unless you prefer otherwise.</div></div>
-        <div class="msg user" id="a8"><div class="msg-label">You</div><div class="msg-bubble">3+ is fine.</div></div>
-        <div class="msg ai" id="q9"><div class="msg-label">AI Planner</div><div class="msg-bubble">Last one — is this primarily an <strong>awareness</strong> play, or should I balance in some lower-funnel performance weight (e.g. Meta / Programmatic for traffic)?</div></div>
-        <div class="msg user" id="a9"><div class="msg-label">You</div><div class="msg-bubble">Mostly awareness, but keep ~15% working budget for performance.</div></div>
-        <div class="msg ai" id="q10"><div class="msg-label">AI Planner</div><div class="msg-bubble">Perfect. I have everything I need. I'll generate a full media plan with 3 optimisation variants — ready?</div></div>
-      </div>
-      <div class="chat-input-row">
-        <input class="chat-input" id="qaIn" placeholder="Reply to AI…" onkeypress="if(event.key==='Enter')qaReply()">
-        <button class="btn-send" onclick="qaReply()">Send</button>
+      <div class="wiz-body" id="wizBody"><!-- question card injected here --></div>
+      <div class="qa-footer">
+        <button class="btn-ghost" id="wizBack" onclick="wizPrev()">← Back</button>
+        <div style="flex:1;"></div>
+        <button class="btn-ghost" onclick="generatePlan()">Skip all</button>
+        <button class="btn-primary" id="wizNext" onclick="wizNext()">Next →</button>
       </div>
     </div>
-  </div>
-  <div class="qa-footer">
-    <button class="btn-ghost" onclick="go(2)">← Back</button>
-    <button class="btn-primary" onclick="generatePlan()" id="genBtn" style="background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 4px 16px rgba(34,197,94,.35);">Generate Plan →</button>
   </div>
 </div>
 
@@ -872,7 +879,6 @@ const WHY = {
   prog:    '<strong style="color:#f2f2f7">DEFAULT curve</strong> — Using DV360 platform reach estimates. No agency curve available for programmatic.',
 };
 
-let qaStep = 0;
 
 function go(n) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -884,7 +890,7 @@ function go(n) {
     else if (i + 1 === n) { s.classList.add('active'); num.textContent = i + 1; }
     else num.textContent = i + 1;
   });
-  if (n === 3 && qaStep === 0) qaStep = 1;
+  if (n === 3) renderWiz();
   if (n === 4) { renderFlightChart(); renderFlightGrid(); }
 }
 
@@ -896,28 +902,68 @@ function uploadFile() {
 }
 function startAnalysis() { uploadFile(); go(3); }
 
-const QA_SEQ = [
-  ['a1','q2'], ['a2','q3'], ['a3','q4'], ['a4','q5'], ['a5','q6'],
-  ['a6','q7'], ['a7','q8'], ['a8','q9'], ['a9','q10'],
+/* ── Clarification wizard ── */
+const WIZ = [
+  { kicker:'Budget', q:'Is the budget net or gross?', hint:'The brief lists 500 000 PLN. This affects how much working media I can plan.',
+    type:'single', options:['Net — excluding agency fee & VAT','Gross — all-in'], default:0 },
+  { kicker:'Seasonality', q:'Any weeks to intensify or avoid?', hint:'The campaign runs July–September. Think holidays, back-to-school, paydays.',
+    type:'text', placeholder:'e.g. boost late September…', default:'Boost the last 2 weeks of September — back-to-school is key for Lactima.' },
+  { kicker:'Constraints', q:'Channels to exclude or must-include?', hint:'Any locked publisher deals or channels that are off the table?',
+    type:'text', placeholder:'e.g. TVN deal, exclude radio…', default:'TVN deal — minimum 30% of TV budget. Otherwise free hand.' },
+  { kicker:'Competition', q:'Who should we out-share?', hint:'Naming the main rival lets me benchmark a share-of-voice target.',
+    type:'text', placeholder:'e.g. main competitor and SOV goal…', default:'Main rival is Mlekovita — we want to beat their TV SOV in the period.' },
+  { kicker:'Audience', q:'Is there a core target to prioritise?', hint:'The brief says Women 25–45. A tighter core sharpens reach optimisation.',
+    type:'single', options:['Whole Women 25–45','Mums with kids under 12','Young professionals 25–34'], default:1 },
+  { kicker:'Creative', q:'Which creative formats are ready?', hint:'This decides which channels I can actually weight. Select all that apply.',
+    type:'multi', options:['30s TVC','15s TVC','6s YouTube bumper','Static social','OOH 6-sheet'], default:[0,1,2,3,4] },
+  { kicker:'Geography', q:'National or regional focus?', hint:'Coverage strategy changes the OOH and radio weighting.',
+    type:'single', options:['National','National + skew to top 5 metros','Selected regions only'], default:1 },
+  { kicker:'Frequency', q:'What effective frequency to optimise for?', hint:'I’ll plan to hit this many contacts against the core target.',
+    type:'single', options:['1+','2+','3+','4+','5+'], default:2, row:true },
+  { kicker:'Objective', q:'Awareness, or balance in some performance?', hint:'Determines how much budget goes to lower-funnel channels (Meta, Programmatic).',
+    type:'single', options:['Pure awareness','~85% awareness / 15% performance','70% awareness / 30% performance'], default:1 },
 ];
-function qaReply() {
-  const inp = document.getElementById('qaIn');
-  inp.value = '';
-  const msgs = document.getElementById('qaMsgs');
-  const show = id => { const e = document.getElementById(id); if (e) e.style.display = 'flex'; };
-  const delay = (id, ms) => setTimeout(() => { show(id); msgs.scrollTop = msgs.scrollHeight; }, ms);
-  const step = QA_SEQ[qaStep - 1];
-  if (step) {
-    show(step[0]);
-    delay(step[1], 700);
-    qaStep++;
-    if (qaStep - 1 === QA_SEQ.length) {
-      const g = document.getElementById('genBtn');
-      g.style.background = 'linear-gradient(135deg,#22c55e,#16a34a)';
-      g.style.boxShadow = '0 4px 16px rgba(34,197,94,.35)';
-    }
+let wizStep = 0;
+const wizAns = WIZ.map(w => Array.isArray(w.default) ? [...w.default] : w.default);
+
+function renderWiz() {
+  const w = WIZ[wizStep];
+  const body = document.getElementById('wizBody');
+  document.getElementById('wizCount').textContent = `Question ${wizStep+1} of ${WIZ.length}`;
+  document.getElementById('wizBar').style.width = ((wizStep+1)/WIZ.length*100) + '%';
+  document.getElementById('wizBack').style.visibility = wizStep === 0 ? 'hidden' : 'visible';
+  document.getElementById('wizNext').textContent = wizStep === WIZ.length-1 ? 'Generate Plan →' : 'Next →';
+  let inner = `<div class="wiz-card"><div class="wiz-kicker">${w.kicker}</div><div class="wiz-q">${w.q}</div><div class="wiz-hint">${w.hint}</div>`;
+  if (w.type === 'text') {
+    inner += `<textarea class="wiz-input" id="wizText" placeholder="${w.placeholder||''}" oninput="wizAns[${wizStep}]=this.value">${wizAns[wizStep]||''}</textarea>`;
+    inner += `<div class="wiz-suggest">💡 AI suggestion — <b onclick="document.getElementById('wizText').value=WIZ[${wizStep}].default;wizAns[${wizStep}]=WIZ[${wizStep}].default">use “${w.default}”</b></div>`;
+  } else {
+    inner += `<div class="wiz-opts${w.row?' row':''}">`;
+    w.options.forEach((o,i) => {
+      const sel = w.type === 'multi' ? wizAns[wizStep].includes(i) : wizAns[wizStep] === i;
+      inner += `<div class="wiz-opt${sel?' sel':''}" onclick="wizPick(${i},${w.type==='multi'})"><div class="wiz-check"></div>${o}</div>`;
+    });
+    inner += `</div>`;
   }
-  msgs.scrollTop = msgs.scrollHeight;
+  inner += `</div>`;
+  body.innerHTML = inner;
+}
+
+function wizPick(i, multi) {
+  if (multi) {
+    const arr = wizAns[wizStep];
+    const idx = arr.indexOf(i);
+    if (idx >= 0) arr.splice(idx,1); else arr.push(i);
+  } else {
+    wizAns[wizStep] = i;
+  }
+  renderWiz();
+}
+
+function wizPrev() { if (wizStep > 0) { wizStep--; renderWiz(); } }
+function wizNext() {
+  if (wizStep < WIZ.length-1) { wizStep++; renderWiz(); }
+  else generatePlan();
 }
 
 function generatePlan() {
