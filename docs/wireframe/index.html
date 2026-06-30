@@ -286,6 +286,10 @@ tbody tr:hover td{background:var(--s3);}
 .c4{background:#22c55e;}.c5{background:#ec4899;}.c6{background:#8b5cf6;}.c7{background:#ef4444;}
 
 /* ── FLIGHTING ── */
+.sankey-box{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:18px;}
+.sankey-box svg{display:block;}
+.sk-link{transition:opacity .15s;}
+.sk-link:hover{opacity:.85 !important;}
 .flight-chart-box{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:14px;margin-bottom:12px;}
 .fl-chart{display:flex;align-items:flex-end;gap:6px;height:230px;padding-top:24px;}
 .fl-col{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;min-width:0;}
@@ -638,6 +642,17 @@ tbody tr:hover td{background:var(--s3);}
         </div>
       </div>
 
+      <!-- Channel Breakdown — Sankey -->
+      <div class="section">
+        <div class="sec-head">
+          <div class="sec-title"><div class="sec-dot"></div>Channel Breakdown</div>
+          <div style="font-size:10px;color:var(--t3);">Budget → Media type → Channel · in k PLN</div>
+        </div>
+        <div class="sankey-box">
+          <svg id="sankeySvg" width="100%" viewBox="0 0 900 400" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+      </div>
+
       <!-- Channel Mix & Reach Curves -->
       <div class="section">
         <div class="sec-head">
@@ -900,7 +915,7 @@ function go(n) {
     else num.textContent = i + 1;
   });
   if (n === 3) renderWiz();
-  if (n === 4) { renderFlightChart(); renderFlightGrid(); }
+  if (n === 4) { renderSankey(); renderFlightChart(); renderFlightGrid(); }
 }
 
 function uploadFile() {
@@ -1096,6 +1111,90 @@ function uploadCurve(btn, key) {
   badge.className = 'cb cb-custom';
   btn.textContent = '↑ Re-upload';
   addPlanMsg('Custom curve uploaded for ' + key.toUpperCase() + '. Your empirical data is now active — reach forecasts have been recalculated.');
+}
+
+const SANKEY = [
+  { name:'TV',            color:'#6366f1', channels:[['TVN',160],['Polsat',90]] },
+  { name:'Digital Video', color:'#f59e0b', channels:[['YouTube',100]] },
+  { name:'Social',        color:'#22c55e', channels:[['Meta',75]] },
+  { name:'OOH',           color:'#ec4899', channels:[['OOH AMS',40]] },
+  { name:'Radio',         color:'#8b5cf6', channels:[['RMF FM',25]] },
+  { name:'Programmatic',  color:'#ef4444', channels:[['Programmatic',10]] },
+];
+
+function renderSankey() {
+  const svg = document.getElementById('sankeySvg');
+  if (!svg) return;
+  const W = 900, H = 400, nodeW = 14, pad = 14, gap = 12;
+  const total = SANKEY.reduce((s,c) => s + c.channels.reduce((a,ch)=>a+ch[1],0), 0);
+  const nCh = SANKEY.reduce((s,c) => s + c.channels.length, 0);
+  // scale so the tallest column (channels) fits with gaps
+  const scale = (H - 2*pad - (nCh-1)*gap) / total;
+  const xA = pad, xB = 330, xC = 600;
+  const NS = 'http://www.w3.org/2000/svg';
+  let out = '';
+  const rect = (x,y,h,fill,op) => `<rect x="${x}" y="${y}" width="${nodeW}" height="${Math.max(h,1)}" rx="3" fill="${fill}" ${op?`opacity="${op}"`:''}/>`;
+  const txt = (x,y,s,fill,anchor,size,weight) => `<text x="${x}" y="${y}" fill="${fill}" font-family="Inter" font-size="${size}" text-anchor="${anchor||'start'}" font-weight="${weight||500}">${s}</text>`;
+  const link = (x0,y0,x1,y1,t,fill) => {
+    const mx = (x0+x1)/2;
+    return `<path class="sk-link" d="M${x0},${y0} C${mx},${y0} ${mx},${y1} ${x1},${y1} L${x1},${y1+t} C${mx},${y1+t} ${mx},${y0+t} ${x0},${y0+t} Z" fill="${fill}" opacity="0.32"/>`;
+  };
+
+  // total column height + start y (centered)
+  const totalH = total*scale;
+  let aY = (H - totalH)/2;
+  const aTop = aY;
+  let aOffset = aY; // running offset for links leaving the total node
+
+  // category column layout
+  let bY = pad;
+  const catLayout = SANKEY.map(c => {
+    const cv = c.channels.reduce((a,ch)=>a+ch[1],0);
+    const h = cv*scale; const y = bY; bY += h + gap;
+    return {...c, cv, y, h, off:y};
+  });
+
+  // channel column layout
+  let cY = pad;
+  const chLayout = [];
+  catLayout.forEach(c => {
+    c.channels.forEach(ch => {
+      const h = ch[1]*scale; const y = cY; cY += h + gap;
+      chLayout.push({cat:c, name:ch[0], v:ch[1], y, h});
+    });
+  });
+
+  // links: total -> category
+  catLayout.forEach(c => {
+    const t = c.h;
+    out += link(xA+nodeW, aOffset, xB, c.y, t, c.color);
+    aOffset += t;
+  });
+  // links: category -> channel
+  catLayout.forEach(c => {
+    let coff = c.y;
+    chLayout.filter(ch => ch.cat === c).forEach(ch => {
+      out += link(xB+nodeW, coff, xC, ch.y, ch.h, c.color);
+      coff += ch.h;
+    });
+  });
+
+  // nodes
+  out += rect(xA, aTop, totalH, '#9aa0b5');
+  out += txt(xA, aTop-8, 'Total budget', '#f2f2f7', 'start', 12, 700);
+  out += txt(xA, aTop+totalH+18, total+'k PLN', '#9898a6', 'start', 11, 600);
+  catLayout.forEach(c => {
+    out += rect(xB, c.y, c.h, c.color);
+    out += txt(xB+nodeW+9, c.y + c.h/2 - 2, c.name, '#f2f2f7', 'start', 11.5, 600);
+    out += txt(xB+nodeW+9, c.y + c.h/2 + 12, c.cv+'k · '+Math.round(c.cv/total*100)+'%', '#606070', 'start', 9.5, 500);
+  });
+  chLayout.forEach(ch => {
+    out += rect(xC, ch.y, ch.h, ch.cat.color, 0.9);
+    out += txt(xC+nodeW+9, ch.y + ch.h/2 - 1, ch.name, '#f2f2f7', 'start', 11, 500);
+    out += txt(xC+nodeW+9, ch.y + ch.h/2 + 12, ch.v+'k', '#606070', 'start', 9.5, 500);
+  });
+
+  svg.innerHTML = out;
 }
 
 function renderFlightChart() {
