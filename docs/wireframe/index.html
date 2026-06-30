@@ -394,15 +394,15 @@ tbody tr:hover td{background:var(--s3);}
   <div class="qa-body">
     <div class="qa-left">
       <h3>📄 Extracted Brief</h3>
-      <div class="brief-item"><div class="brief-item-label">Client / Brand</div><div class="brief-item-val">Lactima</div></div>
-      <div class="brief-item"><div class="brief-item-label">Category</div><div class="brief-item-val">FMCG — Dairy</div></div>
-      <div class="brief-item"><div class="brief-item-label">Budget</div><div class="brief-item-val editable">500 000 PLN</div></div>
-      <div class="brief-item"><div class="brief-item-label">Campaign Period</div><div class="brief-item-val editable">1 Jul – 30 Sep 2026</div></div>
-      <div class="brief-item"><div class="brief-item-label">Target Audience</div><div class="brief-item-val">Women 25–45</div></div>
-      <div class="brief-item"><div class="brief-item-label">Campaign Goal</div><div class="brief-item-val">Brand awareness</div></div>
-      <div class="brief-item"><div class="brief-item-label">KPI</div><div class="brief-item-val editable">Reach 1+ ≥ 60%</div></div>
+      <div class="brief-item"><div class="brief-item-label">Client / Brand</div><div class="brief-item-val editable" onclick="editBrief(this)">Lactima</div></div>
+      <div class="brief-item"><div class="brief-item-label">Category</div><div class="brief-item-val editable" onclick="editBrief(this)">FMCG — Dairy</div></div>
+      <div class="brief-item"><div class="brief-item-label">Budget</div><div class="brief-item-val editable" onclick="editBrief(this)">500 000 PLN</div></div>
+      <div class="brief-item"><div class="brief-item-label">Campaign Period</div><div class="brief-item-val editable" onclick="editBrief(this)">1 Jul – 30 Sep 2026</div></div>
+      <div class="brief-item"><div class="brief-item-label">Target Audience</div><div class="brief-item-val editable" onclick="editBrief(this)">Women 25–45</div></div>
+      <div class="brief-item"><div class="brief-item-label">Campaign Goal</div><div class="brief-item-val editable" onclick="editBrief(this)">Brand awareness</div></div>
+      <div class="brief-item"><div class="brief-item-label">KPI</div><div class="brief-item-val editable" onclick="editBrief(this)">Reach 1+ ≥ 60%</div></div>
       <hr class="divider">
-      <button class="btn-ghost" style="width:100%;font-size:12px;">✏️ Edit brief fields</button>
+      <button class="btn-ghost" style="width:100%;font-size:12px;" onclick="editAllBrief()">✏️ Edit brief fields</button>
     </div>
     <div class="qa-right">
       <div class="qa-top">
@@ -946,6 +946,34 @@ function editParam(el) {
   };
   inp.onblur = done;
   inp.onkeypress = e => { if (e.key === 'Enter') inp.blur(); };
+}
+
+function editBrief(el) {
+  const orig = el.textContent;
+  const cls = el.className;
+  const inp = document.createElement('input');
+  inp.value = orig;
+  inp.style.cssText = 'background:var(--s1);border:1px solid rgba(99,102,241,.4);border-radius:5px;color:var(--t1);font-size:13px;font-weight:500;width:100%;padding:3px 7px;font-family:Inter,sans-serif;';
+  el.replaceWith(inp);
+  inp.focus(); inp.select();
+  const done = () => {
+    const s = document.createElement('div');
+    s.className = cls;
+    s.textContent = inp.value || orig;
+    s.onclick = () => editBrief(s);
+    inp.replaceWith(s);
+  };
+  inp.onblur = done;
+  inp.onkeypress = e => { if (e.key === 'Enter') inp.blur(); };
+}
+
+function editAllBrief() {
+  document.querySelectorAll('#s3 .brief-item-val').forEach(v => {
+    if (!v.classList.contains('editable')) v.classList.add('editable');
+    v.onclick = () => editBrief(v);
+  });
+  const first = document.querySelector('#s3 .brief-item-val.editable');
+  if (first) editBrief(first);
 }
 
 function editPct(el) {
