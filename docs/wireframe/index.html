@@ -5,283 +5,387 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Planning Agent — Media Plan</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#09090b;--s1:#111113;--s2:#18181b;--s3:#202024;
-  --b1:#27272a;--b2:#3f3f46;
-  --t1:#fafafa;--t2:#a1a1aa;--t3:#71717a;
-  --acc:#6366f1;--acc2:#4f46e5;--acc-bg:rgba(99,102,241,.12);
-  --green:#22c55e;--green-bg:rgba(34,197,94,.1);
-  --amber:#f59e0b;--red:#ef4444;
-  --r:8px;--r2:6px;
+  /* lifted charcoal dark palette (governance style) */
+  --bg:#0e0e11;
+  --s1:#151518;
+  --s2:#1b1b1f;
+  --s3:#222228;
+  --s4:#2a2a31;
+  --b1:#2e2e35;
+  --b2:#3c3c44;
+  --b3:#50505a;
+  --t1:#f4f4f5;
+  --t2:#a8a8b2;
+  --t3:#7a7a86;
+  --acc:#6366f1;
+  --acc2:#4f46e5;
+  --acc3:#a5b4fc;
+  --acc-glow:rgba(99,102,241,.18);
+  --acc-bg:rgba(99,102,241,.12);
+  /* input fields — clearly visible */
+  --field:#26262d;
+  --field-border:#42424c;
+  --green:#22c55e;
+  --green-dim:rgba(34,197,94,.12);
+  --amber:#f59e0b;
+  --amber-dim:rgba(245,158,11,.1);
+  --red:#ef4444;
+  --ring:rgba(99,102,241,.55);
+  --mono:'JetBrains Mono',ui-monospace,'SF Mono','Menlo','Consolas',monospace;
+  --r:8px;--r2:6px;--r3:4px;
 }
+/* monospace uppercase micro-labels (governance style) */
+.plan-kicker,.sec-title,.metric-l,.brief-item-label,.param-label,.var-m-label,.kpi-box-title,th,.group-tr td{font-family:var(--mono);}
 html,body{height:100%;overflow:hidden;}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);font-size:13px;line-height:1.5;-webkit-font-smoothing:antialiased;}
 
-/* TOPBAR */
-.topbar{height:48px;background:var(--s1);border-bottom:1px solid var(--b1);display:flex;align-items:center;padding:0 16px;flex-shrink:0;z-index:100;}
-.logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;color:var(--t1);margin-right:20px;text-decoration:none;}
-.logo-icon{width:26px;height:26px;background:var(--acc);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;}
-.steps{display:flex;align-items:center;}
-.step{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:var(--r2);cursor:pointer;color:var(--t3);font-size:12px;font-weight:500;transition:all .15s;}
-.step:hover{color:var(--t2);}
+/* ── TOPBAR ── */
+.topbar{height:52px;background:var(--s1);border-bottom:1px solid var(--b1);display:flex;align-items:center;padding:0 20px;flex-shrink:0;z-index:100;gap:0;}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px;color:var(--t1);margin-right:24px;text-decoration:none;letter-spacing:-.01em;}
+.logo-icon{width:28px;height:28px;background:var(--acc);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 1px 3px rgba(0,0,0,.4);}
+.steps{display:flex;align-items:center;gap:2px;}
+.step{display:flex;align-items:center;gap:7px;padding:5px 13px;border-radius:var(--r2);cursor:pointer;color:var(--t3);font-size:12px;font-weight:500;transition:all .15s;white-space:nowrap;}
+.step:hover{color:var(--t2);background:var(--s3);}
 .step.active{color:var(--t1);background:var(--s3);}
 .step.done{color:var(--green);}
-.step-num{width:18px;height:18px;border-radius:50%;background:var(--b1);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;}
+.step-num{width:20px;height:20px;border-radius:50%;background:var(--b1);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;}
 .step.active .step-num{background:var(--acc);color:#fff;}
-.step.done .step-num{background:var(--green);color:#fff;}
-.chevron{color:var(--b2);margin:0 2px;font-size:11px;}
-.topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
-.avatar{width:28px;height:28px;border-radius:50%;background:var(--acc-bg);border:1px solid var(--acc);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--acc);}
+.step.done .step-num{background:var(--green);color:#fff;font-size:11px;}
+.chevron{color:var(--b2);margin:0 1px;font-size:12px;}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,rgba(99,102,241,.3),rgba(99,102,241,.1));border:1px solid rgba(99,102,241,.35);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--acc3);}
 
-/* SCREENS */
-.screen{display:none;height:calc(100vh - 48px);overflow:hidden;}
+/* ── SCREENS ── */
+.screen{display:none;height:calc(100vh - 52px);overflow:hidden;}
 .screen.active{display:flex;flex-direction:column;}
 #s1{align-items:center;justify-content:center;}
 #s2{align-items:center;justify-content:center;}
 #s3{overflow:hidden;}
 #s4{flex-direction:row;overflow:hidden;}
 
-/* HOME */
-.home-wrap{display:flex;flex-direction:column;align-items:center;gap:24px;max-width:480px;width:100%;padding:0 20px;}
-.home-eyebrow{font-size:11px;font-weight:600;color:var(--acc);letter-spacing:.08em;text-transform:uppercase;background:var(--acc-bg);padding:4px 12px;border-radius:20px;}
-.home-title{font-size:30px;font-weight:800;text-align:center;letter-spacing:-.02em;line-height:1.2;}
-.home-sub{color:var(--t2);text-align:center;font-size:14px;line-height:1.6;}
-.btn-lg{background:var(--acc);color:#fff;border:none;padding:11px 24px;border-radius:var(--r);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .15s;}
-.btn-lg:hover{background:var(--acc2);}
+/* ── HOME ── */
+.home-wrap{display:flex;flex-direction:column;align-items:center;gap:28px;max-width:520px;width:100%;padding:0 24px;}
+.home-eyebrow{font-size:11px;font-weight:600;color:var(--acc3);letter-spacing:.09em;text-transform:uppercase;background:var(--acc-bg);border:1px solid rgba(99,102,241,.2);padding:4px 14px;border-radius:20px;}
+.home-title{font-size:34px;font-weight:800;text-align:center;letter-spacing:-.03em;line-height:1.15;color:var(--t1);}
+.home-sub{color:var(--t2);text-align:center;font-size:15px;line-height:1.65;max-width:400px;}
+.btn-lg{background:var(--acc);color:#fff;border:none;padding:12px 26px;border-radius:var(--r);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:9px;transition:all .2s;box-shadow:0 1px 2px rgba(0,0,0,.3);letter-spacing:-.01em;}
+.btn-lg:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(99,102,241,.45);}
 .recent-card{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);width:100%;overflow:hidden;}
-.recent-header{padding:12px 16px;border-bottom:1px solid var(--b1);font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;}
-.recent-row{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--b1);cursor:pointer;transition:background .1s;}
+.recent-header{padding:13px 18px;border-bottom:1px solid var(--b1);font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;}
+.recent-row{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid var(--b1);cursor:pointer;transition:background .1s;}
 .recent-row:last-child{border-bottom:none;}
 .recent-row:hover{background:var(--s3);}
-.recent-name{font-weight:500;font-size:13px;}
-.recent-meta{font-size:11px;color:var(--t3);margin-top:1px;}
-.badge{padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;}
-.badge-green{background:var(--green-bg);color:var(--green);}
-.badge-blue{background:var(--acc-bg);color:var(--acc);}
+.recent-name{font-weight:600;font-size:13px;letter-spacing:-.01em;}
+.recent-meta{font-size:11px;color:var(--t3);margin-top:2px;}
+.badge{padding:3px 9px;border-radius:5px;font-size:10px;font-weight:700;letter-spacing:.03em;}
+.badge-green{background:var(--green-dim);color:var(--green);border:1px solid rgba(34,197,94,.2);}
+.badge-blue{background:var(--acc-bg);color:var(--acc3);border:1px solid rgba(99,102,241,.2);}
 
-/* UPLOAD */
-.upload-card{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:28px 32px;width:520px;}
-.card-title{font-size:17px;font-weight:700;margin-bottom:4px;letter-spacing:-.01em;}
-.card-sub{color:var(--t2);font-size:13px;margin-bottom:20px;}
-.dropzone{border:2px dashed var(--b1);border-radius:var(--r);padding:36px 20px;text-align:center;cursor:pointer;transition:all .2s;background:var(--s1);}
+/* ── UPLOAD ── */
+.upload-card{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:32px 36px;width:540px;}
+.card-title{font-size:18px;font-weight:800;margin-bottom:5px;letter-spacing:-.02em;}
+.card-sub{color:var(--t2);font-size:13px;margin-bottom:22px;line-height:1.55;}
+.dropzone{border:2px dashed var(--b2);border-radius:var(--r);padding:40px 20px;text-align:center;cursor:pointer;transition:all .2s;background:var(--s1);}
 .dropzone:hover{border-color:var(--acc);background:var(--acc-bg);}
-.dz-icon{font-size:28px;margin-bottom:8px;}
+.dz-icon{font-size:32px;margin-bottom:10px;}
 .dz-text{font-size:13px;color:var(--t2);}
-.dz-text span{color:var(--acc);font-weight:600;}
-.dz-hint{font-size:11px;color:var(--t3);margin-top:4px;}
-.field-label{font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;margin-top:16px;display:block;}
-.textarea{width:100%;background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);color:var(--t1);padding:10px 12px;font-size:13px;font-family:'Inter',sans-serif;resize:vertical;min-height:78px;transition:border-color .15s;}
+.dz-text span{color:var(--acc3);font-weight:600;}
+.dz-hint{font-size:11px;color:var(--t3);margin-top:5px;}
+.field-label{font-size:11px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px;margin-top:18px;display:block;}
+.textarea{width:100%;background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);color:var(--t1);padding:11px 14px;font-size:13px;font-family:'Inter',sans-serif;resize:vertical;min-height:80px;transition:border-color .15s;line-height:1.5;}
 .textarea:focus{outline:none;border-color:var(--acc);}
 .textarea::placeholder{color:var(--t3);}
-.btn-primary{background:var(--acc);color:#fff;border:none;padding:10px 20px;border-radius:var(--r2);font-size:13px;font-weight:600;cursor:pointer;transition:background .15s;display:flex;align-items:center;gap:6px;}
-.btn-primary:hover{background:var(--acc2);}
+.btn-primary{background:var(--acc);color:#fff;border:none;padding:10px 20px;border-radius:var(--r2);font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:6px;box-shadow:0 1px 2px rgba(0,0,0,.3);}
+.btn-primary:hover{box-shadow:0 4px 14px rgba(99,102,241,.4);transform:translateY(-1px);}
 .btn-ghost{background:transparent;color:var(--t2);border:1px solid var(--b1);padding:10px 20px;border-radius:var(--r2);font-size:13px;cursor:pointer;transition:all .15s;}
 .btn-ghost:hover{border-color:var(--b2);color:var(--t1);}
-.row-btns{display:flex;gap:8px;margin-top:16px;}
+.row-btns{display:flex;gap:8px;margin-top:18px;}
 
-/* Q&A */
+/* ── Q&A ── */
 .qa-body{flex:1;display:flex;overflow:hidden;}
-.qa-left{width:280px;flex-shrink:0;background:var(--s2);border-right:1px solid var(--b1);overflow-y:auto;padding:16px;}
-.qa-left h3{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;}
-.brief-item{margin-bottom:10px;}
-.brief-item-label{font-size:10px;color:var(--t3);margin-bottom:3px;}
+.qa-left{width:290px;flex-shrink:0;background:var(--s2);border-right:1px solid var(--b1);overflow-y:auto;padding:20px;}
+.qa-left h3{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.09em;margin-bottom:14px;}
+.brief-item{margin-bottom:13px;}
+.brief-item-label{font-size:10px;color:var(--t3);margin-bottom:3px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;}
 .brief-item-val{font-size:13px;font-weight:500;color:var(--t1);}
-.brief-item-val.editable{border-bottom:1px dashed var(--b2);cursor:pointer;display:inline-block;}
-.brief-item-val.editable:hover{border-color:var(--acc);color:var(--acc);}
-.divider{border:none;border-top:1px solid var(--b1);margin:12px 0;}
+.brief-item-val.editable{background:var(--field);border:1px solid var(--field-border);border-radius:var(--r3);padding:6px 10px;cursor:text;display:block;transition:all .15s;}
+.brief-item-val.editable:hover{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-glow);}
+.divider{border:none;border-top:1px solid var(--b1);margin:14px 0;}
 .qa-right{flex:1;display:flex;flex-direction:column;background:var(--s1);}
-.qa-top{padding:16px 20px;border-bottom:1px solid var(--b1);}
-.qa-top-title{font-size:15px;font-weight:700;letter-spacing:-.01em;}
-.qa-top-sub{font-size:12px;color:var(--t2);margin-top:2px;}
-.chat-msgs{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:12px;}
-.msg{display:flex;flex-direction:column;max-width:72%;}
+.qa-top{padding:18px 22px;border-bottom:1px solid var(--b1);}
+.qa-top-title{font-size:16px;font-weight:800;letter-spacing:-.02em;}
+.qa-top-sub{font-size:12px;color:var(--t2);margin-top:3px;}
+.chat-msgs{flex:1;overflow-y:auto;padding:18px 22px;display:flex;flex-direction:column;gap:13px;}
+.msg{display:flex;flex-direction:column;max-width:74%;}
 .msg.ai{align-self:flex-start;}
 .msg.user{align-self:flex-end;}
-.msg-label{font-size:10px;color:var(--t3);margin-bottom:4px;font-weight:500;}
+.msg-label{font-size:10px;color:var(--t3);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;}
 .msg.user .msg-label{text-align:right;}
-.msg-bubble{padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.55;}
+.msg-bubble{padding:11px 15px;border-radius:12px;font-size:13px;line-height:1.6;}
 .msg.ai .msg-bubble{background:var(--s3);border:1px solid var(--b1);}
 .msg.user .msg-bubble{background:var(--acc);color:#fff;}
-.typing{display:flex;align-items:center;gap:5px;padding:10px 14px;background:var(--s3);border:1px solid var(--b1);border-radius:10px;width:52px;}
+.typing{display:flex;align-items:center;gap:5px;padding:11px 15px;background:var(--s3);border:1px solid var(--b1);border-radius:12px;width:54px;}
 .dot{width:5px;height:5px;border-radius:50%;background:var(--t3);animation:pulse 1.4s ease infinite;}
 .dot:nth-child(2){animation-delay:.2s;}.dot:nth-child(3){animation-delay:.4s;}
-@keyframes pulse{0%,80%,100%{opacity:.4;transform:scale(.8);}40%{opacity:1;transform:scale(1.1);}}
-.chat-input-row{padding:12px 20px;border-top:1px solid var(--b1);display:flex;gap:8px;background:var(--s1);}
-.chat-input{flex:1;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);color:var(--t1);padding:9px 14px;font-size:13px;font-family:'Inter',sans-serif;transition:border-color .15s;}
+@keyframes pulse{0%,80%,100%{opacity:.3;transform:scale(.8);}40%{opacity:1;transform:scale(1.15);}}
+.chat-input-row{padding:14px 22px;border-top:1px solid var(--b1);display:flex;gap:9px;background:var(--s1);}
+.chat-input{flex:1;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);color:var(--t1);padding:10px 14px;font-size:13px;font-family:'Inter',sans-serif;transition:border-color .15s;}
 .chat-input:focus{outline:none;border-color:var(--acc);}
 .chat-input::placeholder{color:var(--t3);}
-.btn-send{background:var(--acc);color:#fff;border:none;border-radius:var(--r2);padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0;}
-.btn-send:hover{background:var(--acc2);}
-.qa-footer{padding:12px 20px;border-top:1px solid var(--b1);display:flex;justify-content:flex-end;gap:8px;background:var(--s2);}
+.btn-send{background:var(--acc);color:#fff;border:none;border-radius:var(--r2);padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0;}
+.btn-send:hover{filter:brightness(1.08);}
+.qa-footer{padding:14px 22px;border-top:1px solid var(--b1);display:flex;justify-content:flex-end;align-items:center;gap:9px;background:var(--s2);}
 
-/* PLAN LAYOUT */
+/* ── CLARIFICATION WIZARD ── */
+.wiz-progress{height:4px;background:var(--s3);border-radius:3px;overflow:hidden;margin-bottom:16px;}
+.wiz-progress-bar{height:100%;background:linear-gradient(90deg,#6366f1,#818cf8);border-radius:3px;width:11%;transition:width .35s cubic-bezier(.4,0,.2,1);}
+.wiz-top-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px;}
+.wiz-count{font-size:11px;font-weight:700;color:var(--acc3);text-transform:uppercase;letter-spacing:.06em;flex-shrink:0;}
+.wiz-body{flex:1;overflow-y:auto;padding:36px 40px;display:flex;flex-direction:column;}
+.wiz-card{max-width:560px;width:100%;margin:auto 0;animation:wizIn .3s ease;}
+@keyframes wizIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+.wiz-kicker{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;}
+.wiz-q{font-size:23px;font-weight:800;letter-spacing:-.025em;line-height:1.3;color:var(--t1);margin-bottom:8px;}
+.wiz-hint{font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:26px;}
+.wiz-opts{display:flex;flex-direction:column;gap:10px;}
+.wiz-opts.row{flex-direction:row;flex-wrap:wrap;}
+.wiz-opt{display:flex;align-items:center;gap:11px;padding:14px 16px;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);cursor:pointer;font-size:14px;color:var(--t1);font-weight:500;transition:all .15s;text-align:left;}
+.wiz-opt:hover{border-color:var(--b3);background:var(--s3);}
+.wiz-opt.sel{border-color:var(--acc);background:var(--acc-bg);box-shadow:0 0 0 1px var(--acc) inset;}
+.wiz-opts.row .wiz-opt{flex:0 0 auto;padding:11px 18px;}
+.wiz-check{width:18px;height:18px;border-radius:50%;border:2px solid var(--b3);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.wiz-opt.sel .wiz-check{border-color:var(--acc);background:var(--acc);}
+.wiz-opt.sel .wiz-check::after{content:'';width:6px;height:6px;border-radius:50%;background:#fff;}
+.wiz-input{width:100%;background:var(--field);border:1px solid var(--field-border);border-radius:var(--r);color:var(--t1);padding:14px 16px;font-size:14px;font-family:'Inter',sans-serif;line-height:1.6;resize:vertical;min-height:96px;transition:border-color .15s;}
+.wiz-input:focus{outline:none;border-color:var(--acc);}
+.wiz-input::placeholder{color:var(--t3);}
+.wiz-suggest{margin-top:10px;font-size:12px;color:var(--t3);}
+.wiz-suggest b{color:var(--acc3);cursor:pointer;font-weight:600;}
+
+/* ── PLAN LAYOUT ── */
 .plan-left{flex:1;overflow-y:auto;background:var(--bg);}
-.plan-content{padding:20px 24px;max-width:920px;}
-.plan-right{width:340px;flex-shrink:0;background:var(--s1);border-left:1px solid var(--b1);display:flex;flex-direction:column;overflow:hidden;height:100%;}
+.plan-content{padding:24px 32px;max-width:none;width:100%;}
+.plan-right{width:348px;flex-shrink:0;background:var(--s1);border-left:1px solid var(--b1);display:flex;flex-direction:column;overflow:hidden;height:100%;}
 
-/* PLAN HEADER */
-.plan-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid var(--b1);}
-.plan-kicker{font-size:10px;font-weight:600;color:var(--acc);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;}
-.plan-title{font-size:20px;font-weight:800;letter-spacing:-.02em;line-height:1.2;}
-.plan-meta{font-size:11px;color:var(--t3);margin-top:4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-.plan-meta-dot{width:4px;height:4px;border-radius:50%;background:var(--b2);}
-.plan-actions{display:flex;gap:6px;flex-shrink:0;margin-top:2px;}
-.btn-sm{background:var(--s2);border:1px solid var(--b1);color:var(--t1);padding:6px 12px;border-radius:var(--r2);font-size:12px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .15s;}
-.btn-sm:hover{border-color:var(--b2);background:var(--s3);}
+/* ── PLAN HEADER ── */
+.plan-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px;padding-bottom:20px;border-bottom:1px solid var(--b1);}
+.plan-kicker{font-size:10px;font-weight:700;color:var(--acc3);text-transform:uppercase;letter-spacing:.09em;margin-bottom:5px;}
+.plan-title{font-size:22px;font-weight:800;letter-spacing:-.03em;line-height:1.2;}
+.plan-meta{font-size:11px;color:var(--t3);margin-top:5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.plan-meta-dot{width:3px;height:3px;border-radius:50%;background:var(--b3);}
+.plan-actions{display:flex;gap:7px;flex-shrink:0;margin-top:3px;}
+.btn-sm{background:var(--s2);border:1px solid var(--b1);color:var(--t2);padding:7px 13px;border-radius:var(--r2);font-size:12px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .15s;white-space:nowrap;}
+.btn-sm:hover{border-color:var(--b2);color:var(--t1);background:var(--s3);}
 
-/* SCENARIO CARDS */
-.variants-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
-.var-card{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:14px;cursor:pointer;transition:all .15s;position:relative;}
+/* ── SCENARIO CARDS ── */
+.variants-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px;}
+.var-card{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:18px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+.var-card::before{content:'';position:absolute;inset:0;border-radius:var(--r);opacity:0;transition:opacity .2s;background:radial-gradient(ellipse at top left,rgba(99,102,241,.08),transparent 70%);}
 .var-card:hover{border-color:var(--b2);}
-.var-card.sel{border-color:var(--acc);background:rgba(99,102,241,.07);}
-.var-rec{position:absolute;top:-8px;right:10px;background:var(--green);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;text-transform:uppercase;letter-spacing:.04em;}
-.var-kpi-lbl{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
-.var-name{font-size:13px;font-weight:700;margin-bottom:8px;color:var(--t1);}
-.var-hero{font-size:22px;font-weight:800;color:var(--acc);letter-spacing:-.02em;line-height:1;}
-.var-hero-sub{font-size:10px;color:var(--t2);margin-top:2px;margin-bottom:8px;}
-.var-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
-.var-m-label{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.04em;}
-.var-m-val{font-size:12px;font-weight:700;}
+.var-card:hover::before{opacity:1;}
+.var-card.sel{border-color:rgba(99,102,241,.5);background:rgba(99,102,241,.05);}
+.var-card.sel::before{opacity:1;background:radial-gradient(ellipse at top left,rgba(99,102,241,.12),transparent 70%);}
+.var-rec{position:absolute;top:-1px;right:-1px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-size:9px;font-weight:700;padding:3px 10px;border-radius:0 var(--r) 0 var(--r);text-transform:uppercase;letter-spacing:.05em;}
+.var-kpi-lbl{font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;}
+.var-name{font-size:14px;font-weight:700;margin-bottom:14px;color:var(--t1);letter-spacing:-.01em;}
+.var-hero{font-size:30px;font-weight:900;color:var(--acc3);letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums;}
+.var-hero-sub{font-size:10px;color:var(--t3);margin-top:4px;margin-bottom:14px;}
+.var-divider{height:1px;background:var(--b1);margin-bottom:12px;}
+.var-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.var-m{background:var(--s1);border-radius:var(--r3);padding:7px 9px;}
+.var-m-label{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px;}
+.var-m-val{font-size:13px;font-weight:700;color:var(--t1);font-variant-numeric:tabular-nums;}
 
-/* SECTIONS */
-.section{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:14px 16px;margin-bottom:12px;}
-.sec-title{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
-.sec-title-left{display:flex;align-items:center;gap:6px;}
-.sec-dot{width:5px;height:5px;border-radius:50%;background:var(--acc);flex-shrink:0;}
-.ai-tag{font-size:9px;font-weight:600;color:var(--acc);background:var(--acc-bg);padding:2px 7px;border-radius:4px;}
-.live-tag{font-size:9px;font-weight:600;color:var(--green);}
+/* ── SECTION ── */
+.section{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:18px 20px;margin-bottom:14px;}
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.sec-title{font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.08em;display:flex;align-items:center;gap:7px;}
+.sec-dot{width:6px;height:6px;border-radius:50%;background:var(--acc);flex-shrink:0;}
+.sec-tag{font-size:9px;font-weight:700;color:var(--acc3);background:var(--acc-bg);border:1px solid rgba(99,102,241,.2);padding:3px 8px;border-radius:4px;}
+.live-tag{font-size:9px;font-weight:700;color:var(--green);display:flex;align-items:center;gap:4px;}
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:livepulse 2s ease infinite;}
+@keyframes livepulse{0%,100%{opacity:1;}50%{opacity:.4;}}
 
-/* CAMPAIGN PARAMS */
-.param-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-.param-item{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:9px 11px;}
-.param-label{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:4px;}
-.param-val{font-size:12px;font-weight:500;color:var(--t1);cursor:pointer;border-bottom:1px dashed transparent;display:inline-block;}
-.param-val:hover{border-bottom-color:var(--b2);color:var(--acc);}
-
-/* PILLS */
-.pill-row{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;}
-.pill{padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600;background:var(--s2);border:1px solid var(--b1);color:var(--t3);cursor:pointer;transition:all .1s;}
+/* ── CAMPAIGN PARAMS ── */
+.param-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.param-item{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:11px 14px;}
+.param-label{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-bottom:5px;}
+.param-val{font-size:13px;font-weight:500;color:var(--t1);cursor:text;background:var(--field);border:1px solid var(--field-border);border-radius:var(--r3);padding:4px 10px;display:inline-block;transition:all .15s;}
+.param-val:hover{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-glow);}
+.pill-row{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px;}
+.pill{padding:3px 9px;border-radius:5px;font-size:10px;font-weight:600;background:var(--s2);border:1px solid var(--b1);color:var(--t3);cursor:pointer;transition:all .1s;letter-spacing:.02em;}
 .pill:hover{border-color:var(--b2);color:var(--t2);}
-.pill.active{background:var(--acc-bg);border-color:var(--acc);color:var(--acc);}
+.pill.active{background:var(--acc-bg);border-color:rgba(99,102,241,.4);color:var(--acc3);}
 
-/* METRICS */
-.metrics-g{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
-.metric{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:10px 12px;}
-.metric-l{font-size:10px;color:var(--t3);margin-bottom:4px;}
-.metric-v{font-size:17px;font-weight:700;letter-spacing:-.01em;}
-.metric-v.editable{cursor:pointer;border-bottom:1px dashed var(--b2);}
-.metric-v.editable:hover{color:var(--acc);border-color:var(--acc);}
-.metric-sub{font-size:10px;color:var(--t3);margin-top:2px;}
+/* ── METRICS GRID ── */
+.metrics-g{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;}
+.metric{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:12px 14px;}
+.metric-l{font-size:10px;color:var(--t3);margin-bottom:5px;font-weight:500;}
+.metric-v{font-size:18px;font-weight:800;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums;}
+.metric-v.editable{cursor:text;background:var(--field);border:1px solid var(--field-border);border-radius:var(--r3);padding:3px 9px;display:inline-block;transition:all .15s;}
+.metric-v.editable:hover{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-glow);}
+.metric-sub{font-size:10px;color:var(--t3);margin-top:5px;}
 
-/* BUDGET BARS */
-.alloc-wrap{display:flex;gap:20px;align-items:flex-start;}
-.alloc-bars{flex:1;}
-.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
-.bar-lbl{width:88px;font-size:11px;color:var(--t2);text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.bar-track{flex:1;background:var(--s1);border-radius:3px;height:16px;overflow:hidden;}
-.bar-fill{height:100%;border-radius:3px;display:flex;align-items:center;padding-left:7px;font-size:10px;font-weight:600;color:rgba(255,255,255,.9);white-space:nowrap;transition:width .5s cubic-bezier(.4,0,.2,1);}
-.bar-pct{width:36px;font-size:11px;color:var(--t2);text-align:right;flex-shrink:0;cursor:pointer;}
-.bar-pct:hover{color:var(--acc);}
-.pie-wrap{flex-shrink:0;width:110px;display:flex;flex-direction:column;align-items:center;gap:10px;}
-.pie-legend{display:flex;flex-direction:column;gap:4px;width:100%;}
-.pie-li{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--t2);}
-.pie-li-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+/* ── BUDGET BARS ── */
+.alloc-wrap{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch;}
+@media(max-width:1100px){.alloc-wrap{grid-template-columns:1fr;}}
+.alloc-card{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:20px 22px;}
+.alloc-card-head{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:18px;letter-spacing:-.01em;}
+.alloc-bars{display:flex;flex-direction:column;gap:13px;}
+.bar-row{display:flex;align-items:center;gap:12px;}
+.bar-lbl{width:104px;font-size:12px;color:var(--t1);text-align:left;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;}
+.bar-track{flex:1;background:var(--s1);border-radius:5px;height:9px;overflow:hidden;cursor:pointer;}
+.bar-track:hover .bar-fill{filter:brightness(1.15);}
+.bar-fill{height:100%;border-radius:5px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+.bar-pct{min-width:52px;font-size:13px;color:var(--t1);text-align:center;flex-shrink:0;cursor:text;font-weight:600;font-variant-numeric:tabular-nums;background:var(--field);border:1px solid var(--field-border);border-radius:var(--r3);padding:3px 6px;transition:all .15s;}
+.bar-pct:hover{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-glow);}
+.bar-pct-ro{min-width:44px;font-size:13px;color:var(--t1);text-align:right;flex-shrink:0;font-weight:600;font-variant-numeric:tabular-nums;}
+.pie-wrap{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:32px;height:100%;}
+.pie-svg-wrap{position:relative;flex-shrink:0;}
+.pie-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+.pie-center-val{font-size:22px;font-weight:800;color:var(--t1);letter-spacing:-.02em;}
+.pie-center-lbl{font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
+.pie-legend{display:flex;flex-direction:column;gap:9px;}
+.pie-li{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--t1);font-weight:500;}
+.pie-li-dot{width:9px;height:9px;border-radius:3px;flex-shrink:0;}
+.pie-li-pct{margin-left:auto;color:var(--t2);font-variant-numeric:tabular-nums;font-weight:600;}
 
-/* CURVE BADGES */
-.curve-cell{display:flex;align-items:center;gap:4px;flex-wrap:nowrap;}
-.cb{display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;}
-.cb-default{background:rgba(113,113,122,.2);color:#a1a1aa;}
-.cb-client{background:rgba(99,102,241,.15);color:#818cf8;}
-.cb-custom{background:rgba(34,197,94,.15);color:#4ade80;}
-.why-btn{width:14px;height:14px;border-radius:50%;background:var(--b1);color:var(--t3);font-size:9px;cursor:pointer;border:none;display:inline-flex;align-items:center;justify-content:center;transition:all .1s;flex-shrink:0;line-height:1;}
-.why-btn:hover{background:var(--acc-bg);color:var(--acc);}
-.upload-btn{font-size:9px;color:var(--t3);background:transparent;border:1px solid var(--b1);border-radius:3px;cursor:pointer;padding:2px 6px;white-space:nowrap;transition:all .1s;}
-.upload-btn:hover{border-color:var(--acc);color:var(--acc);}
+/* ── CURVE BADGES ── */
+.curve-cell{display:flex;align-items:center;gap:5px;flex-wrap:nowrap;}
+.cb{display:inline-flex;align-items:center;padding:3px 8px;border-radius:5px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;}
+.cb-default{background:rgba(96,96,112,.18);color:#8888a0;border:1px solid rgba(96,96,112,.25);}
+.cb-client{background:rgba(99,102,241,.14);color:#818cf8;border:1px solid rgba(99,102,241,.25);}
+.cb-custom{background:rgba(34,197,94,.12);color:#4ade80;border:1px solid rgba(34,197,94,.25);}
+.why-btn{width:16px;height:16px;border-radius:50%;background:var(--s3);border:1px solid var(--b1);color:var(--t3);font-size:9px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all .1s;flex-shrink:0;line-height:1;}
+.why-btn:hover{background:var(--acc-bg);border-color:rgba(99,102,241,.3);color:var(--acc3);}
+.upload-btn{font-size:9px;color:var(--t3);background:var(--s3);border:1px solid var(--b1);border-radius:4px;cursor:pointer;padding:2px 7px;white-space:nowrap;transition:all .1s;font-weight:600;}
+.upload-btn:hover{border-color:rgba(99,102,241,.3);color:var(--acc3);background:var(--acc-bg);}
 
-/* TOOLTIP */
-#tooltip{position:fixed;background:var(--s3);border:1px solid var(--acc);border-radius:var(--r);padding:10px 13px;font-size:11.5px;line-height:1.6;color:var(--t2);max-width:240px;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.5);pointer-events:none;display:none;}
+/* ── TOOLTIP ── */
+#tooltip{position:fixed;background:var(--s3);border:1px solid rgba(99,102,241,.3);border-radius:var(--r);padding:12px 14px;font-size:12px;line-height:1.65;color:var(--t2);max-width:248px;z-index:9999;box-shadow:0 12px 32px rgba(0,0,0,.6);pointer-events:none;display:none;}
 #tooltip.show{display:block;}
 
-/* TABLE */
+/* ── TABLE ── */
 .tbl-wrap{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;font-size:12px;}
-th{text-align:left;padding:6px 8px;color:var(--t3);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--b1);white-space:nowrap;}
-td{padding:7px 8px;border-bottom:1px solid rgba(39,39,42,.6);vertical-align:middle;}
-tr:last-child td{border-bottom:none;}
+th{text-align:left;padding:7px 10px;color:var(--t3);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--b1);white-space:nowrap;}
+td{padding:9px 10px;border-bottom:1px solid rgba(42,42,50,.8);vertical-align:middle;}
+tbody tr:last-child td{border-bottom:none;}
 tbody tr:hover td{background:var(--s3);}
-.group-tr td{background:var(--s1);color:var(--t3);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:5px 8px;}
-.ch-name{display:flex;align-items:center;gap:7px;font-weight:600;}
-.ch-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
-.cell-edit{cursor:pointer;border-bottom:1px dashed transparent;}
-.cell-edit:hover{border-color:var(--acc);color:var(--acc);}
-.bud-hi{font-weight:700;color:var(--acc);}
-.mbadge{padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700;text-transform:uppercase;}
-.mb-grp{background:rgba(168,85,247,.15);color:#a855f7;}
-.mb-cpm{background:var(--acc-bg);color:var(--acc);}
-.mb-cpp{background:rgba(245,158,11,.12);color:var(--amber);}
-.tbl-total td{background:var(--s3);font-weight:700;}
-.cin{background:var(--s1);border:1px solid var(--b1);border-radius:3px;color:var(--t3);font-size:10px;width:58px;padding:3px 5px;text-align:center;font-family:'Inter',sans-serif;}
-.cin:focus{outline:none;border-color:var(--acc);color:var(--t1);}
+.group-tr td{background:var(--s3);color:var(--t2);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:7px 10px;}
+.ch-name{display:flex;align-items:center;gap:8px;font-weight:600;letter-spacing:-.01em;}
+.ch-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.ch-del{margin-left:auto;width:18px;height:18px;border-radius:5px;background:transparent;border:1px solid transparent;color:var(--t3);font-size:13px;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;opacity:0;transition:all .12s;flex-shrink:0;}
+tr:hover .ch-del{opacity:1;}
+.ch-del:hover{background:rgba(239,68,68,.14);border-color:rgba(239,68,68,.35);color:#f87171;}
+/* add-channel picker */
+.addch-wrap{position:relative;margin-top:12px;display:inline-block;}
+.addch-btn{background:var(--field);border:1px dashed var(--field-border);color:var(--t2);padding:8px 15px;border-radius:var(--r2);font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:7px;transition:all .15s;}
+.addch-btn:hover{border-color:var(--acc);color:var(--t1);border-style:solid;}
+.addch-menu{position:absolute;bottom:calc(100% + 6px);left:0;width:280px;max-height:340px;overflow-y:auto;background:var(--s2);border:1px solid var(--b2);border-radius:var(--r);box-shadow:0 16px 40px rgba(0,0,0,.5);padding:6px;z-index:200;display:none;}
+.addch-menu.open{display:block;}
+.addch-search{width:100%;background:var(--field);border:1px solid var(--field-border);border-radius:var(--r3);color:var(--t1);font-size:12px;padding:8px 10px;margin-bottom:6px;font-family:'Inter',sans-serif;}
+.addch-search:focus{outline:none;border-color:var(--acc);}
+.addch-item{padding:8px 11px;border-radius:var(--r3);font-size:13px;color:var(--t1);cursor:pointer;transition:all .1s;display:flex;align-items:center;gap:9px;}
+.addch-item:hover{background:var(--acc-bg);}
+.addch-item .ch-dot{width:9px;height:9px;}
+.cell-edit{cursor:text;background:var(--field);border:1px solid var(--field-border);border-radius:var(--r3);padding:3px 9px;display:inline-block;transition:all .1s;}
+.cell-edit:hover{border-color:var(--acc);color:var(--t1);box-shadow:0 0 0 3px var(--acc-glow);}
+.cell-edit:focus{outline:none;border-color:var(--acc);color:var(--t1);box-shadow:0 0 0 3px var(--acc-glow);}
+.bud-hi{font-weight:700;color:var(--t1);font-variant-numeric:tabular-nums;}
+.mbadge{padding:3px 8px;border-radius:4px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;}
+.mb-grp{background:rgba(168,85,247,.14);color:#c084fc;border:1px solid rgba(168,85,247,.2);}
+.mb-cpm{background:var(--acc-bg);color:var(--acc3);border:1px solid rgba(99,102,241,.2);}
+.mb-cpp{background:rgba(245,158,11,.1);color:var(--amber);border:1px solid rgba(245,158,11,.2);}
+.tbl-total td{background:var(--s3);font-weight:700;border-top:1px solid var(--b1);}
+.cin{background:var(--field);border:1px solid var(--field-border);border-radius:var(--r3);color:var(--t1);font-size:11px;width:64px;padding:4px 6px;text-align:center;font-family:'Inter',sans-serif;transition:all .1s;font-variant-numeric:tabular-nums;}
+.cin:focus{outline:none;border-color:rgba(99,102,241,.4);color:var(--t1);}
 
-/* COLORS */
+/* ── COLORS ── */
 .c1{background:#6366f1;}.c2{background:#06b6d4;}.c3{background:#f59e0b;}
 .c4{background:#22c55e;}.c5{background:#ec4899;}.c6{background:#8b5cf6;}.c7{background:#ef4444;}
 
-/* FLIGHTING */
-.flight-chart-box{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:12px;margin-bottom:10px;}
+/* ── FLIGHTING ── */
+.sankey-box{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:18px 24px;width:100%;}
+.sankey-box svg{display:block;width:100%;height:600px;}
+.sk-link{transition:opacity .15s;}
+.sk-link:hover{opacity:.9 !important;}
+.sankey-tabs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.sk-tab{background:var(--s2);border:1px solid var(--b1);color:var(--t2);padding:6px 14px;border-radius:999px;font-size:12px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;transition:all .15s;}
+.sk-tab:hover{border-color:var(--b3);color:var(--t1);}
+.sk-tab.active{border-color:var(--acc);color:var(--t1);background:var(--acc-bg);}
+.sankey-legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;justify-content:center;}
+.sk-lg{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--t2);font-weight:500;}
+.sk-lg-dot{width:11px;height:11px;border-radius:3px;flex-shrink:0;}
+.flight-chart-box{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:14px;margin-bottom:12px;}
+.fl-chart{display:flex;align-items:flex-end;gap:6px;height:230px;padding-top:24px;}
+.fl-col{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;min-width:0;}
+.fl-stack{width:100%;max-width:46px;display:flex;flex-direction:column;justify-content:flex-end;flex:1;border-radius:5px;overflow:hidden;position:relative;transition:filter .15s;}
+.fl-col:hover .fl-stack{filter:brightness(1.12);}
+.fl-seg{width:100%;transition:height .5s cubic-bezier(.4,0,.2,1);}
+.fl-total{font-size:11px;font-weight:700;color:var(--t1);margin-bottom:6px;font-variant-numeric:tabular-nums;white-space:nowrap;}
+.fl-col.boost .fl-total{color:var(--amber);}
+.fl-wk{font-size:10px;color:var(--t3);font-weight:600;margin-top:8px;letter-spacing:.02em;}
+.fl-col.boost .fl-wk{color:var(--amber);}
+.flight-legend{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap;}
+.flight-legend-item{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--t3);font-weight:500;}
+.flight-legend-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
 .flight-grid-wrap{overflow-x:auto;}
-.fg{border-collapse:collapse;font-size:11px;min-width:680px;width:100%;}
-.fg th{padding:4px 5px;color:var(--t3);font-size:9px;font-weight:600;text-transform:uppercase;border-bottom:1px solid var(--b1);text-align:center;white-space:nowrap;}
-.fg th:first-child{text-align:left;min-width:86px;}
+.fg{border-collapse:collapse;font-size:11px;min-width:700px;width:100%;}
+.fg th{padding:5px 6px;color:var(--t3);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--b1);text-align:center;white-space:nowrap;}
+.fg th:first-child{text-align:left;min-width:90px;}
 .fg th:last-child{text-align:right;}
-.fg td{padding:4px 5px;border-bottom:1px solid rgba(39,39,42,.5);text-align:center;font-size:11px;font-variant-numeric:tabular-nums;}
-.fg td:first-child{text-align:left;font-weight:600;}
-.fg td:last-child{text-align:right;font-weight:700;color:var(--acc);}
+.fg td{padding:5px 6px;border-bottom:1px solid rgba(42,42,50,.6);text-align:center;font-size:11px;font-variant-numeric:tabular-nums;}
+.fg td:first-child{text-align:left;font-weight:600;letter-spacing:-.01em;}
+.fg td:last-child{text-align:right;font-weight:700;color:var(--acc3);}
 .fg tbody tr:hover td{background:var(--s3);}
-.fg-total td{background:var(--s2);font-weight:700;border-top:1px solid var(--b1);}
-.fc{cursor:pointer;padding:1px 3px;border-radius:2px;border:1px solid transparent;min-width:28px;display:inline-block;transition:border-color .1s;}
-.fc:hover{border-color:var(--acc);color:var(--acc);}
+.fg-total td{background:var(--s3);font-weight:700;border-top:1px solid var(--b1);}
+.fc{cursor:text;padding:3px 6px;border-radius:var(--r3);border:1px solid var(--field-border);background:var(--field);min-width:32px;display:inline-block;transition:all .1s;}
+.fc:hover,.fc:focus{border-color:var(--acc);color:var(--t1);box-shadow:0 0 0 2px var(--acc-glow);outline:none;}
 
-/* KPI FORECAST */
-.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
-.kpi-box{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:12px;}
-.kpi-box-title{font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;}
-.kpi-box-val{font-size:20px;font-weight:800;letter-spacing:-.02em;line-height:1.1;}
-.kpi-box-sub{font-size:10px;color:var(--t2);margin-bottom:8px;}
+/* ── KPI FORECAST ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.kpi-box{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:16px;}
+.kpi-box-title{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px;}
+.kpi-box-val{font-size:26px;font-weight:900;letter-spacing:-.04em;line-height:1.05;font-variant-numeric:tabular-nums;}
+.kpi-box-sub{font-size:10px;color:var(--t3);margin-bottom:12px;margin-top:2px;}
 
-/* RIGHT CHAT */
-.chat-panel-header{padding:14px 16px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.chat-panel-title{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;}
-.online-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 2px rgba(34,197,94,.2);}
+/* ── CHAT PANEL ── */
+.chat-panel-header{padding:16px 18px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.chat-panel-title{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;letter-spacing:-.01em;}
+.online-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px rgba(34,197,94,.18);}
 .chat-panel-sub{font-size:10px;color:var(--t3);margin-top:2px;}
-.chat-panel-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;}
-.p-msg{display:flex;flex-direction:column;max-width:90%;}
+.chat-panel-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;}
+.p-msg{display:flex;flex-direction:column;max-width:92%;}
 .p-msg.ai{align-self:flex-start;}
 .p-msg.user{align-self:flex-end;}
-.p-msg-lbl{font-size:10px;color:var(--t3);margin-bottom:3px;font-weight:500;}
+.p-msg-lbl{font-size:9px;color:var(--t3);margin-bottom:4px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;}
 .p-msg.user .p-msg-lbl{text-align:right;}
-.p-msg-bubble{padding:9px 12px;border-radius:9px;font-size:12px;line-height:1.55;}
+.p-msg-bubble{padding:10px 13px;border-radius:11px;font-size:12px;line-height:1.6;}
 .p-msg.ai .p-msg-bubble{background:var(--s3);border:1px solid var(--b1);}
 .p-msg.user .p-msg-bubble{background:var(--acc);color:#fff;}
-.chat-hint{font-size:11px;color:var(--t2);background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.2);border-radius:6px;padding:8px 10px;line-height:1.5;}
-.chat-panel-input{padding:12px;border-top:1px solid var(--b1);flex-shrink:0;background:var(--s1);}
-.chat-panel-input textarea{width:100%;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);color:var(--t1);padding:9px 12px;font-size:12px;font-family:'Inter',sans-serif;resize:none;min-height:68px;transition:border-color .15s;line-height:1.5;}
-.chat-panel-input textarea:focus{outline:none;border-color:var(--acc);}
+.chat-hint-box{font-size:11px;color:var(--t2);background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.15);border-radius:var(--r2);padding:10px 12px;line-height:1.6;}
+.chat-panel-input{padding:13px;border-top:1px solid var(--b1);flex-shrink:0;background:var(--s1);}
+.chat-panel-input textarea{width:100%;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);color:var(--t1);padding:10px 13px;font-size:12px;font-family:'Inter',sans-serif;resize:none;min-height:70px;transition:border-color .15s;line-height:1.55;}
+.chat-panel-input textarea:focus{outline:none;border-color:rgba(99,102,241,.4);}
 .chat-panel-input textarea::placeholder{color:var(--t3);}
-.chat-send-row{display:flex;justify-content:space-between;align-items:center;margin-top:8px;}
+.chat-send-row{display:flex;justify-content:space-between;align-items:center;margin-top:9px;}
 .chips{display:flex;gap:5px;flex-wrap:wrap;}
-.chip{background:var(--s3);border:1px solid var(--b1);border-radius:4px;padding:3px 8px;font-size:10px;color:var(--t2);cursor:pointer;transition:all .1s;}
-.chip:hover{border-color:var(--acc);color:var(--acc);}
+.chip{background:var(--s3);border:1px solid var(--b1);border-radius:5px;padding:3px 9px;font-size:10px;color:var(--t2);cursor:pointer;transition:all .1s;font-weight:500;}
+.chip:hover{border-color:rgba(99,102,241,.3);color:var(--acc3);background:var(--acc-bg);}
 
-/* LOADING */
-.loading{position:fixed;inset:0;background:rgba(9,9,11,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:999;backdrop-filter:blur(4px);}
-.loading-spinner{width:40px;height:40px;border:3px solid var(--b1);border-top-color:var(--acc);border-radius:50%;animation:spin 1s linear infinite;}
+/* ── LOADING ── */
+.loading{position:fixed;inset:0;background:rgba(8,8,10,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;z-index:999;backdrop-filter:blur(6px);}
+.loading-ring{width:44px;height:44px;border-radius:50%;border:3px solid var(--b1);border-top-color:var(--acc);animation:spin 1s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
-.loading-text{font-size:15px;font-weight:600;}
-.loading-sub{font-size:12px;color:var(--t2);}
+.loading-text{font-size:16px;font-weight:700;letter-spacing:-.01em;}
+.loading-sub{font-size:12px;color:var(--t3);display:flex;gap:8px;}
+.loading-step{display:flex;align-items:center;gap:5px;color:var(--t3);}
+.loading-step.done{color:var(--green);}
 
 ::-webkit-scrollbar{width:5px;height:5px;}
 ::-webkit-scrollbar-track{background:transparent;}
@@ -303,48 +407,51 @@ tbody tr:hover td{background:var(--s3);}
     <div class="chevron">›</div>
     <div class="step" onclick="go(4)" id="st4"><div class="step-num">4</div>Media Plan</div>
   </div>
-  <div class="topbar-right"><div class="avatar">KW</div></div>
+  <div class="topbar-right">
+    <div style="font-size:11px;color:var(--t3);">Wizard of Oz</div>
+    <div class="avatar">KW</div>
+  </div>
 </div>
 
 <!-- TOOLTIP -->
 <div id="tooltip"></div>
 
-<!-- ══ SCREEN 1: HOME ══ -->
+<!-- ══ HOME ══ -->
 <div class="screen active" id="s1">
   <div class="home-wrap" style="margin:auto;">
     <div class="home-eyebrow">AI-Powered Media Planning</div>
     <h1 class="home-title">Build media plans<br>10× faster with AI</h1>
-    <p class="home-sub">Upload a client brief and AI generates a complete media plan — channels, budgets, flighting, and reach forecasts — in one unified workspace.</p>
+    <p class="home-sub">Upload a brief and AI generates a complete media plan — channels, curves, flighting, and KPI forecasts — in one unified workspace.</p>
     <button class="btn-lg" onclick="go(2)">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>
       New Plan
     </button>
-    <div class="recent-card" style="margin-top:8px;">
+    <div class="recent-card" style="margin-top:4px;">
       <div class="recent-header">Recent Plans</div>
       <div class="recent-row" onclick="go(4)">
-        <div><div class="recent-name">Łaciate — Spring 2026</div><div class="recent-meta">Budget: 850 000 PLN · TV + Digital</div></div>
+        <div><div class="recent-name">Łaciate — Spring 2026</div><div class="recent-meta">Budget: 850 000 PLN · TV + Digital · 13 weeks</div></div>
         <span class="badge badge-green">Ready</span>
       </div>
       <div class="recent-row">
-        <div><div class="recent-name">Danone Activia — Q2 2026</div><div class="recent-meta">Budget: 1 200 000 PLN · Multi-channel</div></div>
+        <div><div class="recent-name">Danone Activia — Q2 2026</div><div class="recent-meta">Budget: 1 200 000 PLN · Multi-channel · In progress</div></div>
         <span class="badge badge-blue">Draft</span>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══ SCREEN 2: UPLOAD ══ -->
+<!-- ══ UPLOAD ══ -->
 <div class="screen" id="s2">
   <div class="upload-card">
     <div class="card-title">Upload your campaign brief</div>
-    <div class="card-sub">AI will read the brief, ask a few clarifying questions, then generate a complete draft plan.</div>
+    <div class="card-sub">AI reads the brief, asks a few clarifying questions, then generates a complete draft plan in one workspace.</div>
     <div class="dropzone" id="dz" onclick="uploadFile()">
       <div class="dz-icon">📄</div>
       <div class="dz-text">Drop your brief here or <span>browse files</span></div>
       <div class="dz-hint">PDF, Word, PowerPoint · max 50 MB</div>
     </div>
     <label class="field-label">Additional context <span style="font-weight:400;color:var(--t3);">(optional)</span></label>
-    <textarea class="textarea" placeholder="e.g. Budget is net of agency fee, exclude TikTok, we have a TVN deal…"></textarea>
+    <textarea class="textarea" placeholder="e.g. Budget is net of agency fee, exclude TikTok, we have a TVN deal for minimum 30% of TV…"></textarea>
     <div class="row-btns">
       <button class="btn-ghost" onclick="go(1)">Back</button>
       <button class="btn-primary" style="flex:1;justify-content:center;" onclick="startAnalysis()">Analyse Brief →</button>
@@ -352,64 +459,56 @@ tbody tr:hover td{background:var(--s3);}
   </div>
 </div>
 
-<!-- ══ SCREEN 3: CLARIFICATION ══ -->
+<!-- ══ CLARIFICATION ══ -->
 <div class="screen" id="s3">
   <div class="qa-body">
     <div class="qa-left">
-      <h3>📄 Extracted Brief Data</h3>
-      <div class="brief-item"><div class="brief-item-label">Client / Brand</div><div class="brief-item-val">Lactima</div></div>
-      <div class="brief-item"><div class="brief-item-label">Category</div><div class="brief-item-val">FMCG — Dairy</div></div>
-      <div class="brief-item"><div class="brief-item-label">Budget</div><div class="brief-item-val editable">500 000 PLN</div></div>
-      <div class="brief-item"><div class="brief-item-label">Campaign period</div><div class="brief-item-val editable">1 Jul – 30 Sep 2026</div></div>
-      <div class="brief-item"><div class="brief-item-label">Target audience</div><div class="brief-item-val">Women 25–45</div></div>
-      <div class="brief-item"><div class="brief-item-label">Campaign goal</div><div class="brief-item-val">Brand awareness</div></div>
-      <div class="brief-item"><div class="brief-item-label">KPI</div><div class="brief-item-val editable">Reach 1+ ≥ 60%</div></div>
+      <h3>📄 Extracted Brief</h3>
+      <div class="brief-item"><div class="brief-item-label">Client / Brand</div><div class="brief-item-val editable" onclick="editBrief(this)">Lactima</div></div>
+      <div class="brief-item"><div class="brief-item-label">Category</div><div class="brief-item-val editable" onclick="editBrief(this)">FMCG — Dairy</div></div>
+      <div class="brief-item"><div class="brief-item-label">Budget</div><div class="brief-item-val editable" onclick="editBrief(this)">500 000 PLN</div></div>
+      <div class="brief-item"><div class="brief-item-label">Campaign Period</div><div class="brief-item-val editable" onclick="editBrief(this)">1 Jul – 30 Sep 2026</div></div>
+      <div class="brief-item"><div class="brief-item-label">Target Audience</div><div class="brief-item-val editable" onclick="editBrief(this)">Women 25–45</div></div>
+      <div class="brief-item"><div class="brief-item-label">Campaign Goal</div><div class="brief-item-val editable" onclick="editBrief(this)">Brand awareness</div></div>
+      <div class="brief-item"><div class="brief-item-label">KPI</div><div class="brief-item-val editable" onclick="editBrief(this)">Reach 1+ ≥ 60%</div></div>
       <hr class="divider">
-      <button class="btn-ghost" style="width:100%;font-size:12px;">✏️ Edit brief fields</button>
+      <div style="font-size:11px;color:var(--t3);text-align:center;">✏️ Click any field above to edit</div>
     </div>
     <div class="qa-right">
       <div class="qa-top">
-        <div class="qa-top-title">AI is clarifying your brief</div>
-        <div class="qa-top-sub">Answer a few questions to improve plan accuracy</div>
+        <div class="wiz-progress"><div class="wiz-progress-bar" id="wizBar"></div></div>
+        <div class="wiz-top-row">
+          <div class="qa-top-title">Let's fine-tune your plan</div>
+          <div class="wiz-count" id="wizCount">Question 1 of 9</div>
+        </div>
+        <div class="qa-top-sub">AI asks a few questions to tailor the media plan to this brief</div>
       </div>
-      <div class="chat-msgs" id="qaMsgs">
-        <div class="msg ai"><div class="msg-label">AI Planner</div><div class="msg-bubble">I've read the Lactima brief. Before generating the plan, I have a few quick questions.</div></div>
-        <div class="msg ai"><div class="msg-label">AI Planner</div><div class="msg-bubble">The budget is listed as <strong>500 000 PLN</strong> — is this <strong>net</strong> (excluding agency fee and VAT) or <strong>gross</strong>?</div></div>
-        <div class="msg user" id="a1" style="display:none;"><div class="msg-label">You</div><div class="msg-bubble">Net, excluding agency fee</div></div>
-        <div class="msg ai" id="q2" style="display:none;"><div class="msg-label">AI Planner</div><div class="msg-bubble">Got it. The campaign runs July–September. Are there any <strong>weeks to intensify or avoid</strong>? E.g. summer holidays, back-to-school?</div></div>
-        <div class="msg user" id="a2" style="display:none;"><div class="msg-label">You</div><div class="msg-bubble">Boost the last 2 weeks of September — back to school is key for Lactima</div></div>
-        <div class="msg ai" id="q3" style="display:none;"><div class="msg-label">AI Planner</div><div class="msg-bubble">Noted. Last question — any <strong>channels to exclude</strong>, or must-include publisher deals?</div></div>
-        <div class="msg user" id="a3" style="display:none;"><div class="msg-label">You</div><div class="msg-bubble">We have a TVN deal — minimum 30% of TV budget. Otherwise free hand.</div></div>
-        <div class="msg ai" id="q4" style="display:none;"><div class="msg-label">AI Planner</div><div class="msg-bubble">Perfect. I have everything I need. I'll generate a full media plan with 3 optimisation variants. Ready?</div></div>
-      </div>
-      <div class="chat-input-row">
-        <input class="chat-input" id="qaIn" placeholder="Reply to AI…" onkeypress="if(event.key==='Enter')qaReply()">
-        <button class="btn-send" onclick="qaReply()">Send</button>
+      <div class="wiz-body" id="wizBody"><!-- question card injected here --></div>
+      <div class="qa-footer">
+        <button class="btn-ghost" id="wizBack" onclick="wizPrev()">← Back</button>
+        <div style="flex:1;"></div>
+        <button class="btn-ghost" onclick="generatePlan()">Skip all</button>
+        <button class="btn-primary" id="wizNext" onclick="wizNext()">Next →</button>
       </div>
     </div>
   </div>
-  <div class="qa-footer">
-    <button class="btn-ghost" onclick="go(2)">← Back</button>
-    <button class="btn-primary" onclick="generatePlan()" id="genBtn">Generate Plan →</button>
-  </div>
 </div>
 
-<!-- ══ SCREEN 4: MEDIA PLAN ══ -->
+<!-- ══ MEDIA PLAN ══ -->
 <div class="screen" id="s4">
-
-  <!-- LEFT: scrollable plan -->
   <div class="plan-left">
     <div class="plan-content">
 
       <!-- Header -->
       <div class="plan-header">
         <div>
-          <div class="plan-kicker">Media Plan · Wizard of Oz Prototype</div>
-          <div class="plan-title">Lactima — Q3 2026 Campaign</div>
+          <div class="plan-kicker">Media Plan · Q3 2026</div>
+          <div class="plan-title">Lactima — Summer + Back to School</div>
           <div class="plan-meta">
-            <span>AI-generated</span><span class="plan-meta-dot"></span>
+            <span>AI-generated draft</span><span class="plan-meta-dot"></span>
             <span>500 000 PLN net</span><span class="plan-meta-dot"></span>
-            <span>Jul 1 – Sep 30, 2026 · 13 weeks</span>
+            <span>Jul 1 – Sep 30, 2026</span><span class="plan-meta-dot"></span>
+            <span>13 weeks · 7 channels</span>
           </div>
         </div>
         <div class="plan-actions">
@@ -418,52 +517,55 @@ tbody tr:hover td{background:var(--s3);}
         </div>
       </div>
 
-      <!-- Scenario selector -->
+      <!-- Scenarios -->
       <div class="variants-row">
-        <div class="var-card" onclick="pickVar(this,'maxReach')">
-          <div class="var-kpi-lbl">Optimise for: Reach</div>
+        <div class="var-card" onclick="pickVar(this)">
+          <div class="var-kpi-lbl">Optimise for · Reach</div>
           <div class="var-name">📡 Maximize Reach</div>
-          <div class="var-hero">78%</div>
-          <div class="var-hero-sub">Reach 1+ · Est. Rev: 1.2M PLN</div>
+          <div class="var-hero">78<span style="font-size:18px;font-weight:700;">%</span></div>
+          <div class="var-hero-sub">Reach 1+ · Women 25–45</div>
+          <div class="var-divider"></div>
           <div class="var-grid">
-            <div><div class="var-m-label">GRP</div><div class="var-m-val">450</div></div>
-            <div><div class="var-m-label">Avg CPM</div><div class="var-m-val">21 PLN</div></div>
-            <div><div class="var-m-label">Frequency</div><div class="var-m-val">1.9×</div></div>
-            <div><div class="var-m-label">Channels</div><div class="var-m-val">7</div></div>
+            <div class="var-m"><div class="var-m-label">Est. Revenue</div><div class="var-m-val" style="color:var(--green)">1.2M PLN</div></div>
+            <div class="var-m"><div class="var-m-label">GRP</div><div class="var-m-val">450</div></div>
+            <div class="var-m"><div class="var-m-label">Avg CPM</div><div class="var-m-val">21 PLN</div></div>
+            <div class="var-m"><div class="var-m-label">Frequency</div><div class="var-m-val">1.9×</div></div>
           </div>
         </div>
-        <div class="var-card" onclick="pickVar(this,'maxRevenue')">
-          <div class="var-kpi-lbl">Optimise for: Revenue</div>
+        <div class="var-card" onclick="pickVar(this)">
+          <div class="var-kpi-lbl">Optimise for · Revenue</div>
           <div class="var-name">💰 Maximize Revenue</div>
-          <div class="var-hero">2.8M</div>
-          <div class="var-hero-sub">Est. Revenue PLN · Reach: 61%</div>
+          <div class="var-hero" style="color:var(--green)">2.8<span style="font-size:18px;font-weight:700;">M PLN</span></div>
+          <div class="var-hero-sub">Estimated Revenue</div>
+          <div class="var-divider"></div>
           <div class="var-grid">
-            <div><div class="var-m-label">GRP</div><div class="var-m-val">310</div></div>
-            <div><div class="var-m-label">Avg CPM</div><div class="var-m-val">28 PLN</div></div>
-            <div><div class="var-m-label">Frequency</div><div class="var-m-val">3.4×</div></div>
-            <div><div class="var-m-label">Channels</div><div class="var-m-val">6</div></div>
+            <div class="var-m"><div class="var-m-label">Reach 1+</div><div class="var-m-val">61%</div></div>
+            <div class="var-m"><div class="var-m-label">GRP</div><div class="var-m-val">310</div></div>
+            <div class="var-m"><div class="var-m-label">Avg CPM</div><div class="var-m-val">28 PLN</div></div>
+            <div class="var-m"><div class="var-m-label">Frequency</div><div class="var-m-val">3.4×</div></div>
           </div>
         </div>
-        <div class="var-card sel" onclick="pickVar(this,'balanced')">
+        <div class="var-card sel" onclick="pickVar(this)">
           <div class="var-rec">★ Recommended</div>
-          <div class="var-kpi-lbl">Optimise for: Reach + Revenue</div>
+          <div class="var-kpi-lbl">Optimise for · Reach + Revenue</div>
           <div class="var-name">⚖️ Balanced</div>
-          <div class="var-hero">71%</div>
+          <div class="var-hero">71<span style="font-size:18px;font-weight:700;">%</span></div>
           <div class="var-hero-sub">Reach 1+ · Est. Rev: 2.1M PLN</div>
+          <div class="var-divider"></div>
           <div class="var-grid">
-            <div><div class="var-m-label">GRP</div><div class="var-m-val">380</div></div>
-            <div><div class="var-m-label">Avg CPM</div><div class="var-m-val">24 PLN</div></div>
-            <div><div class="var-m-label">Frequency</div><div class="var-m-val">2.6×</div></div>
-            <div><div class="var-m-label">Channels</div><div class="var-m-val">7</div></div>
+            <div class="var-m"><div class="var-m-label">GRP</div><div class="var-m-val">380</div></div>
+            <div class="var-m"><div class="var-m-label">Avg CPM</div><div class="var-m-val">24 PLN</div></div>
+            <div class="var-m"><div class="var-m-label">Frequency</div><div class="var-m-val">2.6×</div></div>
+            <div class="var-m"><div class="var-m-label">Channels</div><div class="var-m-val">7</div></div>
           </div>
         </div>
       </div>
 
       <!-- Campaign Params -->
       <div class="section">
-        <div class="sec-title">
-          <div class="sec-title-left"><div class="sec-dot"></div>Campaign Parameters</div>
-          <div class="ai-tag">✨ AI-filled · all editable</div>
+        <div class="sec-head">
+          <div class="sec-title"><div class="sec-dot"></div>Campaign Parameters</div>
+          <div class="sec-tag">✨ AI-filled · all editable</div>
         </div>
         <div class="param-grid">
           <div class="param-item">
@@ -485,21 +587,21 @@ tbody tr:hover td{background:var(--s3);}
           <div class="param-item">
             <div class="param-label">KPI Mode</div>
             <div class="pill-row">
-              <span class="pill" onclick="setPill(this,'.pill-row')">Reach</span>
-              <span class="pill" onclick="setPill(this,'.pill-row')">Revenue</span>
-              <span class="pill active" onclick="setPill(this,'.pill-row')">Both</span>
+              <span class="pill" onclick="setPill(this,this.closest('.pill-row'))">Reach</span>
+              <span class="pill" onclick="setPill(this,this.closest('.pill-row'))">Revenue</span>
+              <span class="pill active" onclick="setPill(this,this.closest('.pill-row'))">Both</span>
             </div>
           </div>
           <div class="param-item">
             <div class="param-label">Frequency Target</div>
-            <div class="pill-row" id="freqRow">
-              <span class="pill" onclick="setPill(this,'#freqRow')">1+</span>
-              <span class="pill active" onclick="setPill(this,'#freqRow')">2+</span>
-              <span class="pill" onclick="setPill(this,'#freqRow')">3+</span>
-              <span class="pill" onclick="setPill(this,'#freqRow')">4+</span>
-              <span class="pill" onclick="setPill(this,'#freqRow')">5+</span>
-              <span class="pill" onclick="setPill(this,'#freqRow')">7+</span>
-              <span class="pill" onclick="setPill(this,'#freqRow')">10+</span>
+            <div class="pill-row">
+              <span class="pill" onclick="setPill(this,this.closest('.pill-row'))">1+</span>
+              <span class="pill active" onclick="setPill(this,this.closest('.pill-row'))">2+</span>
+              <span class="pill" onclick="setPill(this,this.closest('.pill-row'))">3+</span>
+              <span class="pill" onclick="setPill(this,this.closest('.pill-row'))">4+</span>
+              <span class="pill" onclick="setPill(this,this.closest('.pill-row'))">5+</span>
+              <span class="pill" onclick="setPill(this,this.closest('.pill-row'))">7+</span>
+              <span class="pill" onclick="setPill(this,this.closest('.pill-row'))">10+</span>
             </div>
           </div>
         </div>
@@ -507,66 +609,27 @@ tbody tr:hover td{background:var(--s3);}
 
       <!-- Plan Summary -->
       <div class="section">
-        <div class="sec-title">
-          <div class="sec-title-left"><div class="sec-dot"></div>Plan Summary</div>
-          <div class="live-tag">● Updates live</div>
+        <div class="sec-head">
+          <div class="sec-title"><div class="sec-dot"></div>Plan Summary</div>
+          <div class="live-tag"><div class="live-dot"></div>Updates live</div>
         </div>
         <div class="metrics-g">
-          <div class="metric"><div class="metric-l">Total Budget</div><div class="metric-v editable" onclick="editV(this)">500 000 PLN</div><div class="metric-sub">net</div></div>
+          <div class="metric"><div class="metric-l">Total Budget</div><div class="metric-v editable" onclick="editV(this)">500 000</div><div class="metric-sub">PLN net</div></div>
           <div class="metric"><div class="metric-l">Total Impressions</div><div class="metric-v editable" onclick="editV(this)">20.8M</div><div class="metric-sub">estimated</div></div>
-          <div class="metric"><div class="metric-l">Avg. CPM</div><div class="metric-v editable" onclick="editV(this)">24.10 PLN</div><div class="metric-sub">weighted</div></div>
+          <div class="metric"><div class="metric-l">Avg. CPM</div><div class="metric-v editable" onclick="editV(this)">24.10</div><div class="metric-sub">PLN weighted</div></div>
           <div class="metric"><div class="metric-l">Avg. Frequency</div><div class="metric-v editable" onclick="editV(this)">2.6×</div><div class="metric-sub">per person</div></div>
-          <div class="metric"><div class="metric-l">Cumulative Reach</div><div class="metric-v editable" onclick="editV(this)" style="color:var(--acc)">71%</div><div class="metric-sub">1+ contact, W25-45</div></div>
-          <div class="metric"><div class="metric-l">Estimated Revenue</div><div class="metric-v" style="font-size:14px;font-weight:700;color:var(--green);">2.1M PLN</div><div class="metric-sub">model forecast</div></div>
+          <div class="metric"><div class="metric-l">Cumulative Reach</div><div class="metric-v editable" onclick="editV(this)" style="color:var(--acc3)">71%</div><div class="metric-sub">1+, Women 25–45</div></div>
+          <div class="metric"><div class="metric-l">Est. Revenue</div><div class="metric-v" style="color:var(--green);font-size:20px;">2.1M</div><div class="metric-sub">PLN model forecast</div></div>
           <div class="metric"><div class="metric-l">Total GRP</div><div class="metric-v editable" onclick="editV(this)">380</div><div class="metric-sub">TV + Radio</div></div>
           <div class="metric"><div class="metric-l">Channels</div><div class="metric-v">7</div><div class="metric-sub">publishers</div></div>
         </div>
       </div>
 
-      <!-- Budget Allocation -->
-      <div class="section">
-        <div class="sec-title">
-          <div class="sec-title-left"><div class="sec-dot"></div>Budget Allocation</div>
-          <div style="font-size:9px;color:var(--t3);">click % to edit · drag bar to adjust</div>
-        </div>
-        <div class="alloc-wrap">
-          <div class="alloc-bars">
-            <div class="bar-row"><div class="bar-lbl">TVN</div><div class="bar-track"><div class="bar-fill c1" style="width:32%">160k PLN</div></div><div class="bar-pct" onclick="editPct(this)">32%</div></div>
-            <div class="bar-row"><div class="bar-lbl">Polsat</div><div class="bar-track"><div class="bar-fill c2" style="width:18%">90k PLN</div></div><div class="bar-pct" onclick="editPct(this)">18%</div></div>
-            <div class="bar-row"><div class="bar-lbl">YouTube</div><div class="bar-track"><div class="bar-fill c3" style="width:20%">100k PLN</div></div><div class="bar-pct" onclick="editPct(this)">20%</div></div>
-            <div class="bar-row"><div class="bar-lbl">Meta</div><div class="bar-track"><div class="bar-fill c4" style="width:15%">75k PLN</div></div><div class="bar-pct" onclick="editPct(this)">15%</div></div>
-            <div class="bar-row"><div class="bar-lbl">OOH AMS</div><div class="bar-track"><div class="bar-fill c5" style="width:8%">40k</div></div><div class="bar-pct" onclick="editPct(this)">8%</div></div>
-            <div class="bar-row"><div class="bar-lbl">RMF FM</div><div class="bar-track"><div class="bar-fill c6" style="width:5%">25k</div></div><div class="bar-pct" onclick="editPct(this)">5%</div></div>
-            <div class="bar-row"><div class="bar-lbl">Programmatic</div><div class="bar-track"><div class="bar-fill c7" style="width:2%"></div></div><div class="bar-pct" onclick="editPct(this)">2%</div></div>
-          </div>
-          <div class="pie-wrap">
-            <svg viewBox="0 0 100 100" width="100" height="100">
-              <circle cx="50" cy="50" r="38" fill="none" stroke="#6366f1" stroke-width="22" stroke-dasharray="76.5 162.1" stroke-dashoffset="0"/>
-              <circle cx="50" cy="50" r="38" fill="none" stroke="#06b6d4" stroke-width="22" stroke-dasharray="43.0 195.6" stroke-dashoffset="-76.5"/>
-              <circle cx="50" cy="50" r="38" fill="none" stroke="#f59e0b" stroke-width="22" stroke-dasharray="47.7 190.9" stroke-dashoffset="-119.5"/>
-              <circle cx="50" cy="50" r="38" fill="none" stroke="#22c55e" stroke-width="22" stroke-dasharray="35.8 202.8" stroke-dashoffset="-167.2"/>
-              <circle cx="50" cy="50" r="38" fill="none" stroke="#ec4899" stroke-width="22" stroke-dasharray="19.1 219.5" stroke-dashoffset="-203"/>
-              <circle cx="50" cy="50" r="38" fill="none" stroke="#8b5cf6" stroke-width="22" stroke-dasharray="11.9 226.7" stroke-dashoffset="-222.1"/>
-              <circle cx="50" cy="50" r="32" fill="var(--s2)"/>
-            </svg>
-            <div class="pie-legend">
-              <div class="pie-li"><div class="pie-li-dot c1"></div>TVN 32%</div>
-              <div class="pie-li"><div class="pie-li-dot c2"></div>Polsat 18%</div>
-              <div class="pie-li"><div class="pie-li-dot c3"></div>YouTube 20%</div>
-              <div class="pie-li"><div class="pie-li-dot c4"></div>Meta 15%</div>
-              <div class="pie-li"><div class="pie-li-dot c5"></div>OOH 8%</div>
-              <div class="pie-li"><div class="pie-li-dot c6"></div>Radio 5%</div>
-              <div class="pie-li"><div class="pie-li-dot c7"></div>Prog. 2%</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <!-- Channel Mix & Reach Curves -->
       <div class="section">
-        <div class="sec-title">
-          <div class="sec-title-left"><div class="sec-dot"></div>Channel Mix &amp; Reach Curves</div>
-          <div class="ai-tag">✨ AI-assigned · all editable</div>
+        <div class="sec-head">
+          <div class="sec-title"><div class="sec-dot"></div>Channel Mix &amp; Reach Curves</div>
+          <div class="sec-tag">✨ AI-assigned · all editable</div>
         </div>
         <div class="tbl-wrap">
           <table>
@@ -574,7 +637,7 @@ tbody tr:hover td{background:var(--s3);}
               <tr>
                 <th>Channel</th>
                 <th>Format</th>
-                <th>CPM/CPP</th>
+                <th>CPM / CPP</th>
                 <th>Reach Curve</th>
                 <th>Min Budget</th>
                 <th>Max Budget</th>
@@ -582,142 +645,140 @@ tbody tr:hover td{background:var(--s3);}
                 <th>%</th>
               </tr>
             </thead>
-            <tbody>
-              <tr class="group-tr"><td colspan="8">📺 TV — 50%</td></tr>
+            <tbody id="chBody">
+              <tr class="group-tr"><td colspan="8">📺 Television — 50% of budget</td></tr>
               <tr>
                 <td><div class="ch-name"><div class="ch-dot c1"></div>TVN</div></td>
-                <td>Spot 30"</td>
-                <td class="cell-edit">38 PLN</td>
-                <td><div class="curve-cell">
-                  <span class="cb cb-client" id="cb-tvn">CLIENT</span>
-                  <button class="why-btn" onclick="showWhy(event,'tvn')">?</button>
-                  <button class="upload-btn" onclick="uploadCurve(this,'tvn')">↑ Upload</button>
-                </div></td>
+                <td style="color:var(--t2)">Spot 30"</td>
+                <td class="cell-edit" contenteditable="true">38 PLN</td>
+                <td><div class="curve-cell"><span class="cb cb-client" id="cb-tvn">CLIENT</span><button class="why-btn" onclick="showWhy(event,'tvn')">?</button><button class="upload-btn" onclick="uploadCurve(this,'tvn')">↑ Upload</button></div></td>
                 <td><input class="cin" value="100 000" /></td>
                 <td><input class="cin" value="200 000" /></td>
-                <td class="bud-hi cell-edit">160 000 PLN</td>
-                <td class="cell-edit">32%</td>
+                <td class="bud-hi cell-edit" contenteditable="true">160 000 PLN</td>
+                <td class="cell-edit" contenteditable="true" style="color:var(--t2)">32%</td>
               </tr>
               <tr>
                 <td><div class="ch-name"><div class="ch-dot c2"></div>Polsat</div></td>
-                <td>Spot 30"</td>
-                <td class="cell-edit">30 PLN</td>
-                <td><div class="curve-cell">
-                  <span class="cb cb-default" id="cb-polsat">DEFAULT</span>
-                  <button class="why-btn" onclick="showWhy(event,'polsat')">?</button>
-                  <button class="upload-btn" onclick="uploadCurve(this,'polsat')">↑ Upload</button>
-                </div></td>
+                <td style="color:var(--t2)">Spot 30"</td>
+                <td class="cell-edit" contenteditable="true">30 PLN</td>
+                <td><div class="curve-cell"><span class="cb cb-default" id="cb-polsat">DEFAULT</span><button class="why-btn" onclick="showWhy(event,'polsat')">?</button><button class="upload-btn" onclick="uploadCurve(this,'polsat')">↑ Upload</button></div></td>
                 <td><input class="cin" value="50 000" /></td>
                 <td><input class="cin" value="150 000" /></td>
-                <td class="bud-hi cell-edit">90 000 PLN</td>
-                <td class="cell-edit">18%</td>
+                <td class="bud-hi cell-edit" contenteditable="true">90 000 PLN</td>
+                <td class="cell-edit" contenteditable="true" style="color:var(--t2)">18%</td>
               </tr>
-              <tr class="group-tr"><td colspan="8">📱 Digital — 37%</td></tr>
+              <tr class="group-tr"><td colspan="8">📱 Digital — 37% of budget</td></tr>
               <tr>
                 <td><div class="ch-name"><div class="ch-dot c3"></div>YouTube</div></td>
-                <td>TrueView In-stream</td>
-                <td class="cell-edit">18 PLN</td>
-                <td><div class="curve-cell">
-                  <span class="cb cb-client" id="cb-youtube">CLIENT</span>
-                  <button class="why-btn" onclick="showWhy(event,'youtube')">?</button>
-                  <button class="upload-btn" onclick="uploadCurve(this,'youtube')">↑ Upload</button>
-                </div></td>
+                <td style="color:var(--t2)">TrueView In-stream</td>
+                <td class="cell-edit" contenteditable="true">18 PLN</td>
+                <td><div class="curve-cell"><span class="cb cb-client" id="cb-youtube">CLIENT</span><button class="why-btn" onclick="showWhy(event,'youtube')">?</button><button class="upload-btn" onclick="uploadCurve(this,'youtube')">↑ Upload</button></div></td>
                 <td><input class="cin" value="50 000" /></td>
                 <td><input class="cin" value="150 000" /></td>
-                <td class="bud-hi cell-edit">100 000 PLN</td>
-                <td class="cell-edit">20%</td>
+                <td class="bud-hi cell-edit" contenteditable="true">100 000 PLN</td>
+                <td class="cell-edit" contenteditable="true" style="color:var(--t2)">20%</td>
               </tr>
               <tr>
                 <td><div class="ch-name"><div class="ch-dot c4"></div>Meta</div></td>
-                <td>Video + Stories</td>
-                <td class="cell-edit">14 PLN</td>
-                <td><div class="curve-cell">
-                  <span class="cb cb-default" id="cb-meta">DEFAULT</span>
-                  <button class="why-btn" onclick="showWhy(event,'meta')">?</button>
-                  <button class="upload-btn" onclick="uploadCurve(this,'meta')">↑ Upload</button>
-                </div></td>
+                <td style="color:var(--t2)">Video + Stories</td>
+                <td class="cell-edit" contenteditable="true">14 PLN</td>
+                <td><div class="curve-cell"><span class="cb cb-default" id="cb-meta">DEFAULT</span><button class="why-btn" onclick="showWhy(event,'meta')">?</button><button class="upload-btn" onclick="uploadCurve(this,'meta')">↑ Upload</button></div></td>
                 <td><input class="cin" value="25 000" /></td>
                 <td><input class="cin" value="100 000" /></td>
-                <td class="bud-hi cell-edit">75 000 PLN</td>
-                <td class="cell-edit">15%</td>
+                <td class="bud-hi cell-edit" contenteditable="true">75 000 PLN</td>
+                <td class="cell-edit" contenteditable="true" style="color:var(--t2)">15%</td>
               </tr>
               <tr>
                 <td><div class="ch-name"><div class="ch-dot c7"></div>Programmatic</div></td>
-                <td>Display + Video</td>
-                <td class="cell-edit">9 PLN</td>
-                <td><div class="curve-cell">
-                  <span class="cb cb-default" id="cb-prog">DEFAULT</span>
-                  <button class="why-btn" onclick="showWhy(event,'prog')">?</button>
-                  <button class="upload-btn" onclick="uploadCurve(this,'prog')">↑ Upload</button>
-                </div></td>
+                <td style="color:var(--t2)">Display + Video</td>
+                <td class="cell-edit" contenteditable="true">9 PLN</td>
+                <td><div class="curve-cell"><span class="cb cb-default" id="cb-prog">DEFAULT</span><button class="why-btn" onclick="showWhy(event,'prog')">?</button><button class="upload-btn" onclick="uploadCurve(this,'prog')">↑ Upload</button></div></td>
                 <td><input class="cin" value="0" /></td>
                 <td><input class="cin" value="30 000" /></td>
-                <td class="bud-hi cell-edit">10 000 PLN</td>
-                <td class="cell-edit">2%</td>
+                <td class="bud-hi cell-edit" contenteditable="true">10 000 PLN</td>
+                <td class="cell-edit" contenteditable="true" style="color:var(--t2)">2%</td>
               </tr>
-              <tr class="group-tr"><td colspan="8">🏙 OOH + Audio — 13%</td></tr>
+              <tr class="group-tr"><td colspan="8">🏙 OOH + Audio — 13% of budget</td></tr>
               <tr>
                 <td><div class="ch-name"><div class="ch-dot c5"></div>OOH AMS</div></td>
-                <td>Billboard + CityLight</td>
-                <td class="cell-edit">45 PLN</td>
-                <td><div class="curve-cell">
-                  <span class="cb cb-custom" id="cb-ooh">CUSTOM</span>
-                  <button class="why-btn" onclick="showWhy(event,'ooh')">?</button>
-                  <button class="upload-btn" onclick="uploadCurve(this,'ooh')">↑ Re-upload</button>
-                </div></td>
+                <td style="color:var(--t2)">Billboard + CityLight</td>
+                <td class="cell-edit" contenteditable="true">45 PLN</td>
+                <td><div class="curve-cell"><span class="cb cb-custom" id="cb-ooh">CUSTOM</span><button class="why-btn" onclick="showWhy(event,'ooh')">?</button><button class="upload-btn" onclick="uploadCurve(this,'ooh')">↑ Re-upload</button></div></td>
                 <td><input class="cin" value="20 000" /></td>
                 <td><input class="cin" value="80 000" /></td>
-                <td class="bud-hi cell-edit">40 000 PLN</td>
-                <td class="cell-edit">8%</td>
+                <td class="bud-hi cell-edit" contenteditable="true">40 000 PLN</td>
+                <td class="cell-edit" contenteditable="true" style="color:var(--t2)">8%</td>
               </tr>
               <tr>
                 <td><div class="ch-name"><div class="ch-dot c6"></div>RMF FM</div></td>
-                <td>Radio Spot 30"</td>
-                <td class="cell-edit">8 PLN</td>
-                <td><div class="curve-cell">
-                  <span class="cb cb-default" id="cb-rmf">DEFAULT</span>
-                  <button class="why-btn" onclick="showWhy(event,'rmf')">?</button>
-                  <button class="upload-btn" onclick="uploadCurve(this,'rmf')">↑ Upload</button>
-                </div></td>
+                <td style="color:var(--t2)">Radio Spot 30"</td>
+                <td class="cell-edit" contenteditable="true">8 PLN</td>
+                <td><div class="curve-cell"><span class="cb cb-default" id="cb-rmf">DEFAULT</span><button class="why-btn" onclick="showWhy(event,'rmf')">?</button><button class="upload-btn" onclick="uploadCurve(this,'rmf')">↑ Upload</button></div></td>
                 <td><input class="cin" value="10 000" /></td>
                 <td><input class="cin" value="50 000" /></td>
-                <td class="bud-hi cell-edit">25 000 PLN</td>
-                <td class="cell-edit">5%</td>
+                <td class="bud-hi cell-edit" contenteditable="true">25 000 PLN</td>
+                <td class="cell-edit" contenteditable="true" style="color:var(--t2)">5%</td>
               </tr>
-              <tr class="tbl-total">
+              <tr class="tbl-total" id="chTotal">
                 <td colspan="6"><strong>TOTAL</strong></td>
-                <td class="bud-hi"><strong>500 000 PLN</strong></td>
-                <td><strong>100%</strong></td>
+                <td><strong>500 000 PLN</strong></td>
+                <td style="color:var(--t2)"><strong>100%</strong></td>
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="addch-wrap">
+          <button class="addch-btn" onclick="toggleAddCh(event)">＋ Add channel</button>
+          <div class="addch-menu" id="addChMenu" onclick="event.stopPropagation()">
+            <input class="addch-search" id="addChSearch" placeholder="Search channels…" oninput="filterAddCh(this.value)">
+            <div id="addChList"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Budget Allocation -->
+      <div class="section">
+        <div class="sec-head">
+          <div class="sec-title"><div class="sec-dot"></div>Budget Allocation</div>
+          <div style="font-size:10px;color:var(--t3);">derived from channel budgets</div>
+        </div>
+        <div class="alloc-wrap">
+          <div class="alloc-card">
+            <div class="alloc-card-head">Budget allocation by channel</div>
+            <div class="alloc-bars" id="allocBars"></div>
+          </div>
+          <div class="alloc-card">
+            <div class="alloc-card-head">Budget split by channel</div>
+            <div class="pie-wrap">
+              <div class="pie-svg-wrap" id="allocDonut"></div>
+              <div class="pie-legend" id="allocLegend"></div>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- Flighting -->
       <div class="section">
-        <div class="sec-title">
-          <div class="sec-title-left"><div class="sec-dot"></div>Flighting — Weekly Budget Distribution</div>
-          <div style="font-size:9px;color:var(--t3);">values in 000 PLN · click to edit</div>
+        <div class="sec-head">
+          <div class="sec-title"><div class="sec-dot"></div>Flighting — Weekly Budget Distribution</div>
+          <div style="font-size:10px;color:var(--t3);">values in thousands of PLN (k = 1 000 PLN) · click to edit</div>
         </div>
-
         <div class="flight-chart-box">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-            <span style="font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;">Weekly Total (000 PLN)</span>
-            <span style="font-size:9px;color:var(--amber);font-weight:700;">▲ W12–W13 boosted — back-to-school</span>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <span style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;">Weekly Total (000 PLN)</span>
+            <span style="font-size:10px;color:var(--amber);font-weight:700;display:flex;align-items:center;gap:5px;">▲ W12–W13 boosted · back-to-school</span>
           </div>
-          <svg id="flightSvg" width="100%" height="90" viewBox="0 0 546 90" preserveAspectRatio="none"></svg>
-          <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;">
-            <div style="display:flex;align-items:center;gap:3px;font-size:9px;color:var(--t3)"><div style="width:8px;height:8px;border-radius:1px;background:#6366f1"></div>TVN</div>
-            <div style="display:flex;align-items:center;gap:3px;font-size:9px;color:var(--t3)"><div style="width:8px;height:8px;border-radius:1px;background:#06b6d4"></div>Polsat</div>
-            <div style="display:flex;align-items:center;gap:3px;font-size:9px;color:var(--t3)"><div style="width:8px;height:8px;border-radius:1px;background:#f59e0b"></div>YouTube</div>
-            <div style="display:flex;align-items:center;gap:3px;font-size:9px;color:var(--t3)"><div style="width:8px;height:8px;border-radius:1px;background:#22c55e"></div>Meta</div>
-            <div style="display:flex;align-items:center;gap:3px;font-size:9px;color:var(--t3)"><div style="width:8px;height:8px;border-radius:1px;background:#ec4899"></div>OOH</div>
-            <div style="display:flex;align-items:center;gap:3px;font-size:9px;color:var(--t3)"><div style="width:8px;height:8px;border-radius:1px;background:#8b5cf6"></div>Radio</div>
-            <div style="display:flex;align-items:center;gap:3px;font-size:9px;color:var(--t3)"><div style="width:8px;height:8px;border-radius:1px;background:#ef4444"></div>Prog.</div>
+          <div id="flightChart" class="fl-chart"></div>
+          <div class="flight-legend">
+            <div class="flight-legend-item"><div class="flight-legend-dot c1"></div>TVN</div>
+            <div class="flight-legend-item"><div class="flight-legend-dot c2"></div>Polsat</div>
+            <div class="flight-legend-item"><div class="flight-legend-dot c3"></div>YouTube</div>
+            <div class="flight-legend-item"><div class="flight-legend-dot c4"></div>Meta</div>
+            <div class="flight-legend-item"><div class="flight-legend-dot c5"></div>OOH AMS</div>
+            <div class="flight-legend-item"><div class="flight-legend-dot c6"></div>RMF FM</div>
+            <div class="flight-legend-item"><div class="flight-legend-dot c7"></div>Programmatic</div>
           </div>
         </div>
-
         <div class="flight-grid-wrap">
           <table class="fg" id="flightGrid"></table>
         </div>
@@ -725,60 +786,76 @@ tbody tr:hover td{background:var(--s3);}
 
       <!-- KPI Forecast -->
       <div class="section">
-        <div class="sec-title">
-          <div class="sec-title-left"><div class="sec-dot"></div>KPI Forecast</div>
-          <div class="live-tag">● Updates on every edit</div>
+        <div class="sec-head">
+          <div class="sec-title"><div class="sec-dot"></div>KPI Forecast</div>
+          <div class="live-tag"><div class="live-dot"></div>Updates on every edit</div>
         </div>
         <div class="kpi-grid">
           <div class="kpi-box">
             <div class="kpi-box-title">Cumulative Reach 1+</div>
-            <div class="kpi-box-val" style="color:var(--acc)">71%</div>
-            <div class="kpi-box-sub">of Women 25–45</div>
-            <svg width="100%" height="72" viewBox="0 0 200 72">
-              <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6366f1" stop-opacity=".25"/><stop offset="100%" stop-color="#6366f1" stop-opacity="0"/></linearGradient></defs>
-              <path d="M0,68 C14,64 26,57 40,50 C54,43 66,37 82,31 C96,26 112,22 128,20 C144,18 158,17 172,16 C182,15 192,15 200,14" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round"/>
-              <path d="M0,68 C14,64 26,57 40,50 C54,43 66,37 82,31 C96,26 112,22 128,20 C144,18 158,17 172,16 C182,15 192,15 200,14 L200,72 L0,72Z" fill="url(#g1)"/>
-              <line x1="0" y1="14" x2="200" y2="14" stroke="#3f3f46" stroke-width="0.5" stroke-dasharray="3,3"/>
-              <text x="3" y="11" fill="#71717a" font-size="7" font-family="Inter">71%</text>
-              <text x="2" y="71" fill="#52525b" font-size="7" font-family="Inter">W1</text>
-              <text x="88" y="71" fill="#52525b" font-size="7" font-family="Inter">W7</text>
-              <text x="183" y="71" fill="#52525b" font-size="7" font-family="Inter">W13</text>
+            <div class="kpi-box-val" style="color:var(--acc3)">71<span style="font-size:16px;font-weight:700;">%</span></div>
+            <div class="kpi-box-sub">of Women 25–45 target</div>
+            <svg width="100%" height="76" viewBox="0 0 200 76">
+              <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6366f1" stop-opacity=".3"/><stop offset="100%" stop-color="#6366f1" stop-opacity="0"/></linearGradient></defs>
+              <path d="M0,70 C14,65 26,58 40,51 C54,44 66,37 82,30 C96,25 112,21 128,18 C144,16 158,15 172,14 C182,14 192,13 200,13" fill="none" stroke="#6366f1" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M0,70 C14,65 26,58 40,51 C54,44 66,37 82,30 C96,25 112,21 128,18 C144,16 158,15 172,14 C182,14 192,13 200,13 L200,76 L0,76Z" fill="url(#g1)"/>
+              <line x1="0" y1="13" x2="200" y2="13" stroke="#2a2a32" stroke-width="1" stroke-dasharray="4,3"/>
+              <text x="4" y="10" fill="#606070" font-size="8" font-family="Inter" font-weight="600">71%</text>
+              <text x="2" y="75" fill="#606070" font-size="7.5" font-family="Inter">W1</text>
+              <text x="88" y="75" fill="#606070" font-size="7.5" font-family="Inter">W7</text>
+              <text x="180" y="75" fill="#606070" font-size="7.5" font-family="Inter">W13</text>
             </svg>
           </div>
           <div class="kpi-box">
             <div class="kpi-box-title">Reach with Decay</div>
-            <div class="kpi-box-val" style="color:var(--amber)">58%</div>
+            <div class="kpi-box-val" style="color:var(--amber)">58<span style="font-size:16px;font-weight:700;">%</span></div>
             <div class="kpi-box-sub">effective reach (forgetting model)</div>
-            <svg width="100%" height="72" viewBox="0 0 200 72">
-              <defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f59e0b" stop-opacity=".25"/><stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/></linearGradient></defs>
-              <path d="M0,68 C12,63 22,57 36,51 C50,45 62,39 78,34 C92,30 108,27 124,25 C138,23 152,24 164,26 C176,28 188,32 200,29" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>
-              <path d="M0,68 C12,63 22,57 36,51 C50,45 62,39 78,34 C92,30 108,27 124,25 C138,23 152,24 164,26 C176,28 188,32 200,29 L200,72 L0,72Z" fill="url(#g2)"/>
-              <text x="2" y="71" fill="#52525b" font-size="7" font-family="Inter">W1</text>
-              <text x="88" y="71" fill="#52525b" font-size="7" font-family="Inter">W7</text>
-              <text x="183" y="71" fill="#52525b" font-size="7" font-family="Inter">W13</text>
+            <svg width="100%" height="76" viewBox="0 0 200 76">
+              <defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f59e0b" stop-opacity=".3"/><stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/></linearGradient></defs>
+              <path d="M0,70 C12,65 22,58 36,52 C50,46 62,40 78,35 C92,30 108,27 124,25 C138,23 152,23 164,25 C176,27 188,31 200,28" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M0,70 C12,65 22,58 36,52 C50,46 62,40 78,35 C92,30 108,27 124,25 C138,23 152,23 164,25 C176,27 188,31 200,28 L200,76 L0,76Z" fill="url(#g2)"/>
+              <text x="2" y="75" fill="#606070" font-size="7.5" font-family="Inter">W1</text>
+              <text x="88" y="75" fill="#606070" font-size="7.5" font-family="Inter">W7</text>
+              <text x="180" y="75" fill="#606070" font-size="7.5" font-family="Inter">W13</text>
             </svg>
           </div>
           <div class="kpi-box">
             <div class="kpi-box-title">Estimated Revenue</div>
-            <div class="kpi-box-val" style="color:var(--green)">2.1M PLN</div>
+            <div class="kpi-box-val" style="color:var(--green)">2.1<span style="font-size:16px;font-weight:700;">M PLN</span></div>
             <div class="kpi-box-sub">cumulative model forecast</div>
-            <svg width="100%" height="72" viewBox="0 0 200 72">
-              <defs><linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22c55e" stop-opacity=".25"/><stop offset="100%" stop-color="#22c55e" stop-opacity="0"/></linearGradient></defs>
-              <path d="M0,70 C14,67 26,62 40,55 C54,48 68,40 84,33 C98,27 114,21 130,17 C144,14 158,13 172,12 C182,11 192,11 200,10" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round"/>
-              <path d="M0,70 C14,67 26,62 40,55 C54,48 68,40 84,33 C98,27 114,21 130,17 C144,14 158,13 172,12 C182,11 192,11 200,10 L200,72 L0,72Z" fill="url(#g3)"/>
-              <text x="2" y="71" fill="#52525b" font-size="7" font-family="Inter">W1</text>
-              <text x="88" y="71" fill="#52525b" font-size="7" font-family="Inter">W7</text>
-              <text x="183" y="71" fill="#52525b" font-size="7" font-family="Inter">W13</text>
+            <svg width="100%" height="76" viewBox="0 0 200 76">
+              <defs><linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22c55e" stop-opacity=".3"/><stop offset="100%" stop-color="#22c55e" stop-opacity="0"/></linearGradient></defs>
+              <path d="M0,73 C14,70 26,64 40,57 C54,50 68,42 84,34 C98,28 114,22 130,17 C144,14 158,12 172,11 C182,10 192,10 200,9" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M0,73 C14,70 26,64 40,57 C54,50 68,42 84,34 C98,28 114,22 130,17 C144,14 158,12 172,11 C182,10 192,10 200,9 L200,76 L0,76Z" fill="url(#g3)"/>
+              <text x="2" y="75" fill="#606070" font-size="7.5" font-family="Inter">W1</text>
+              <text x="88" y="75" fill="#606070" font-size="7.5" font-family="Inter">W7</text>
+              <text x="180" y="75" fill="#606070" font-size="7.5" font-family="Inter">W13</text>
             </svg>
           </div>
         </div>
       </div>
 
-      <div style="height:24px;"></div>
+      <!-- Channel Breakdown — Budget Flow Sankey -->
+      <div class="section">
+        <div class="sec-head">
+          <div class="sec-title"><div class="sec-dot"></div>Channel Breakdown</div>
+          <div style="font-size:10px;color:var(--t3);">Budget → Media type → Channel → Reach curve · in k PLN</div>
+        </div>
+        <div class="sankey-box">
+          <svg id="sankeySvg" width="100%" height="600" viewBox="0 0 1160 600" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+        <div class="sankey-legend">
+          <div class="sk-lg"><span class="sk-lg-dot" style="background:#6366f1"></span>CLIENT curve</div>
+          <div class="sk-lg"><span class="sk-lg-dot" style="background:#71717a"></span>DEFAULT curve</div>
+          <div class="sk-lg"><span class="sk-lg-dot" style="background:#22c55e"></span>CUSTOM curve</div>
+        </div>
+      </div>
+
+      <div style="height:28px;"></div>
     </div>
   </div>
 
-  <!-- RIGHT: AI Chat — full height -->
+  <!-- RIGHT: AI Chat -->
   <div class="plan-right">
     <div class="chat-panel-header">
       <div>
@@ -789,9 +866,9 @@ tbody tr:hover td{background:var(--s3);}
     <div class="chat-panel-msgs" id="planMsgs">
       <div class="p-msg ai">
         <div class="p-msg-lbl">AI Planner</div>
-        <div class="p-msg-bubble">I've generated the media plan based on your brief. <strong>Balanced</strong> is recommended — it optimises for both reach and revenue.<br><br>I assigned <strong>CLIENT curves</strong> to TVN and YouTube (agency library Dairy FMCG data), and used your <strong>CUSTOM curve</strong> for OOH AMS. Click the <strong>?</strong> next to any curve badge to see why.</div>
+        <div class="p-msg-bubble">I've generated the media plan based on your brief. <strong>Balanced</strong> is recommended — it optimises for both reach and revenue simultaneously.<br><br>I assigned <strong>CLIENT curves</strong> to TVN and YouTube (agency Dairy FMCG data), and your <strong>CUSTOM curve</strong> is active for OOH AMS. Click <strong>?</strong> on any badge to see why.</div>
       </div>
-      <div class="chat-hint">💡 Try: "Increase TV to 40%", "Move 20k from OOH to Meta", "Boost W12–W13 by 15%", "What if we add TikTok?"</div>
+      <div class="chat-hint-box">💡 Try: "Increase TV to 40%", "Move 20k from OOH to Meta", "Boost W12–W13 by 15%", "What if we add TikTok?"</div>
     </div>
     <div class="chat-panel-input">
       <textarea id="planIn" placeholder="Ask AI to modify the plan…" rows="3" onkeypress="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();planSend();}"></textarea>
@@ -809,16 +886,20 @@ tbody tr:hover td{background:var(--s3);}
 
 <!-- LOADING -->
 <div class="loading" id="loader" style="display:none;">
-  <div class="loading-spinner"></div>
-  <div class="loading-text">AI is generating your media plan…</div>
-  <div class="loading-sub">Selecting channels · Assigning curves · Allocating budget</div>
+  <div class="loading-ring"></div>
+  <div class="loading-text">Generating your media plan…</div>
+  <div class="loading-sub">
+    <span class="loading-step done">✓ Brief parsed</span>
+    <span style="color:var(--b2)">·</span>
+    <span class="loading-step done">✓ Channels selected</span>
+    <span style="color:var(--b2)">·</span>
+    <span class="loading-step">Allocating budget…</span>
+  </div>
 </div>
 
 <script>
-// ── Data ──────────────────────────────────────────────
 const CH = ['TVN','Polsat','YouTube','Meta','OOH AMS','RMF FM','Programmatic'];
 const CC = ['#6366f1','#06b6d4','#f59e0b','#22c55e','#ec4899','#8b5cf6','#ef4444'];
-
 const FLIGHT = [
   [12,12,12,12,12,12,12,12,12,12,12,16,20],
   [ 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8],
@@ -828,19 +909,16 @@ const FLIGHT = [
   [ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3],
   [ 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
 ];
-
-const WHY_TEXT = {
-  tvn:     '<strong style="color:#fafafa">CLIENT curve</strong> — Agency library Dairy FMCG W25-45 curve selected. Outperforms Default by 2.1×. Upload your own empirical data to override.',
-  polsat:  '<strong style="color:#fafafa">DEFAULT curve</strong> — No agency library match found. Using Nielsen Connection Survey generic curve. Upload custom data to improve accuracy.',
-  youtube: '<strong style="color:#fafafa">CLIENT curve</strong> — Agency library Digital Video FMCG curve selected. Better frequency distribution for W25-45 vs Default.',
-  meta:    '<strong style="color:#fafafa">DEFAULT curve</strong> — Using Meta API reach estimates. No specific FMCG curve in library. Upload empirical data to improve.',
-  ooh:     '<strong style="color:#fafafa">CUSTOM curve ✓</strong> — Your AMS OOH empirical data (uploaded Feb 2026). Outperforms agency library by 1.8×. Highest-priority source.',
-  rmf:     '<strong style="color:#fafafa">DEFAULT curve</strong> — Using Nielsen Radex national radio curve. Consider uploading RMF-specific campaign data.',
-  prog:    '<strong style="color:#fafafa">DEFAULT curve</strong> — Using DV360 platform reach estimates. No agency curve for programmatic.',
+const WHY = {
+  tvn:     '<strong style="color:#f2f2f7">CLIENT curve</strong> — Agency library Dairy FMCG W25-45 curve selected. Outperforms Default by 2.1×. Upload your own empirical data to override.',
+  polsat:  '<strong style="color:#f2f2f7">DEFAULT curve</strong> — No agency library match found. Using Nielsen Connection Survey generic curve. Upload custom data to improve accuracy.',
+  youtube: '<strong style="color:#f2f2f7">CLIENT curve</strong> — Agency library Digital Video FMCG curve selected. Better frequency distribution for W25-45 vs Default.',
+  meta:    '<strong style="color:#f2f2f7">DEFAULT curve</strong> — Using Meta API reach estimates. No specific FMCG curve in library. Consider uploading empirical data.',
+  ooh:     '<strong style="color:#4ade80">CUSTOM curve ✓</strong> — Your AMS OOH empirical data (uploaded Feb 2026). Outperforms agency library by 1.8×. Highest-priority source.',
+  rmf:     '<strong style="color:#f2f2f7">DEFAULT curve</strong> — Using Nielsen Radex national radio curve. Consider uploading RMF-specific campaign data.',
+  prog:    '<strong style="color:#f2f2f7">DEFAULT curve</strong> — Using DV360 platform reach estimates. No agency curve available for programmatic.',
 };
 
-// ── Navigation ────────────────────────────────────────
-let qaStep = 0;
 
 function go(n) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -852,59 +930,103 @@ function go(n) {
     else if (i + 1 === n) { s.classList.add('active'); num.textContent = i + 1; }
     else num.textContent = i + 1;
   });
-  if (n === 3 && qaStep === 0) qaStep = 1;
-  if (n === 4) { renderFlightChart(); renderFlightGrid(); }
+  if (n === 3) renderWiz();
+  if (n === 4) { enhanceChannelRows(); recompute(); renderFlightChart(); renderFlightGrid(); }
 }
 
-// ── Upload / Analysis ─────────────────────────────────
 function uploadFile() {
   const dz = document.getElementById('dz');
   dz.style.borderColor = 'var(--green)';
-  dz.style.background = 'var(--green-bg)';
-  dz.innerHTML = '<div class="dz-icon">✅</div><div class="dz-text" style="color:var(--green);font-weight:600;">brief_q3_lactima.pdf uploaded</div><div class="dz-hint">2.4 MB · ready</div>';
+  dz.style.background = 'var(--green-dim)';
+  dz.innerHTML = '<div class="dz-icon">✅</div><div class="dz-text" style="color:var(--green);font-weight:600;">brief_q3_lactima.pdf uploaded</div><div class="dz-hint">2.4 MB · ready to analyse</div>';
 }
 function startAnalysis() { uploadFile(); go(3); }
 
-// ── Q&A Flow ──────────────────────────────────────────
-function qaReply() {
-  const inp = document.getElementById('qaIn');
-  inp.value = '';
-  const msgs = document.getElementById('qaMsgs');
-  const show = id => { const e = document.getElementById(id); if (e) e.style.display = 'flex'; };
-  const delay = (id, ms) => setTimeout(() => { show(id); msgs.scrollTop = msgs.scrollHeight; }, ms);
-  if (qaStep === 1) { show('a1'); delay('q2', 700); qaStep = 2; }
-  else if (qaStep === 2) { show('a2'); delay('q3', 700); qaStep = 3; }
-  else if (qaStep === 3) {
-    show('a3'); delay('q4', 700); qaStep = 4;
-    const g = document.getElementById('genBtn');
-    g.style.background = '#22c55e';
-    g.style.boxShadow = '0 0 0 3px rgba(34,197,94,.2)';
+/* ── Clarification wizard ── */
+const WIZ = [
+  { kicker:'Budget', q:'Is the budget net or gross?', hint:'The brief lists 500 000 PLN. This affects how much working media I can plan.',
+    type:'single', options:['Net — excluding agency fee & VAT','Gross — all-in'], default:0 },
+  { kicker:'Seasonality', q:'Any weeks to intensify or avoid?', hint:'The campaign runs July–September. Think holidays, back-to-school, paydays.',
+    type:'text', placeholder:'e.g. boost late September…', default:'Boost the last 2 weeks of September — back-to-school is key for Lactima.' },
+  { kicker:'Constraints', q:'Channels to exclude or must-include?', hint:'Any locked publisher deals or channels that are off the table?',
+    type:'text', placeholder:'e.g. TVN deal, exclude radio…', default:'TVN deal — minimum 30% of TV budget. Otherwise free hand.' },
+  { kicker:'Competition', q:'Who should we out-share?', hint:'Naming the main rival lets me benchmark a share-of-voice target.',
+    type:'text', placeholder:'e.g. main competitor and SOV goal…', default:'Main rival is Mlekovita — we want to beat their TV SOV in the period.' },
+  { kicker:'Audience', q:'Is there a core target to prioritise?', hint:'The brief says Women 25–45. A tighter core sharpens reach optimisation.',
+    type:'single', options:['Whole Women 25–45','Mums with kids under 12','Young professionals 25–34'], default:1 },
+  { kicker:'Creative', q:'Which creative formats are ready?', hint:'This decides which channels I can actually weight. Select all that apply.',
+    type:'multi', options:['30s TVC','15s TVC','6s YouTube bumper','Static social','OOH 6-sheet'], default:[0,1,2,3,4] },
+  { kicker:'Geography', q:'National or regional focus?', hint:'Coverage strategy changes the OOH and radio weighting.',
+    type:'single', options:['National','National + skew to top 5 metros','Selected regions only'], default:1 },
+  { kicker:'Frequency', q:'What effective frequency to optimise for?', hint:'I’ll plan to hit this many contacts against the core target.',
+    type:'single', options:['1+','2+','3+','4+','5+'], default:2, row:true },
+  { kicker:'Objective', q:'Awareness, or balance in some performance?', hint:'Determines how much budget goes to lower-funnel channels (Meta, Programmatic).',
+    type:'single', options:['Pure awareness','~85% awareness / 15% performance','70% awareness / 30% performance'], default:1 },
+];
+let wizStep = 0;
+const wizAns = WIZ.map(w => Array.isArray(w.default) ? [...w.default] : w.default);
+
+function renderWiz() {
+  const w = WIZ[wizStep];
+  const body = document.getElementById('wizBody');
+  document.getElementById('wizCount').textContent = `Question ${wizStep+1} of ${WIZ.length}`;
+  document.getElementById('wizBar').style.width = ((wizStep+1)/WIZ.length*100) + '%';
+  document.getElementById('wizBack').style.visibility = wizStep === 0 ? 'hidden' : 'visible';
+  document.getElementById('wizNext').textContent = wizStep === WIZ.length-1 ? 'Generate Plan →' : 'Next →';
+  let inner = `<div class="wiz-card"><div class="wiz-kicker">${w.kicker}</div><div class="wiz-q">${w.q}</div><div class="wiz-hint">${w.hint}</div>`;
+  if (w.type === 'text') {
+    inner += `<textarea class="wiz-input" id="wizText" placeholder="${w.placeholder||''}" oninput="wizAns[${wizStep}]=this.value">${wizAns[wizStep]||''}</textarea>`;
+    inner += `<div class="wiz-suggest">💡 AI suggestion — <b onclick="document.getElementById('wizText').value=WIZ[${wizStep}].default;wizAns[${wizStep}]=WIZ[${wizStep}].default">use “${w.default}”</b></div>`;
+  } else {
+    inner += `<div class="wiz-opts${w.row?' row':''}">`;
+    w.options.forEach((o,i) => {
+      const sel = w.type === 'multi' ? wizAns[wizStep].includes(i) : wizAns[wizStep] === i;
+      inner += `<div class="wiz-opt${sel?' sel':''}" onclick="wizPick(${i},${w.type==='multi'})"><div class="wiz-check"></div>${o}</div>`;
+    });
+    inner += `</div>`;
   }
-  msgs.scrollTop = msgs.scrollHeight;
+  inner += `</div>`;
+  body.innerHTML = inner;
+}
+
+function wizPick(i, multi) {
+  if (multi) {
+    const arr = wizAns[wizStep];
+    const idx = arr.indexOf(i);
+    if (idx >= 0) arr.splice(idx,1); else arr.push(i);
+  } else {
+    wizAns[wizStep] = i;
+  }
+  renderWiz();
+}
+
+function wizPrev() { if (wizStep > 0) { wizStep--; renderWiz(); } }
+function wizNext() {
+  if (wizStep < WIZ.length-1) { wizStep++; renderWiz(); }
+  else generatePlan();
 }
 
 function generatePlan() {
   const l = document.getElementById('loader');
   l.style.display = 'flex';
-  setTimeout(() => { l.style.display = 'none'; go(4); }, 2200);
+  setTimeout(() => { l.style.display = 'none'; go(4); }, 2400);
 }
 
-// ── Scenario picker ───────────────────────────────────
 function pickVar(el) {
   document.querySelectorAll('.var-card').forEach(c => c.classList.remove('sel'));
   el.classList.add('sel');
 }
 
-// ── Inline editing ────────────────────────────────────
 function editV(el) {
   const inp = document.createElement('input');
   inp.value = el.textContent;
-  inp.style.cssText = 'background:var(--s1);border:1px solid var(--acc);border-radius:4px;color:var(--t1);font-size:16px;font-weight:700;width:100%;padding:2px 6px;font-family:Inter,sans-serif;';
+  inp.style.cssText = 'background:var(--s1);border:1px solid var(--acc);border-radius:5px;color:var(--t1);font-size:17px;font-weight:800;width:100%;padding:3px 7px;font-family:Inter,sans-serif;letter-spacing:-.02em;';
   el.replaceWith(inp);
   inp.focus(); inp.select();
   const done = () => {
     const d = document.createElement('div');
     d.className = el.className;
+    d.style.cssText = el.style.cssText;
     d.textContent = inp.value || el.textContent;
     d.onclick = () => editV(d);
     inp.replaceWith(d);
@@ -917,7 +1039,7 @@ function editParam(el) {
   const orig = el.textContent;
   const inp = document.createElement('input');
   inp.value = orig;
-  inp.style.cssText = 'background:var(--s1);border:1px solid var(--acc);border-radius:4px;color:var(--t1);font-size:12px;font-weight:500;width:100%;padding:2px 6px;font-family:Inter,sans-serif;';
+  inp.style.cssText = 'background:var(--s1);border:1px solid rgba(99,102,241,.4);border-radius:5px;color:var(--t1);font-size:13px;font-weight:500;width:100%;padding:3px 7px;font-family:Inter,sans-serif;';
   el.replaceWith(inp);
   inp.focus(); inp.select();
   const done = () => {
@@ -931,13 +1053,41 @@ function editParam(el) {
   inp.onkeypress = e => { if (e.key === 'Enter') inp.blur(); };
 }
 
+function editBrief(el) {
+  const orig = el.textContent;
+  const cls = el.className;
+  const inp = document.createElement('input');
+  inp.value = orig;
+  inp.style.cssText = 'background:var(--s1);border:1px solid rgba(99,102,241,.4);border-radius:5px;color:var(--t1);font-size:13px;font-weight:500;width:100%;padding:3px 7px;font-family:Inter,sans-serif;';
+  el.replaceWith(inp);
+  inp.focus(); inp.select();
+  const done = () => {
+    const s = document.createElement('div');
+    s.className = cls;
+    s.textContent = inp.value || orig;
+    s.onclick = () => editBrief(s);
+    inp.replaceWith(s);
+  };
+  inp.onblur = done;
+  inp.onkeypress = e => { if (e.key === 'Enter') inp.blur(); };
+}
+
+function editAllBrief() {
+  document.querySelectorAll('#s3 .brief-item-val').forEach(v => {
+    if (!v.classList.contains('editable')) v.classList.add('editable');
+    v.onclick = () => editBrief(v);
+  });
+  const first = document.querySelector('#s3 .brief-item-val.editable');
+  if (first) editBrief(first);
+}
+
 function editPct(el) {
   const orig = el.textContent;
   const row = el.closest('.bar-row');
   const fill = row ? row.querySelector('.bar-fill') : null;
   const inp = document.createElement('input');
   inp.value = orig.replace('%','');
-  inp.style.cssText = 'background:var(--s1);border:1px solid var(--acc);border-radius:4px;color:var(--t1);font-size:11px;font-weight:600;width:34px;padding:2px 4px;font-family:Inter,sans-serif;text-align:right;';
+  inp.style.cssText = 'background:var(--s1);border:1px solid rgba(99,102,241,.4);border-radius:4px;color:var(--t1);font-size:11px;font-weight:700;width:38px;padding:2px 5px;font-family:Inter,sans-serif;text-align:right;';
   el.replaceWith(inp);
   inp.focus(); inp.select();
   const done = () => {
@@ -953,27 +1103,21 @@ function editPct(el) {
   inp.onkeypress = e => { if (e.key === 'Enter') inp.blur(); };
 }
 
-// ── Pills ─────────────────────────────────────────────
-function setPill(el, scope) {
-  const container = typeof scope === 'string' ? (scope.startsWith('#') ? document.getElementById(scope.slice(1)) : el.closest('.param-item').querySelector('.pill-row')) : scope;
-  if (container) container.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+function setPill(el, row) {
+  row.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
 }
 
-// ── Curve badges ──────────────────────────────────────
 const tooltip = document.getElementById('tooltip');
-
 function showWhy(e, key) {
   e.stopPropagation();
-  const text = WHY_TEXT[key] || '';
-  tooltip.innerHTML = text;
+  tooltip.innerHTML = WHY[key] || '';
   tooltip.classList.add('show');
-  const x = Math.min(e.clientX + 10, window.innerWidth - 260);
-  const y = Math.min(e.clientY + 10, window.innerHeight - 120);
+  const x = Math.min(e.clientX + 12, window.innerWidth - 270);
+  const y = Math.min(e.clientY + 10, window.innerHeight - 130);
   tooltip.style.left = x + 'px';
   tooltip.style.top = y + 'px';
 }
-
 document.addEventListener('click', () => tooltip.classList.remove('show'));
 
 function uploadCurve(btn, key) {
@@ -982,31 +1126,294 @@ function uploadCurve(btn, key) {
   badge.textContent = 'CUSTOM';
   badge.className = 'cb cb-custom';
   btn.textContent = '↑ Re-upload';
-  addPlanMsg('Curve for ' + key.toUpperCase() + ' updated to CUSTOM. Your empirical data is now active — reach forecasts recalculated.');
+  addPlanMsg('Custom curve uploaded for ' + key.toUpperCase() + '. Your empirical data is now active — reach forecasts have been recalculated.');
 }
 
-// ── Flighting ─────────────────────────────────────────
-function renderFlightChart() {
-  const svg = document.getElementById('flightSvg');
+/* ── Flexible channel table: add / remove channels ── */
+const CHANNEL_LIB = ['Cinema','Corporate Sponsorship','Digital Display','Direct Response','Events','Gaming','Influencer/KOL','Linear TV','Online Video','Out of Home','Owned Brand Assets','Print','Radio','Retail Media Networks','Search','Social','Streaming Audio','Streaming TV'];
+const CH_PALETTE = ['#6366f1','#06b6d4','#f59e0b','#22c55e','#ec4899','#8b5cf6','#ef4444','#14b8a6','#a855f7','#eab308'];
+let chColorIdx = 0;
+
+let chListenerAttached = false;
+function enhanceChannelRows() {
+  document.querySelectorAll('#chBody tr').forEach(tr => {
+    if (tr.classList.contains('group-tr') || tr.classList.contains('tbl-total')) return;
+    const nm = tr.querySelector('.ch-name');
+    if (nm && !nm.querySelector('.ch-del')) {
+      const b = document.createElement('button');
+      b.className = 'ch-del'; b.textContent = '×'; b.title = 'Remove channel';
+      b.onclick = () => delChannel(b);
+      nm.appendChild(b);
+    }
+  });
+  if (!chListenerAttached) {
+    const body = document.getElementById('chBody');
+    if (body) { body.addEventListener('input', () => recompute()); chListenerAttached = true; }
+  }
+}
+
+function delChannel(btn) {
+  const tr = btn.closest('tr');
+  const name = tr.querySelector('.ch-name') ? tr.querySelector('.ch-name').childNodes[1].textContent.trim() : 'Channel';
+  tr.remove();
+  recompute();
+  addPlanMsg('Removed <strong>' + name + '</strong> from the plan. Budget, allocation, split and channel flow have been recalculated.');
+}
+
+function toggleAddCh(e) {
+  e.stopPropagation();
+  const menu = document.getElementById('addChMenu');
+  const open = menu.classList.toggle('open');
+  if (open) { buildAddChList(''); const s = document.getElementById('addChSearch'); s.value=''; s.focus(); }
+}
+function filterAddCh(q) { buildAddChList(q); }
+function buildAddChList(q) {
+  const list = document.getElementById('addChList');
+  const present = Array.from(document.querySelectorAll('#chBody .ch-name')).map(n => n.childNodes[1].textContent.trim().toLowerCase());
+  const ql = q.toLowerCase();
+  list.innerHTML = CHANNEL_LIB
+    .filter(c => c.toLowerCase().includes(ql))
+    .map(c => { const used = present.includes(c.toLowerCase());
+      return `<div class="addch-item" style="${used?'opacity:.4;':''}" onclick="addChannel('${c.replace(/'/g,"\\'")}')"><span class="ch-dot" style="background:${CH_PALETTE[CHANNEL_LIB.indexOf(c)%CH_PALETTE.length]}"></span>${c}${used?' &nbsp;<span style=\"font-size:10px;color:var(--t3)\">(added)</span>':''}</div>`; })
+    .join('') || '<div style="padding:10px;color:var(--t3);font-size:12px;">No matches</div>';
+}
+
+function addChannel(name) {
+  const color = CH_PALETTE[chColorIdx++ % CH_PALETTE.length];
+  const id = 'add' + Date.now();
+  const tr = document.createElement('tr');
+  tr.innerHTML =
+    `<td><div class="ch-name"><div class="ch-dot" style="background:${color}"></div>${name}<button class="ch-del" title="Remove channel">×</button></div></td>`+
+    `<td class="cell-edit" contenteditable="true" style="color:var(--t2)">Standard</td>`+
+    `<td class="cell-edit" contenteditable="true">— PLN</td>`+
+    `<td><div class="curve-cell"><span class="cb cb-default" id="cb-${id}">DEFAULT</span><button class="upload-btn" onclick="uploadCurve(this,'${id}')">↑ Upload</button></div></td>`+
+    `<td><input class="cin" value="0" /></td>`+
+    `<td><input class="cin" value="0" /></td>`+
+    `<td class="bud-hi cell-edit" contenteditable="true">0 PLN</td>`+
+    `<td class="cell-edit" contenteditable="true" style="color:var(--t2)">0%</td>`;
+  document.getElementById('chTotal').before(tr);
+  tr.querySelector('.ch-del').onclick = function(){ delChannel(this); };
+  document.getElementById('addChMenu').classList.remove('open');
+  recompute();
+  addPlanMsg('Added <strong>' + name + '</strong> to the plan. Set its budget in the table and the allocation, split and channel flow update automatically.');
+}
+document.addEventListener('click', () => { const m = document.getElementById('addChMenu'); if (m) m.classList.remove('open'); });
+
+/* ── Automatic recalculation ── */
+const CLASS_COLOR = { c1:'#6366f1', c2:'#06b6d4', c3:'#f59e0b', c4:'#22c55e', c5:'#ec4899', c6:'#8b5cf6', c7:'#ef4444' };
+const CH_MEDIA = {
+  'TVN':'Television','Polsat':'Television','Linear TV':'Television','Streaming TV':'Television','Cinema':'Television',
+  'YouTube':'Digital','Meta':'Digital','Programmatic':'Digital','Digital Display':'Digital','Online Video':'Digital','Search':'Digital','Social':'Digital','Direct Response':'Digital','Retail Media Networks':'Digital','Gaming':'Digital','Influencer/KOL':'Digital',
+  'OOH AMS':'OOH + Audio','RMF FM':'OOH + Audio','Radio':'OOH + Audio','Out of Home':'OOH + Audio','Streaming Audio':'OOH + Audio',
+  'Print':'Print','Events':'Experiential','Corporate Sponsorship':'Experiential','Owned Brand Assets':'Owned'
+};
+const MT_COLOR = { 'Television':'#6366f1','Digital':'#f59e0b','OOH + Audio':'#ec4899','Print':'#8b5cf6','Experiential':'#14b8a6','Owned':'#a855f7','Other':'#71717a' };
+const parseNum = s => { const n = parseFloat((s||'').replace(/[^\d.]/g,'')); return isNaN(n)?0:n; };
+const fmtInt = n => Math.round(n).toLocaleString('en-US').replace(/,/g,' ');
+
+function getChannels() {
+  const rows = document.querySelectorAll('#chBody tr');
+  const out = [];
+  rows.forEach(tr => {
+    if (tr.classList.contains('group-tr') || tr.classList.contains('tbl-total')) return;
+    const nameEl = tr.querySelector('.ch-name');
+    if (!nameEl) return;
+    const name = nameEl.childNodes[1] ? nameEl.childNodes[1].textContent.trim() : '';
+    const dot = tr.querySelector('.ch-dot');
+    let color = dot && (dot.style.background || dot.style.backgroundColor);
+    if (!color && dot) { const cls = [...dot.classList].find(c => /^c\d$/.test(c)); color = CLASS_COLOR[cls] || '#71717a'; }
+    const tds = tr.querySelectorAll('td');
+    const cpm = parseNum(tds[2] && tds[2].textContent);
+    const budget = parseNum(tr.querySelector('.bud-hi') && tr.querySelector('.bud-hi').textContent);
+    const curve = (tr.querySelector('.cb') && tr.querySelector('.cb').textContent.trim()) || 'DEFAULT';
+    out.push({ name, color, cpm, budget, curve, tr, mt: CH_MEDIA[name] || 'Other' });
+  });
+  return out;
+}
+
+function recompute() {
+  const chans = getChannels();
+  const total = chans.reduce((s,c) => s + c.budget, 0) || 1;
+  // table: % per row + total row
+  chans.forEach(c => {
+    const tds = c.tr.querySelectorAll('td');
+    const pctCell = tds[tds.length-1];
+    if (pctCell && pctCell !== document.activeElement) pctCell.textContent = Math.round(c.budget/total*100) + '%';
+  });
+  const totalRow = document.getElementById('chTotal');
+  if (totalRow) {
+    const t = totalRow.querySelectorAll('td');
+    t[1].innerHTML = '<strong>' + fmtInt(total) + ' PLN</strong>';
+    t[2].innerHTML = '<strong>100%</strong>';
+  }
+  // KPI summary (budget-derived)
+  const impr = chans.reduce((s,c) => s + (c.cpm>0 ? c.budget/c.cpm*1000 : 0), 0);
+  const wCpm = total ? chans.reduce((s,c) => s + c.cpm*c.budget, 0)/total : 0;
+  setMetric('Total Budget', fmtInt(total));
+  setMetric('Total Impressions', (impr/1e6).toFixed(1) + 'M');
+  setMetric('Avg. CPM', wCpm.toFixed(2));
+  setMetric('Channels', String(chans.length));
+  // charts
+  renderBudget(chans, total);
+  renderSankey();
+}
+
+function setMetric(label, val) {
+  document.querySelectorAll('.metric').forEach(m => {
+    const l = m.querySelector('.metric-l');
+    if (l && l.textContent.trim() === label) {
+      const v = m.querySelector('.metric-v');
+      if (v && v !== document.activeElement) {
+        // preserve any trailing unit span
+        const span = v.querySelector('span');
+        v.childNodes[0].nodeValue = val;
+        if (span) {} // keep
+      }
+    }
+  });
+}
+
+function renderBudget(chans, total) {
+  const bars = document.getElementById('allocBars');
+  const donut = document.getElementById('allocDonut');
+  const legend = document.getElementById('allocLegend');
+  if (!bars) return;
+  bars.innerHTML = chans.map(c => {
+    const pct = Math.round(c.budget/total*100);
+    return `<div class="bar-row"><div class="bar-lbl">${c.name}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${c.color}"></div></div><div class="bar-pct-ro">${pct}%</div></div>`;
+  }).join('');
+  // donut
+  const C = 2*Math.PI*38; let off = 0;
+  const circles = chans.map(c => {
+    const seg = c.budget/total*C;
+    const el = `<circle cx="50" cy="50" r="38" fill="none" stroke="${c.color}" stroke-width="16" stroke-dasharray="${seg.toFixed(2)} ${(C-seg).toFixed(2)}" stroke-dashoffset="${(-off).toFixed(2)}" transform="rotate(-90 50 50)"/>`;
+    off += seg; return el;
+  }).join('');
+  donut.innerHTML = `<svg viewBox="0 0 100 100" width="172" height="172">${circles}</svg><div class="pie-center"><div class="pie-center-val">${Math.round(total/1000)}k</div><div class="pie-center-lbl">PLN total</div></div>`;
+  legend.innerHTML = chans.map(c => `<div class="pie-li"><div class="pie-li-dot" style="background:${c.color}"></div>${c.name}<span class="pie-li-pct">${Math.round(c.budget/total*100)}%</span></div>`).join('');
+}
+
+/* Budget-flow Sankey (media plan data): Budget → Media type → Channel → Reach curve */
+const SK_CURVE = { 'CLIENT':'#6366f1','DEFAULT':'#71717a','CUSTOM':'#22c55e' };
+
+function renderSankey() {
+  const svg = document.getElementById('sankeySvg');
   if (!svg) return;
-  const W = 13, barW = 38, gap = 4, padL = 2, maxH = 80;
+  // build flows from the live channel table: [mediaType, channel, curve, budget(k)]
+  const chans = getChannels().filter(c => c.budget > 0);
+  if (!chans.length) { svg.innerHTML = ''; return; }
+  const SK_FLOWS = chans.map(c => [c.mt, c.name, c.curve, Math.round(c.budget/1000)]);
+  const SK_MT = MT_COLOR;
+  const SK_CH = {}; chans.forEach(c => SK_CH[c.name] = c.color);
+
+  const VH = 600, nodeW = 12, padT = 50, padB = 20, gap = 13;
+  const stageX = [10, 385, 760, 1000];
+  const headers = ['Budget','Media type','Channel','Reach curve'];
+  const total = SK_FLOWS.reduce((s,f) => s + f[3], 0);
+
+  const nodeAt = (f, s) => s===0 ? 'Total budget' : s===1 ? f[0] : s===2 ? f[1] : f[2];
+  // node color per stage
+  const nodeColor = (s, id) => s===0 ? 'url(#skTot)' : s===1 ? (SK_MT[id]||'#71717a') : s===2 ? SK_CH[id] : SK_CURVE[id];
+  // link color: budget→media uses media colour, later stages use channel colour
+  const linkColor = (f, s) => s===0 ? (SK_MT[f[0]]||'#71717a') : SK_CH[f[1]];
+
+  const stages = [];
+  for (let s = 0; s < 4; s++) {
+    const order = [], map = {};
+    SK_FLOWS.forEach(f => { const id = nodeAt(f,s); if (!(id in map)) { map[id] = {id, v:0}; order.push(id); } map[id].v += f[3]; });
+    stages.push(order.map(id => map[id]));
+  }
+
+  const maxNodes = Math.max(...stages.map(st => st.length));
+  const scale = (VH - padT - padB - (maxNodes-1)*gap) / total;
+
+  const pos = {};
+  stages.forEach((st, s) => {
+    let y = padT;
+    st.forEach(n => { const h = n.v*scale; pos[s+'|'+n.id] = {x:stageX[s], y, h}; y += h + gap; });
+  });
+
+  const linkMap = {}; const linkOrder = [];
+  for (let s = 0; s < 3; s++) {
+    SK_FLOWS.forEach(f => {
+      const a = s+'|'+nodeAt(f,s), b = (s+1)+'|'+nodeAt(f,s+1), k = a+'>'+b;
+      if (!(k in linkMap)) { linkMap[k] = {a, b, v:0, color:linkColor(f,s)}; linkOrder.push(k); }
+      linkMap[k].v += f[3];
+    });
+  }
+  const links = linkOrder.map(k => linkMap[k]);
+
+  const outOff = {};
+  links.sort((p,q) => pos[p.a].y - pos[q.a].y || pos[p.b].y - pos[q.b].y);
+  links.forEach(l => {
+    if (outOff[l.a]==null) outOff[l.a] = pos[l.a].y;
+    l.t = l.v*scale; l.sy = outOff[l.a]; outOff[l.a] += l.t;
+  });
+  const byTarget = {};
+  links.forEach(l => { (byTarget[l.b] = byTarget[l.b]||[]).push(l); });
+  Object.keys(byTarget).forEach(b => {
+    byTarget[b].sort((p,q) => pos[p.a].y - pos[q.a].y);
+    let off = pos[b].y;
+    byTarget[b].forEach(l => { l.ty = off; off += l.t; });
+  });
+
+  const rect = (x,y,h,fill) => `<rect x="${x}" y="${y}" width="${nodeW}" height="${Math.max(h,1)}" rx="2" fill="${fill}"/>`;
+  const line = (x,y,s,fill,size,weight) => `<text x="${x}" y="${y}" fill="${fill}" font-family="Inter" font-size="${size}" font-weight="${weight||500}">${s}</text>`;
+  const band = (x0,y0,x1,y1,t,fill) => { const mx=(x0+x1)/2; return `<path class="sk-link" d="M${x0},${y0} C${mx},${y0} ${mx},${y1} ${x1},${y1} L${x1},${y1+t} C${mx},${y1+t} ${mx},${y0+t} ${x0},${y0+t} Z" fill="${fill}" opacity="0.4"/>`; };
+
+  let out = `<defs><linearGradient id="skTot" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6366f1"/><stop offset="55%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#ec4899"/></linearGradient></defs>`;
+  headers.forEach((h,i) => { out += line(stageX[i], 28, h, 'var(--t3)', 12, 600); });
+  links.forEach(l => out += band(pos[l.a].x + nodeW, l.sy, pos[l.b].x, l.ty, l.t, l.color));
+
+  stages.forEach((st, s) => {
+    st.forEach(n => {
+      const p = pos[s+'|'+n.id];
+      out += rect(p.x, p.y, p.h, nodeColor(s, n.id));
+      const cy = p.y + p.h/2, tx = p.x + nodeW + 10;
+      const pct = Math.round(n.v/total*100);
+      if (s===0) {
+        out += line(tx, cy-4, 'Total budget', 'var(--t1)', 13, 700);
+        out += line(tx, cy+14, total+'k PLN', 'var(--t2)', 11, 600);
+      } else if (s===1) {
+        out += line(tx, cy-2, n.id, 'var(--t1)', 12.5, 700);
+        out += line(tx, cy+13, n.v+'k · '+pct+'%', 'var(--t3)', 10.5, 500);
+      } else if (s===2) {
+        out += line(tx, cy-2, n.id, 'var(--t1)', 12, 600);
+        out += line(tx, cy+13, n.v+'k · '+pct+'%', 'var(--t3)', 10, 500);
+      } else {
+        out += line(tx, cy-2, n.id+' curve', 'var(--t1)', 11.5, 600);
+        out += line(tx, cy+13, n.v+'k · '+pct+'%', 'var(--t3)', 10, 500);
+      }
+    });
+  });
+
+  svg.innerHTML = out;
+}
+
+function renderFlightChart() {
+  const box = document.getElementById('flightChart');
+  if (!box) return;
+  const W = 13;
   const totals = Array.from({length:W}, (_,w) => FLIGHT.reduce((s,r) => s + (r[w]||0), 0));
   const maxT = Math.max(...totals);
   let html = '';
   for (let w = 0; w < W; w++) {
-    const x = padL + w * (barW + gap);
-    let stackY = 88;
-    for (let c = 0; c < CH.length; c++) {
+    const boost = w >= 11;
+    let segs = '';
+    // top → bottom: render from last channel down so TVN (c0) sits at the bottom
+    for (let c = CH.length - 1; c >= 0; c--) {
       const v = FLIGHT[c][w] || 0;
       if (!v) continue;
-      const h = Math.round((v / maxT) * maxH);
-      stackY -= h;
-      html += `<rect x="${x}" y="${stackY}" width="${barW}" height="${h}" fill="${CC[c]}" rx="1" opacity="0.85"/>`;
+      const pct = (v / maxT) * 100;
+      segs += `<div class="fl-seg" style="height:${pct}%;background:${CC[c]};" title="${CH[c]}: ${v}k PLN"></div>`;
     }
-    const wLabel = 'W' + (w + 1);
-    html += `<text x="${x + barW/2}" y="90" fill="#52525b" font-size="8" font-family="Inter" text-anchor="middle">${wLabel}</text>`;
+    html += `<div class="fl-col${boost?' boost':''}">
+      <div class="fl-total">${totals[w]}k</div>
+      <div class="fl-stack">${segs}</div>
+      <div class="fl-wk">W${w+1}</div>
+    </div>`;
   }
-  svg.innerHTML = html;
+  box.innerHTML = html;
 }
 
 function renderFlightGrid() {
@@ -1015,27 +1422,23 @@ function renderFlightGrid() {
   const W = 13;
   let html = '<thead><tr><th>Channel</th>';
   for (let w = 1; w <= W; w++) html += `<th>W${w}</th>`;
-  html += '<th>Total</th></tr></thead><tbody>';
-
+  html += '<th>Total (k PLN)</th></tr></thead><tbody>';
   for (let c = 0; c < CH.length; c++) {
     const total = FLIGHT[c].reduce((s,v) => s+v, 0);
-    html += `<tr><td><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${CC[c]};margin-right:5px;"></span>${CH[c]}</td>`;
+    html += `<tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${CC[c]};margin-right:6px;flex-shrink:0;"></span>${CH[c]}</td>`;
     for (let w = 0; w < W; w++) {
-      html += `<td><span class="fc" contenteditable="true">${FLIGHT[c][w]}</span></td>`;
+      html += `<td><span class="fc" contenteditable="true">${FLIGHT[c][w] || 0}</span></td>`;
     }
-    html += `<td>${total}</td></tr>`;
+    html += `<td>${total}k</td></tr>`;
   }
-
   const weekTotals = Array.from({length:W}, (_,w) => FLIGHT.reduce((s,r) => s + (r[w]||0), 0));
-  const grandTotal = weekTotals.reduce((s,v) => s+v, 0);
+  const grand = weekTotals.reduce((s,v) => s+v, 0);
   html += '<tr class="fg-total"><td>TOTAL</td>';
-  weekTotals.forEach(t => { html += `<td>${t}</td>`; });
-  html += `<td>${grandTotal}</td></tr>`;
-  html += '</tbody>';
+  weekTotals.forEach(t => { html += `<td>${t}k</td>`; });
+  html += `<td>${grand}k</td></tr></tbody>`;
   grid.innerHTML = html;
 }
 
-// ── Plan chat ─────────────────────────────────────────
 function setMsg(t) { const i = document.getElementById('planIn'); i.value = t; i.focus(); }
 
 function addPlanMsg(text) {
@@ -1057,7 +1460,7 @@ function planSend() {
     const t = document.getElementById('typ');
     if (t) t.outerHTML = `<div class="p-msg ai"><div class="p-msg-lbl">AI Planner</div><div class="p-msg-bubble">Done — I've updated the plan. The channel table, flighting grid, and KPI forecasts have been revised. Let me know if you'd like further adjustments.</div></div>`;
     msgs.scrollTop = msgs.scrollHeight;
-  }, 1600);
+  }, 1800);
 }
 </script>
 </body>
