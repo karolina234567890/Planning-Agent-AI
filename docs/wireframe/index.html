@@ -243,6 +243,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);font-si
 .bar-fill{height:100%;border-radius:5px;transition:width .5s cubic-bezier(.4,0,.2,1);}
 .bar-pct{min-width:52px;font-size:13px;color:var(--t1);text-align:center;flex-shrink:0;cursor:text;font-weight:600;font-variant-numeric:tabular-nums;background:var(--field);border:1px solid var(--field-border);border-radius:var(--r3);padding:3px 6px;transition:all .15s;}
 .bar-pct:hover{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-glow);}
+.bar-pct-ro{min-width:44px;font-size:13px;color:var(--t1);text-align:right;flex-shrink:0;font-weight:600;font-variant-numeric:tabular-nums;}
 .pie-wrap{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:32px;height:100%;}
 .pie-svg-wrap{position:relative;flex-shrink:0;}
 .pie-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
@@ -633,40 +634,13 @@ tr:hover .ch-del{opacity:1;}
         <div class="alloc-wrap">
           <div class="alloc-card">
             <div class="alloc-card-head">Budget allocation by channel</div>
-            <div class="alloc-bars">
-              <div class="bar-row"><div class="bar-lbl">TVN</div><div class="bar-track"><div class="bar-fill c1" style="width:32%"></div></div><div class="bar-pct" onclick="editPct(this)">32%</div></div>
-              <div class="bar-row"><div class="bar-lbl">Polsat</div><div class="bar-track"><div class="bar-fill c2" style="width:18%"></div></div><div class="bar-pct" onclick="editPct(this)">18%</div></div>
-              <div class="bar-row"><div class="bar-lbl">YouTube</div><div class="bar-track"><div class="bar-fill c3" style="width:20%"></div></div><div class="bar-pct" onclick="editPct(this)">20%</div></div>
-              <div class="bar-row"><div class="bar-lbl">Meta</div><div class="bar-track"><div class="bar-fill c4" style="width:15%"></div></div><div class="bar-pct" onclick="editPct(this)">15%</div></div>
-              <div class="bar-row"><div class="bar-lbl">OOH AMS</div><div class="bar-track"><div class="bar-fill c5" style="width:8%"></div></div><div class="bar-pct" onclick="editPct(this)">8%</div></div>
-              <div class="bar-row"><div class="bar-lbl">RMF FM</div><div class="bar-track"><div class="bar-fill c6" style="width:5%"></div></div><div class="bar-pct" onclick="editPct(this)">5%</div></div>
-              <div class="bar-row"><div class="bar-lbl">Programmatic</div><div class="bar-track"><div class="bar-fill c7" style="width:2%"></div></div><div class="bar-pct" onclick="editPct(this)">2%</div></div>
-            </div>
+            <div class="alloc-bars" id="allocBars"></div>
           </div>
           <div class="alloc-card">
             <div class="alloc-card-head">Budget split by channel</div>
             <div class="pie-wrap">
-              <div class="pie-svg-wrap">
-                <svg viewBox="0 0 100 100" width="172" height="172">
-                  <circle cx="50" cy="50" r="38" fill="none" stroke="#6366f1" stroke-width="16" stroke-dasharray="76.40 162.36" stroke-dashoffset="0" transform="rotate(-90 50 50)"/>
-                  <circle cx="50" cy="50" r="38" fill="none" stroke="#06b6d4" stroke-width="16" stroke-dasharray="42.98 195.78" stroke-dashoffset="-76.40" transform="rotate(-90 50 50)"/>
-                  <circle cx="50" cy="50" r="38" fill="none" stroke="#f59e0b" stroke-width="16" stroke-dasharray="47.75 191.01" stroke-dashoffset="-119.38" transform="rotate(-90 50 50)"/>
-                  <circle cx="50" cy="50" r="38" fill="none" stroke="#22c55e" stroke-width="16" stroke-dasharray="35.81 202.95" stroke-dashoffset="-167.13" transform="rotate(-90 50 50)"/>
-                  <circle cx="50" cy="50" r="38" fill="none" stroke="#ec4899" stroke-width="16" stroke-dasharray="19.10 219.66" stroke-dashoffset="-202.94" transform="rotate(-90 50 50)"/>
-                  <circle cx="50" cy="50" r="38" fill="none" stroke="#8b5cf6" stroke-width="16" stroke-dasharray="11.94 226.82" stroke-dashoffset="-222.04" transform="rotate(-90 50 50)"/>
-                  <circle cx="50" cy="50" r="38" fill="none" stroke="#ef4444" stroke-width="16" stroke-dasharray="4.78 233.98" stroke-dashoffset="-233.98" transform="rotate(-90 50 50)"/>
-                </svg>
-                <div class="pie-center"><div class="pie-center-val">500k</div><div class="pie-center-lbl">PLN total</div></div>
-              </div>
-              <div class="pie-legend">
-                <div class="pie-li"><div class="pie-li-dot c1"></div>TVN<span class="pie-li-pct">32%</span></div>
-                <div class="pie-li"><div class="pie-li-dot c2"></div>Polsat<span class="pie-li-pct">18%</span></div>
-                <div class="pie-li"><div class="pie-li-dot c3"></div>YouTube<span class="pie-li-pct">20%</span></div>
-                <div class="pie-li"><div class="pie-li-dot c4"></div>Meta<span class="pie-li-pct">15%</span></div>
-                <div class="pie-li"><div class="pie-li-dot c5"></div>OOH AMS<span class="pie-li-pct">8%</span></div>
-                <div class="pie-li"><div class="pie-li-dot c6"></div>RMF FM<span class="pie-li-pct">5%</span></div>
-                <div class="pie-li"><div class="pie-li-dot c7"></div>Programmatic<span class="pie-li-pct">2%</span></div>
-              </div>
+              <div class="pie-svg-wrap" id="allocDonut"></div>
+              <div class="pie-legend" id="allocLegend"></div>
             </div>
           </div>
         </div>
@@ -957,7 +931,7 @@ function go(n) {
     else num.textContent = i + 1;
   });
   if (n === 3) renderWiz();
-  if (n === 4) { enhanceChannelRows(); renderSankey(); renderFlightChart(); renderFlightGrid(); }
+  if (n === 4) { enhanceChannelRows(); recompute(); renderFlightChart(); renderFlightGrid(); }
 }
 
 function uploadFile() {
@@ -1160,6 +1134,7 @@ const CHANNEL_LIB = ['Cinema','Corporate Sponsorship','Digital Display','Direct 
 const CH_PALETTE = ['#6366f1','#06b6d4','#f59e0b','#22c55e','#ec4899','#8b5cf6','#ef4444','#14b8a6','#a855f7','#eab308'];
 let chColorIdx = 0;
 
+let chListenerAttached = false;
 function enhanceChannelRows() {
   document.querySelectorAll('#chBody tr').forEach(tr => {
     if (tr.classList.contains('group-tr') || tr.classList.contains('tbl-total')) return;
@@ -1171,13 +1146,18 @@ function enhanceChannelRows() {
       nm.appendChild(b);
     }
   });
+  if (!chListenerAttached) {
+    const body = document.getElementById('chBody');
+    if (body) { body.addEventListener('input', () => recompute()); chListenerAttached = true; }
+  }
 }
 
 function delChannel(btn) {
   const tr = btn.closest('tr');
   const name = tr.querySelector('.ch-name') ? tr.querySelector('.ch-name').childNodes[1].textContent.trim() : 'Channel';
   tr.remove();
-  addPlanMsg('Removed <strong>' + name + '</strong> from the plan. Re-run "Rebalance budget" in chat to redistribute its spend.');
+  recompute();
+  addPlanMsg('Removed <strong>' + name + '</strong> from the plan. Budget, allocation, split and channel flow have been recalculated.');
 }
 
 function toggleAddCh(e) {
@@ -1214,28 +1194,118 @@ function addChannel(name) {
   document.getElementById('chTotal').before(tr);
   tr.querySelector('.ch-del').onclick = function(){ delChannel(this); };
   document.getElementById('addChMenu').classList.remove('open');
-  addPlanMsg('Added <strong>' + name + '</strong> to the plan. Set its budget and I\'ll fold it into the reach & flighting forecasts.');
+  recompute();
+  addPlanMsg('Added <strong>' + name + '</strong> to the plan. Set its budget in the table and the allocation, split and channel flow update automatically.');
 }
 document.addEventListener('click', () => { const m = document.getElementById('addChMenu'); if (m) m.classList.remove('open'); });
 
+/* ── Automatic recalculation ── */
+const CLASS_COLOR = { c1:'#6366f1', c2:'#06b6d4', c3:'#f59e0b', c4:'#22c55e', c5:'#ec4899', c6:'#8b5cf6', c7:'#ef4444' };
+const CH_MEDIA = {
+  'TVN':'Television','Polsat':'Television','Linear TV':'Television','Streaming TV':'Television','Cinema':'Television',
+  'YouTube':'Digital','Meta':'Digital','Programmatic':'Digital','Digital Display':'Digital','Online Video':'Digital','Search':'Digital','Social':'Digital','Direct Response':'Digital','Retail Media Networks':'Digital','Gaming':'Digital','Influencer/KOL':'Digital',
+  'OOH AMS':'OOH + Audio','RMF FM':'OOH + Audio','Radio':'OOH + Audio','Out of Home':'OOH + Audio','Streaming Audio':'OOH + Audio',
+  'Print':'Print','Events':'Experiential','Corporate Sponsorship':'Experiential','Owned Brand Assets':'Owned'
+};
+const MT_COLOR = { 'Television':'#6366f1','Digital':'#f59e0b','OOH + Audio':'#ec4899','Print':'#8b5cf6','Experiential':'#14b8a6','Owned':'#a855f7','Other':'#71717a' };
+const parseNum = s => { const n = parseFloat((s||'').replace(/[^\d.]/g,'')); return isNaN(n)?0:n; };
+const fmtInt = n => Math.round(n).toLocaleString('en-US').replace(/,/g,' ');
+
+function getChannels() {
+  const rows = document.querySelectorAll('#chBody tr');
+  const out = [];
+  rows.forEach(tr => {
+    if (tr.classList.contains('group-tr') || tr.classList.contains('tbl-total')) return;
+    const nameEl = tr.querySelector('.ch-name');
+    if (!nameEl) return;
+    const name = nameEl.childNodes[1] ? nameEl.childNodes[1].textContent.trim() : '';
+    const dot = tr.querySelector('.ch-dot');
+    let color = dot && (dot.style.background || dot.style.backgroundColor);
+    if (!color && dot) { const cls = [...dot.classList].find(c => /^c\d$/.test(c)); color = CLASS_COLOR[cls] || '#71717a'; }
+    const tds = tr.querySelectorAll('td');
+    const cpm = parseNum(tds[2] && tds[2].textContent);
+    const budget = parseNum(tr.querySelector('.bud-hi') && tr.querySelector('.bud-hi').textContent);
+    const curve = (tr.querySelector('.cb') && tr.querySelector('.cb').textContent.trim()) || 'DEFAULT';
+    out.push({ name, color, cpm, budget, curve, tr, mt: CH_MEDIA[name] || 'Other' });
+  });
+  return out;
+}
+
+function recompute() {
+  const chans = getChannels();
+  const total = chans.reduce((s,c) => s + c.budget, 0) || 1;
+  // table: % per row + total row
+  chans.forEach(c => {
+    const tds = c.tr.querySelectorAll('td');
+    const pctCell = tds[tds.length-1];
+    if (pctCell && pctCell !== document.activeElement) pctCell.textContent = Math.round(c.budget/total*100) + '%';
+  });
+  const totalRow = document.getElementById('chTotal');
+  if (totalRow) {
+    const t = totalRow.querySelectorAll('td');
+    t[1].innerHTML = '<strong>' + fmtInt(total) + ' PLN</strong>';
+    t[2].innerHTML = '<strong>100%</strong>';
+  }
+  // KPI summary (budget-derived)
+  const impr = chans.reduce((s,c) => s + (c.cpm>0 ? c.budget/c.cpm*1000 : 0), 0);
+  const wCpm = total ? chans.reduce((s,c) => s + c.cpm*c.budget, 0)/total : 0;
+  setMetric('Total Budget', fmtInt(total));
+  setMetric('Total Impressions', (impr/1e6).toFixed(1) + 'M');
+  setMetric('Avg. CPM', wCpm.toFixed(2));
+  setMetric('Channels', String(chans.length));
+  // charts
+  renderBudget(chans, total);
+  renderSankey();
+}
+
+function setMetric(label, val) {
+  document.querySelectorAll('.metric').forEach(m => {
+    const l = m.querySelector('.metric-l');
+    if (l && l.textContent.trim() === label) {
+      const v = m.querySelector('.metric-v');
+      if (v && v !== document.activeElement) {
+        // preserve any trailing unit span
+        const span = v.querySelector('span');
+        v.childNodes[0].nodeValue = val;
+        if (span) {} // keep
+      }
+    }
+  });
+}
+
+function renderBudget(chans, total) {
+  const bars = document.getElementById('allocBars');
+  const donut = document.getElementById('allocDonut');
+  const legend = document.getElementById('allocLegend');
+  if (!bars) return;
+  bars.innerHTML = chans.map(c => {
+    const pct = Math.round(c.budget/total*100);
+    return `<div class="bar-row"><div class="bar-lbl">${c.name}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${c.color}"></div></div><div class="bar-pct-ro">${pct}%</div></div>`;
+  }).join('');
+  // donut
+  const C = 2*Math.PI*38; let off = 0;
+  const circles = chans.map(c => {
+    const seg = c.budget/total*C;
+    const el = `<circle cx="50" cy="50" r="38" fill="none" stroke="${c.color}" stroke-width="16" stroke-dasharray="${seg.toFixed(2)} ${(C-seg).toFixed(2)}" stroke-dashoffset="${(-off).toFixed(2)}" transform="rotate(-90 50 50)"/>`;
+    off += seg; return el;
+  }).join('');
+  donut.innerHTML = `<svg viewBox="0 0 100 100" width="172" height="172">${circles}</svg><div class="pie-center"><div class="pie-center-val">${Math.round(total/1000)}k</div><div class="pie-center-lbl">PLN total</div></div>`;
+  legend.innerHTML = chans.map(c => `<div class="pie-li"><div class="pie-li-dot" style="background:${c.color}"></div>${c.name}<span class="pie-li-pct">${Math.round(c.budget/total*100)}%</span></div>`).join('');
+}
+
 /* Budget-flow Sankey (media plan data): Budget → Media type → Channel → Reach curve */
-// [mediaType, channel, curve, budget(k)]
-const SK_FLOWS = [
-  ['Television','TVN','CLIENT',160],
-  ['Television','Polsat','DEFAULT',90],
-  ['Digital','YouTube','CLIENT',100],
-  ['Digital','Meta','DEFAULT',75],
-  ['Digital','Programmatic','DEFAULT',10],
-  ['OOH + Audio','OOH AMS','CUSTOM',40],
-  ['OOH + Audio','RMF FM','DEFAULT',25],
-];
-const SK_MT = { 'Television':'#6366f1', 'Digital':'#f59e0b', 'OOH + Audio':'#ec4899' };
-const SK_CH = { 'TVN':'#6366f1','Polsat':'#06b6d4','YouTube':'#f59e0b','Meta':'#22c55e','Programmatic':'#ef4444','OOH AMS':'#ec4899','RMF FM':'#8b5cf6' };
 const SK_CURVE = { 'CLIENT':'#6366f1','DEFAULT':'#71717a','CUSTOM':'#22c55e' };
 
 function renderSankey() {
   const svg = document.getElementById('sankeySvg');
   if (!svg) return;
+  // build flows from the live channel table: [mediaType, channel, curve, budget(k)]
+  const chans = getChannels().filter(c => c.budget > 0);
+  if (!chans.length) { svg.innerHTML = ''; return; }
+  const SK_FLOWS = chans.map(c => [c.mt, c.name, c.curve, Math.round(c.budget/1000)]);
+  const SK_MT = MT_COLOR;
+  const SK_CH = {}; chans.forEach(c => SK_CH[c.name] = c.color);
+
   const VH = 1100, nodeW = 12, padT = 54, padB = 24, gap = 15;
   const stageX = [8, 235, 470, 690];
   const headers = ['Budget','Media type','Channel','Reach curve'];
@@ -1243,9 +1313,9 @@ function renderSankey() {
 
   const nodeAt = (f, s) => s===0 ? 'Total budget' : s===1 ? f[0] : s===2 ? f[1] : f[2];
   // node color per stage
-  const nodeColor = (s, id) => s===0 ? 'url(#skTot)' : s===1 ? SK_MT[id] : s===2 ? SK_CH[id] : SK_CURVE[id];
+  const nodeColor = (s, id) => s===0 ? 'url(#skTot)' : s===1 ? (SK_MT[id]||'#71717a') : s===2 ? SK_CH[id] : SK_CURVE[id];
   // link color: budget→media uses media colour, later stages use channel colour
-  const linkColor = (f, s) => s===0 ? SK_MT[f[0]] : SK_CH[f[1]];
+  const linkColor = (f, s) => s===0 ? (SK_MT[f[0]]||'#71717a') : SK_CH[f[1]];
 
   const stages = [];
   for (let s = 0; s < 4; s++) {
