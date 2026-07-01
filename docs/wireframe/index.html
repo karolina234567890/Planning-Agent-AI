@@ -310,7 +310,7 @@ tr:hover .ch-del{opacity:1;}
 .c4{background:#22c55e;}.c5{background:#ec4899;}.c6{background:#8b5cf6;}.c7{background:#ef4444;}
 
 /* ── FLIGHTING ── */
-.sankey-box{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:18px 20px;max-width:760px;margin:0 auto;}
+.sankey-box{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:18px 24px;width:100%;}
 .sankey-box svg{display:block;width:100%;height:auto;}
 .sk-link{transition:opacity .15s;}
 .sk-link:hover{opacity:.9 !important;}
@@ -625,27 +625,6 @@ tr:hover .ch-del{opacity:1;}
         </div>
       </div>
 
-      <!-- Budget Allocation -->
-      <div class="section">
-        <div class="sec-head">
-          <div class="sec-title"><div class="sec-dot"></div>Budget Allocation</div>
-          <div style="font-size:10px;color:var(--t3);">click % to edit</div>
-        </div>
-        <div class="alloc-wrap">
-          <div class="alloc-card">
-            <div class="alloc-card-head">Budget allocation by channel</div>
-            <div class="alloc-bars" id="allocBars"></div>
-          </div>
-          <div class="alloc-card">
-            <div class="alloc-card-head">Budget split by channel</div>
-            <div class="pie-wrap">
-              <div class="pie-svg-wrap" id="allocDonut"></div>
-              <div class="pie-legend" id="allocLegend"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <!-- Channel Mix & Reach Curves -->
       <div class="section">
         <div class="sec-head">
@@ -757,6 +736,27 @@ tr:hover .ch-del{opacity:1;}
         </div>
       </div>
 
+      <!-- Budget Allocation -->
+      <div class="section">
+        <div class="sec-head">
+          <div class="sec-title"><div class="sec-dot"></div>Budget Allocation</div>
+          <div style="font-size:10px;color:var(--t3);">derived from channel budgets</div>
+        </div>
+        <div class="alloc-wrap">
+          <div class="alloc-card">
+            <div class="alloc-card-head">Budget allocation by channel</div>
+            <div class="alloc-bars" id="allocBars"></div>
+          </div>
+          <div class="alloc-card">
+            <div class="alloc-card-head">Budget split by channel</div>
+            <div class="pie-wrap">
+              <div class="pie-svg-wrap" id="allocDonut"></div>
+              <div class="pie-legend" id="allocLegend"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Flighting -->
       <div class="section">
         <div class="sec-head">
@@ -842,7 +842,7 @@ tr:hover .ch-del{opacity:1;}
           <div style="font-size:10px;color:var(--t3);">Budget → Media type → Channel → Reach curve · in k PLN</div>
         </div>
         <div class="sankey-box">
-          <svg id="sankeySvg" width="100%" viewBox="0 0 820 1100" preserveAspectRatio="xMidYMid meet"></svg>
+          <svg id="sankeySvg" width="100%" viewBox="0 0 1360 980" preserveAspectRatio="xMidYMid meet"></svg>
         </div>
         <div class="sankey-legend">
           <div class="sk-lg"><span class="sk-lg-dot" style="background:#6366f1"></span>CLIENT curve</div>
@@ -1306,8 +1306,8 @@ function renderSankey() {
   const SK_MT = MT_COLOR;
   const SK_CH = {}; chans.forEach(c => SK_CH[c.name] = c.color);
 
-  const VH = 1100, nodeW = 12, padT = 54, padB = 24, gap = 15;
-  const stageX = [8, 235, 470, 690];
+  const VH = 980, nodeW = 13, padT = 54, padB = 24, gap = 15;
+  const stageX = [12, 440, 880, 1180];
   const headers = ['Budget','Media type','Channel','Reach curve'];
   const total = SK_FLOWS.reduce((s,f) => s + f[3], 0);
 
