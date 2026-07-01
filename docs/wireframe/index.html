@@ -288,10 +288,17 @@ tbody tr:hover td{background:var(--s3);}
 .c4{background:#22c55e;}.c5{background:#ec4899;}.c6{background:#8b5cf6;}.c7{background:#ef4444;}
 
 /* ── FLIGHTING ── */
-.sankey-box{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:16px 20px;max-width:720px;}
+.sankey-box{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:18px 20px;max-width:900px;}
 .sankey-box svg{display:block;width:100%;height:auto;}
 .sk-link{transition:opacity .15s;}
-.sk-link:hover{opacity:.85 !important;}
+.sk-link:hover{opacity:.9 !important;}
+.sankey-tabs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.sk-tab{background:var(--s2);border:1px solid var(--b1);color:var(--t2);padding:6px 14px;border-radius:999px;font-size:12px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;transition:all .15s;}
+.sk-tab:hover{border-color:var(--b3);color:var(--t1);}
+.sk-tab.active{border-color:var(--acc);color:var(--t1);background:var(--acc-bg);}
+.sankey-legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;}
+.sk-lg{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--t2);font-weight:500;}
+.sk-lg-dot{width:11px;height:11px;border-radius:3px;flex-shrink:0;}
 .flight-chart-box{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:14px;margin-bottom:12px;}
 .fl-chart{display:flex;align-items:flex-end;gap:6px;height:230px;padding-top:24px;}
 .fl-col{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;min-width:0;}
@@ -644,17 +651,6 @@ tbody tr:hover td{background:var(--s3);}
         </div>
       </div>
 
-      <!-- Channel Breakdown — Sankey -->
-      <div class="section">
-        <div class="sec-head">
-          <div class="sec-title"><div class="sec-dot"></div>Channel Breakdown</div>
-          <div style="font-size:10px;color:var(--t3);">Budget → Media type → Channel · in k PLN</div>
-        </div>
-        <div class="sankey-box">
-          <svg id="sankeySvg" width="100%" viewBox="0 0 680 268" preserveAspectRatio="xMidYMid meet"></svg>
-        </div>
-      </div>
-
       <!-- Channel Mix & Reach Curves -->
       <div class="section">
         <div class="sec-head">
@@ -834,6 +830,29 @@ tbody tr:hover td{background:var(--s3);}
               <text x="180" y="75" fill="#606070" font-size="7.5" font-family="Inter">W13</text>
             </svg>
           </div>
+        </div>
+      </div>
+
+      <!-- Channel Breakdown — Audience Sankey -->
+      <div class="section">
+        <div class="sec-head">
+          <div class="sec-title"><div class="sec-dot"></div>Channel Breakdown</div>
+          <div style="font-size:10px;color:var(--t3);">Interested vs not interested — over &amp; under indexed</div>
+        </div>
+        <div class="sankey-tabs">
+          <button class="sk-tab active">Audio Streaming</button>
+          <button class="sk-tab">Video Streaming</button>
+          <button class="sk-tab">Social</button>
+          <button class="sk-tab">News &amp; Business</button>
+        </div>
+        <div class="sankey-box">
+          <svg id="sankeySvg" width="100%" viewBox="0 0 1000 940" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+        <div class="sankey-legend">
+          <div class="sk-lg"><span class="sk-lg-dot" style="background:#22d3ee"></span>Interested, over-indexed</div>
+          <div class="sk-lg"><span class="sk-lg-dot" style="background:#d4d4d8"></span>Interested, under-indexed</div>
+          <div class="sk-lg"><span class="sk-lg-dot" style="background:#f87171"></span>Not interested, over-indexed</div>
+          <div class="sk-lg"><span class="sk-lg-dot" style="background:#71717a"></span>Not interested, under-indexed</div>
         </div>
       </div>
 
@@ -1115,69 +1134,127 @@ function uploadCurve(btn, key) {
   addPlanMsg('Custom curve uploaded for ' + key.toUpperCase() + '. Your empirical data is now active — reach forecasts have been recalculated.');
 }
 
-const SANKEY = [
-  { name:'TV',            color:'#6366f1', channels:[['TVN',160],['Polsat',90]] },
-  { name:'Digital Video', color:'#f59e0b', channels:[['YouTube',100]] },
-  { name:'Social',        color:'#22c55e', channels:[['Meta',75]] },
-  { name:'OOH',           color:'#ec4899', channels:[['OOH AMS',40]] },
-  { name:'Radio',         color:'#8b5cf6', channels:[['RMF FM',25]] },
-  { name:'Programmatic',  color:'#ef4444', channels:[['Programmatic',10]] },
+/* Multi-stage audience Sankey: Channel → Interest → Index → Media Property → Program */
+const SK_BR = { io:'#22d3ee', iu:'#d4d4d8', no:'#f87171', nu:'#71717a' };
+// [interest, indexKey, media|lx, program, value, branch]
+const SK_FLOWS = [
+  ['Interested','io','Apple Music|420lx','Classical & Jazz',8,'io'],
+  ['Interested','io','Apple Music|420lx','True crime pods',5,'io'],
+  ['Interested','io','Pandora|214lx','True crime pods',3,'io'],
+  ['Interested','io','Pandora|214lx','Finance podcasts',5,'io'],
+  ['Interested','io','iHeart|188lx','Finance podcasts',3,'io'],
+  ['Interested','io','iHeart|188lx','News / NPR',4,'io'],
+  ['Interested','iu','Spotify|162lx','Pop / top 40',5,'iu'],
+  ['Interested','iu','Spotify|162lx','Hip-hop / R&B',3,'iu'],
+  ['Interested','iu','Amazon Music|89lx','Pop / top 40',2,'iu'],
+  ['Interested','iu','Amazon Music|89lx','Hip-hop / R&B',3,'iu'],
+  ['Not Interested','no','SiriusXM|112lx','Sports talk',10,'no'],
+  ['Not Interested','no','SiriusXM|112lx','Country',7,'no'],
+  ['Not Interested','no','Tidal|74lx','Country',6,'no'],
+  ['Not Interested','no','Tidal|74lx','Latin Music',9,'no'],
+  ['Not Interested','nu','Deezer|58lx','Comedy pods',8,'nu'],
+  ['Not Interested','nu','Deezer|58lx','Gaming content',6,'nu'],
+  ['Not Interested','nu','YouTube Music|61lx','Gaming content',7,'nu'],
+  ['Not Interested','nu','YouTube Music|61lx','Comedy pods',6,'nu'],
 ];
+const SK_INDEX_LABEL = { io:'Over-indexed|high affinity', iu:'Under-indexed|weak signal', no:'Over-indexed|resistant', nu:'Under-indexed|low signal' };
 
 function renderSankey() {
   const svg = document.getElementById('sankeySvg');
   if (!svg) return;
-  const H = 268, nodeW = 9, pad = 16, gap = 9;
-  const total = SANKEY.reduce((s,c) => s + c.channels.reduce((a,ch)=>a+ch[1],0), 0);
-  const nCh = SANKEY.reduce((s,c) => s + c.channels.length, 0);
-  const scale = (H - 2*pad - (nCh-1)*gap) / total;
-  const xA = 4, xB = 250, xC = 470;
-  const txt = (x,y,s,fill,size,weight) => `<text x="${x}" y="${y}" fill="${fill}" font-family="Inter" font-size="${size}" font-weight="${weight||500}">${s}</text>`;
-  const rect = (x,y,h,fill,op) => `<rect x="${x}" y="${y}" width="${nodeW}" height="${Math.max(h,1)}" rx="2" fill="${fill}" ${op?`opacity="${op}"`:''}/>`;
-  const link = (x0,y0,x1,y1,t,fill) => {
-    const mx = (x0+x1)/2;
-    return `<path class="sk-link" d="M${x0},${y0} C${mx},${y0} ${mx},${y1} ${x1},${y1} L${x1},${y1+t} C${mx},${y1+t} ${mx},${y0+t} ${x0},${y0+t} Z" fill="${fill}" opacity="0.28"/>`;
-  };
+  const VW = 1010, VH = 940, nodeW = 11, padT = 52, padB = 22, gap = 11;
+  const stageX = [8, 225, 430, 645, 838];
+  const headers = ['Channel','Interest','Index','Media Property','Program'];
+  const total = SK_FLOWS.reduce((s,f) => s + f[4], 0);
 
-  const totalH = total*scale;
-  const aTop = (H - totalH)/2;
-  let aOffset = aTop;
+  // node id for a flow at a given stage
+  const nodeAt = (f, s) => s===0 ? 'Audio Streaming' : s===1 ? f[0] : s===2 ? f[1] : s===3 ? f[2] : f[3];
+  // build ordered unique node list + value + branch per stage
+  const stages = [];
+  for (let s = 0; s < 5; s++) {
+    const order = [], map = {};
+    SK_FLOWS.forEach(f => { const id = nodeAt(f,s); if (!(id in map)) { map[id] = {id, v:0, br:f[5]}; order.push(id); } map[id].v += f[4]; });
+    stages.push(order.map(id => map[id]));
+  }
 
-  let bY = pad;
-  const catLayout = SANKEY.map(c => {
-    const cv = c.channels.reduce((a,ch)=>a+ch[1],0);
-    const h = cv*scale; const y = bY; bY += h + gap;
-    return {...c, cv, y, h};
+  // scale from busiest stage (most nodes)
+  const maxNodes = Math.max(...stages.map(st => st.length));
+  const scale = (VH - padT - padB - (maxNodes-1)*gap) / total;
+
+  // layout: stack each stage top-aligned
+  const pos = {}; // id -> {x,y,h,br,stage}
+  stages.forEach((st, s) => {
+    let y = padT;
+    st.forEach(n => { const h = n.v*scale; pos[s+'|'+n.id] = {x:stageX[s], y, h, br:n.br, stage:s}; y += h + gap; });
   });
 
-  let cY = pad;
-  const chLayout = [];
-  catLayout.forEach(c => {
-    c.channels.forEach(ch => {
-      const h = ch[1]*scale; const y = cY; cY += h + gap;
-      chLayout.push({cat:c, name:ch[0], v:ch[1], y, h});
+  // build aggregated links between adjacent stages
+  const linkMap = {}; const linkOrder = [];
+  for (let s = 0; s < 4; s++) {
+    SK_FLOWS.forEach(f => {
+      const a = s+'|'+nodeAt(f,s), b = (s+1)+'|'+nodeAt(f,s+1), k = a+'>'+b;
+      if (!(k in linkMap)) { linkMap[k] = {a, b, v:0, br:f[5], sA:s}; linkOrder.push(k); }
+      linkMap[k].v += f[4];
     });
+  }
+  const links = linkOrder.map(k => linkMap[k]);
+
+  // source & target offsets
+  const outOff = {}, inOff = {};
+  // sort outgoing by target y, incoming by source y
+  links.sort((p,q) => pos[p.a].y - pos[q.a].y || pos[p.b].y - pos[q.b].y);
+  links.forEach(l => {
+    const src = pos[l.a], tgt = pos[l.b], t = l.v*scale;
+    if (outOff[l.a]==null) outOff[l.a] = src.y;
+    l.sy = outOff[l.a]; outOff[l.a] += t;
+    l.t = t;
+  });
+  // target offsets: order incoming by source y
+  const byTarget = {};
+  links.forEach(l => { (byTarget[l.b] = byTarget[l.b]||[]).push(l); });
+  Object.keys(byTarget).forEach(b => {
+    byTarget[b].sort((p,q) => pos[p.a].y - pos[q.a].y);
+    let off = pos[b].y;
+    byTarget[b].forEach(l => { l.ty = off; off += l.t; });
   });
 
-  let out = '';
-  catLayout.forEach(c => { out += link(xA+nodeW, aOffset, xB, c.y, c.h, c.color); aOffset += c.h; });
-  catLayout.forEach(c => {
-    let coff = c.y;
-    chLayout.filter(ch => ch.cat === c).forEach(ch => { out += link(xB+nodeW, coff, xC, ch.y, ch.h, c.color); coff += ch.h; });
-  });
+  const rect = (x,y,h,fill,op) => `<rect x="${x}" y="${y}" width="${nodeW}" height="${Math.max(h,1)}" rx="2" fill="${fill}" ${op?`opacity="${op}"`:''}/>`;
+  const line = (x,y,s,fill,size,weight) => `<text x="${x}" y="${y}" fill="${fill}" font-family="Inter" font-size="${size}" font-weight="${weight||500}">${s}</text>`;
+  const band = (x0,y0,x1,y1,t,fill) => { const mx=(x0+x1)/2; return `<path class="sk-link" d="M${x0},${y0} C${mx},${y0} ${mx},${y1} ${x1},${y1} L${x1},${y1+t} C${mx},${y1+t} ${mx},${y0+t} ${x0},${y0+t} Z" fill="${fill}" opacity="0.42"/>`; };
 
-  out += rect(xA, aTop, totalH, '#52525b');
-  out += txt(xA, aTop-8, 'Total budget', 'var(--t1)', 11, 700);
-  out += txt(xA, aTop+totalH+17, total+'k PLN', 'var(--t3)', 10, 600);
-  catLayout.forEach(c => {
-    out += rect(xB, c.y, c.h, c.color);
-    out += txt(xB+nodeW+8, c.y + c.h/2 + (c.h>16?-1:3), c.name, 'var(--t1)', 10.5, 600);
-    if (c.h > 16) out += txt(xB+nodeW+8, c.y + c.h/2 + 11, c.cv+'k · '+Math.round(c.cv/total*100)+'%', 'var(--t3)', 9, 500);
-  });
-  chLayout.forEach(ch => {
-    out += rect(xC, ch.y, ch.h, ch.cat.color, 0.9);
-    out += txt(xC+nodeW+8, ch.y + ch.h/2 + (ch.h>16?-1:3), ch.name, 'var(--t1)', 10, 500);
-    if (ch.h > 16) out += txt(xC+nodeW+8, ch.y + ch.h/2 + 11, ch.v+'k', 'var(--t3)', 9, 500);
+  let out = `<defs><linearGradient id="skCh" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22d3ee"/><stop offset="45%" stop-color="#5b8a9a"/><stop offset="55%" stop-color="#9a6b6b"/><stop offset="100%" stop-color="#f87171"/></linearGradient></defs>`;
+
+  // headers
+  headers.forEach((h,i) => { out += line(stageX[i], 26, h, 'var(--t3)', 12, 600); });
+
+  // links (draw under nodes)
+  links.forEach(l => out += band(pos[l.a].x + nodeW, l.sy, pos[l.b].x, l.ty, l.t, SK_BR[l.br]));
+
+  // nodes + labels
+  stages.forEach((st, s) => {
+    st.forEach(n => {
+      const p = pos[s+'|'+n.id];
+      const fill = s===0 ? 'url(#skCh)' : (s===1 ? (n.id==='Interested'?SK_BR.io:SK_BR.no) : SK_BR[n.br]);
+      out += rect(p.x, p.y, p.h, fill);
+      const cy = p.y + p.h/2;
+      if (s===0) {
+        out += line(p.x, cy-4, 'Audio', 'var(--t1)', 13, 700);
+        out += line(p.x, cy+13, 'Streaming', 'var(--t1)', 13, 700);
+      } else if (s===1) {
+        out += line(p.x+nodeW+9, cy-1, n.id, 'var(--t1)', 12.5, 700);
+        out += line(p.x+nodeW+9, cy+14, Math.round(n.v/total*100)+'%', 'var(--t2)', 11, 500);
+      } else if (s===2) {
+        const [t1,t2] = SK_INDEX_LABEL[n.id].split('|');
+        out += line(p.x+nodeW+9, cy-1, t1, 'var(--t1)', 12, 700);
+        out += line(p.x+nodeW+9, cy+13, t2, 'var(--t3)', 10.5, 500);
+      } else if (s===3) {
+        const [nm,lx] = n.id.split('|');
+        out += line(p.x+nodeW+9, cy-1, nm, 'var(--t1)', 11.5, 600);
+        out += line(p.x+nodeW+9, cy+13, lx, 'var(--t3)', 10, 500);
+      } else {
+        out += line(p.x+nodeW+9, cy+3.5, n.id, 'var(--t1)', 11.5, 600);
+      }
+    });
   });
 
   svg.innerHTML = out;
