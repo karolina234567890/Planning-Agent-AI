@@ -607,6 +607,57 @@ tr:hover .ch-del{opacity:1;}
         </div>
       </div>
 
+      <!-- KPI Forecast -->
+      <div class="section">
+        <div class="sec-head">
+          <div class="sec-title"><div class="sec-dot"></div>KPI Forecast</div>
+          <div class="live-tag"><div class="live-dot"></div>Updates on every edit</div>
+        </div>
+        <div class="kpi-grid">
+          <div class="kpi-box">
+            <div class="kpi-box-title">Cumulative Reach 1+</div>
+            <div class="kpi-box-val" style="color:var(--acc3)">71<span style="font-size:16px;font-weight:700;">%</span></div>
+            <div class="kpi-box-sub">of Women 25–45 target</div>
+            <svg width="100%" height="76" viewBox="0 0 200 76">
+              <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6366f1" stop-opacity=".3"/><stop offset="100%" stop-color="#6366f1" stop-opacity="0"/></linearGradient></defs>
+              <path d="M0,70 C14,65 26,58 40,51 C54,44 66,37 82,30 C96,25 112,21 128,18 C144,16 158,15 172,14 C182,14 192,13 200,13" fill="none" stroke="#6366f1" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M0,70 C14,65 26,58 40,51 C54,44 66,37 82,30 C96,25 112,21 128,18 C144,16 158,15 172,14 C182,14 192,13 200,13 L200,76 L0,76Z" fill="url(#g1)"/>
+              <line x1="0" y1="13" x2="200" y2="13" stroke="#2a2a32" stroke-width="1" stroke-dasharray="4,3"/>
+              <text x="4" y="10" fill="#606070" font-size="8" font-family="Inter" font-weight="600">71%</text>
+              <text x="2" y="75" fill="#606070" font-size="7.5" font-family="Inter">W1</text>
+              <text x="88" y="75" fill="#606070" font-size="7.5" font-family="Inter">W7</text>
+              <text x="180" y="75" fill="#606070" font-size="7.5" font-family="Inter">W13</text>
+            </svg>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-box-title">Reach with Decay</div>
+            <div class="kpi-box-val" style="color:var(--amber)">58<span style="font-size:16px;font-weight:700;">%</span></div>
+            <div class="kpi-box-sub">effective reach (forgetting model)</div>
+            <svg width="100%" height="76" viewBox="0 0 200 76">
+              <defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f59e0b" stop-opacity=".3"/><stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/></linearGradient></defs>
+              <path d="M0,70 C12,65 22,58 36,52 C50,46 62,40 78,35 C92,30 108,27 124,25 C138,23 152,23 164,25 C176,27 188,31 200,28" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M0,70 C12,65 22,58 36,52 C50,46 62,40 78,35 C92,30 108,27 124,25 C138,23 152,23 164,25 C176,27 188,31 200,28 L200,76 L0,76Z" fill="url(#g2)"/>
+              <text x="2" y="75" fill="#606070" font-size="7.5" font-family="Inter">W1</text>
+              <text x="88" y="75" fill="#606070" font-size="7.5" font-family="Inter">W7</text>
+              <text x="180" y="75" fill="#606070" font-size="7.5" font-family="Inter">W13</text>
+            </svg>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-box-title">Estimated Revenue</div>
+            <div class="kpi-box-val" style="color:var(--green)">2.1<span style="font-size:16px;font-weight:700;">M PLN</span></div>
+            <div class="kpi-box-sub">cumulative model forecast</div>
+            <svg width="100%" height="76" viewBox="0 0 200 76">
+              <defs><linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22c55e" stop-opacity=".3"/><stop offset="100%" stop-color="#22c55e" stop-opacity="0"/></linearGradient></defs>
+              <path d="M0,73 C14,70 26,64 40,57 C54,50 68,42 84,34 C98,28 114,22 130,17 C144,14 158,12 172,11 C182,10 192,10 200,9" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M0,73 C14,70 26,64 40,57 C54,50 68,42 84,34 C98,28 114,22 130,17 C144,14 158,12 172,11 C182,10 192,10 200,9 L200,76 L0,76Z" fill="url(#g3)"/>
+              <text x="2" y="75" fill="#606070" font-size="7.5" font-family="Inter">W1</text>
+              <text x="88" y="75" fill="#606070" font-size="7.5" font-family="Inter">W7</text>
+              <text x="180" y="75" fill="#606070" font-size="7.5" font-family="Inter">W13</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
       <!-- Plan Summary -->
       <div class="section">
         <div class="sec-head">
@@ -781,57 +832,6 @@ tr:hover .ch-del{opacity:1;}
         </div>
         <div class="flight-grid-wrap">
           <table class="fg" id="flightGrid"></table>
-        </div>
-      </div>
-
-      <!-- KPI Forecast -->
-      <div class="section">
-        <div class="sec-head">
-          <div class="sec-title"><div class="sec-dot"></div>KPI Forecast</div>
-          <div class="live-tag"><div class="live-dot"></div>Updates on every edit</div>
-        </div>
-        <div class="kpi-grid">
-          <div class="kpi-box">
-            <div class="kpi-box-title">Cumulative Reach 1+</div>
-            <div class="kpi-box-val" style="color:var(--acc3)">71<span style="font-size:16px;font-weight:700;">%</span></div>
-            <div class="kpi-box-sub">of Women 25–45 target</div>
-            <svg width="100%" height="76" viewBox="0 0 200 76">
-              <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6366f1" stop-opacity=".3"/><stop offset="100%" stop-color="#6366f1" stop-opacity="0"/></linearGradient></defs>
-              <path d="M0,70 C14,65 26,58 40,51 C54,44 66,37 82,30 C96,25 112,21 128,18 C144,16 158,15 172,14 C182,14 192,13 200,13" fill="none" stroke="#6366f1" stroke-width="2.5" stroke-linecap="round"/>
-              <path d="M0,70 C14,65 26,58 40,51 C54,44 66,37 82,30 C96,25 112,21 128,18 C144,16 158,15 172,14 C182,14 192,13 200,13 L200,76 L0,76Z" fill="url(#g1)"/>
-              <line x1="0" y1="13" x2="200" y2="13" stroke="#2a2a32" stroke-width="1" stroke-dasharray="4,3"/>
-              <text x="4" y="10" fill="#606070" font-size="8" font-family="Inter" font-weight="600">71%</text>
-              <text x="2" y="75" fill="#606070" font-size="7.5" font-family="Inter">W1</text>
-              <text x="88" y="75" fill="#606070" font-size="7.5" font-family="Inter">W7</text>
-              <text x="180" y="75" fill="#606070" font-size="7.5" font-family="Inter">W13</text>
-            </svg>
-          </div>
-          <div class="kpi-box">
-            <div class="kpi-box-title">Reach with Decay</div>
-            <div class="kpi-box-val" style="color:var(--amber)">58<span style="font-size:16px;font-weight:700;">%</span></div>
-            <div class="kpi-box-sub">effective reach (forgetting model)</div>
-            <svg width="100%" height="76" viewBox="0 0 200 76">
-              <defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f59e0b" stop-opacity=".3"/><stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/></linearGradient></defs>
-              <path d="M0,70 C12,65 22,58 36,52 C50,46 62,40 78,35 C92,30 108,27 124,25 C138,23 152,23 164,25 C176,27 188,31 200,28" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/>
-              <path d="M0,70 C12,65 22,58 36,52 C50,46 62,40 78,35 C92,30 108,27 124,25 C138,23 152,23 164,25 C176,27 188,31 200,28 L200,76 L0,76Z" fill="url(#g2)"/>
-              <text x="2" y="75" fill="#606070" font-size="7.5" font-family="Inter">W1</text>
-              <text x="88" y="75" fill="#606070" font-size="7.5" font-family="Inter">W7</text>
-              <text x="180" y="75" fill="#606070" font-size="7.5" font-family="Inter">W13</text>
-            </svg>
-          </div>
-          <div class="kpi-box">
-            <div class="kpi-box-title">Estimated Revenue</div>
-            <div class="kpi-box-val" style="color:var(--green)">2.1<span style="font-size:16px;font-weight:700;">M PLN</span></div>
-            <div class="kpi-box-sub">cumulative model forecast</div>
-            <svg width="100%" height="76" viewBox="0 0 200 76">
-              <defs><linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22c55e" stop-opacity=".3"/><stop offset="100%" stop-color="#22c55e" stop-opacity="0"/></linearGradient></defs>
-              <path d="M0,73 C14,70 26,64 40,57 C54,50 68,42 84,34 C98,28 114,22 130,17 C144,14 158,12 172,11 C182,10 192,10 200,9" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round"/>
-              <path d="M0,73 C14,70 26,64 40,57 C54,50 68,42 84,34 C98,28 114,22 130,17 C144,14 158,12 172,11 C182,10 192,10 200,9 L200,76 L0,76Z" fill="url(#g3)"/>
-              <text x="2" y="75" fill="#606070" font-size="7.5" font-family="Inter">W1</text>
-              <text x="88" y="75" fill="#606070" font-size="7.5" font-family="Inter">W7</text>
-              <text x="180" y="75" fill="#606070" font-size="7.5" font-family="Inter">W13</text>
-            </svg>
-          </div>
         </div>
       </div>
 
