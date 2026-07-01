@@ -291,7 +291,7 @@ tbody tr:hover td{background:var(--s3);}
 .c4{background:#22c55e;}.c5{background:#ec4899;}.c6{background:#8b5cf6;}.c7{background:#ef4444;}
 
 /* ── FLIGHTING ── */
-.sankey-box{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:18px 20px;max-width:900px;}
+.sankey-box{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:18px 20px;max-width:760px;margin:0 auto;}
 .sankey-box svg{display:block;width:100%;height:auto;}
 .sk-link{transition:opacity .15s;}
 .sk-link:hover{opacity:.9 !important;}
@@ -299,7 +299,7 @@ tbody tr:hover td{background:var(--s3);}
 .sk-tab{background:var(--s2);border:1px solid var(--b1);color:var(--t2);padding:6px 14px;border-radius:999px;font-size:12px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;transition:all .15s;}
 .sk-tab:hover{border-color:var(--b3);color:var(--t1);}
 .sk-tab.active{border-color:var(--acc);color:var(--t1);background:var(--acc-bg);}
-.sankey-legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;}
+.sankey-legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;justify-content:center;}
 .sk-lg{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--t2);font-weight:500;}
 .sk-lg-dot{width:11px;height:11px;border-radius:3px;flex-shrink:0;}
 .flight-chart-box{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:14px;margin-bottom:12px;}
@@ -836,26 +836,19 @@ tbody tr:hover td{background:var(--s3);}
         </div>
       </div>
 
-      <!-- Channel Breakdown — Audience Sankey -->
+      <!-- Channel Breakdown — Budget Flow Sankey -->
       <div class="section">
         <div class="sec-head">
           <div class="sec-title"><div class="sec-dot"></div>Channel Breakdown</div>
-          <div style="font-size:10px;color:var(--t3);">Interested vs not interested — over &amp; under indexed</div>
-        </div>
-        <div class="sankey-tabs">
-          <button class="sk-tab active">Audio Streaming</button>
-          <button class="sk-tab">Video Streaming</button>
-          <button class="sk-tab">Social</button>
-          <button class="sk-tab">News &amp; Business</button>
+          <div style="font-size:10px;color:var(--t3);">Budget → Media type → Channel → Reach curve · in k PLN</div>
         </div>
         <div class="sankey-box">
-          <svg id="sankeySvg" width="100%" viewBox="0 0 1000 940" preserveAspectRatio="xMidYMid meet"></svg>
+          <svg id="sankeySvg" width="100%" viewBox="0 0 820 1100" preserveAspectRatio="xMidYMid meet"></svg>
         </div>
         <div class="sankey-legend">
-          <div class="sk-lg"><span class="sk-lg-dot" style="background:#22d3ee"></span>Interested, over-indexed</div>
-          <div class="sk-lg"><span class="sk-lg-dot" style="background:#d4d4d8"></span>Interested, under-indexed</div>
-          <div class="sk-lg"><span class="sk-lg-dot" style="background:#f87171"></span>Not interested, over-indexed</div>
-          <div class="sk-lg"><span class="sk-lg-dot" style="background:#71717a"></span>Not interested, under-indexed</div>
+          <div class="sk-lg"><span class="sk-lg-dot" style="background:#6366f1"></span>CLIENT curve</div>
+          <div class="sk-lg"><span class="sk-lg-dot" style="background:#71717a"></span>DEFAULT curve</div>
+          <div class="sk-lg"><span class="sk-lg-dot" style="background:#22c55e"></span>CUSTOM curve</div>
         </div>
       </div>
 
@@ -1137,82 +1130,67 @@ function uploadCurve(btn, key) {
   addPlanMsg('Custom curve uploaded for ' + key.toUpperCase() + '. Your empirical data is now active — reach forecasts have been recalculated.');
 }
 
-/* Multi-stage audience Sankey: Channel → Interest → Index → Media Property → Program */
-const SK_BR = { io:'#22d3ee', iu:'#d4d4d8', no:'#f87171', nu:'#71717a' };
-// [interest, indexKey, media|lx, program, value, branch]
+/* Budget-flow Sankey (media plan data): Budget → Media type → Channel → Reach curve */
+// [mediaType, channel, curve, budget(k)]
 const SK_FLOWS = [
-  ['Interested','io','Apple Music|420lx','Classical & Jazz',8,'io'],
-  ['Interested','io','Apple Music|420lx','True crime pods',5,'io'],
-  ['Interested','io','Pandora|214lx','True crime pods',3,'io'],
-  ['Interested','io','Pandora|214lx','Finance podcasts',5,'io'],
-  ['Interested','io','iHeart|188lx','Finance podcasts',3,'io'],
-  ['Interested','io','iHeart|188lx','News / NPR',4,'io'],
-  ['Interested','iu','Spotify|162lx','Pop / top 40',5,'iu'],
-  ['Interested','iu','Spotify|162lx','Hip-hop / R&B',3,'iu'],
-  ['Interested','iu','Amazon Music|89lx','Pop / top 40',2,'iu'],
-  ['Interested','iu','Amazon Music|89lx','Hip-hop / R&B',3,'iu'],
-  ['Not Interested','no','SiriusXM|112lx','Sports talk',10,'no'],
-  ['Not Interested','no','SiriusXM|112lx','Country',7,'no'],
-  ['Not Interested','no','Tidal|74lx','Country',6,'no'],
-  ['Not Interested','no','Tidal|74lx','Latin Music',9,'no'],
-  ['Not Interested','nu','Deezer|58lx','Comedy pods',8,'nu'],
-  ['Not Interested','nu','Deezer|58lx','Gaming content',6,'nu'],
-  ['Not Interested','nu','YouTube Music|61lx','Gaming content',7,'nu'],
-  ['Not Interested','nu','YouTube Music|61lx','Comedy pods',6,'nu'],
+  ['Television','TVN','CLIENT',160],
+  ['Television','Polsat','DEFAULT',90],
+  ['Digital','YouTube','CLIENT',100],
+  ['Digital','Meta','DEFAULT',75],
+  ['Digital','Programmatic','DEFAULT',10],
+  ['OOH + Audio','OOH AMS','CUSTOM',40],
+  ['OOH + Audio','RMF FM','DEFAULT',25],
 ];
-const SK_INDEX_LABEL = { io:'Over-indexed|high affinity', iu:'Under-indexed|weak signal', no:'Over-indexed|resistant', nu:'Under-indexed|low signal' };
+const SK_MT = { 'Television':'#6366f1', 'Digital':'#f59e0b', 'OOH + Audio':'#ec4899' };
+const SK_CH = { 'TVN':'#6366f1','Polsat':'#06b6d4','YouTube':'#f59e0b','Meta':'#22c55e','Programmatic':'#ef4444','OOH AMS':'#ec4899','RMF FM':'#8b5cf6' };
+const SK_CURVE = { 'CLIENT':'#6366f1','DEFAULT':'#71717a','CUSTOM':'#22c55e' };
 
 function renderSankey() {
   const svg = document.getElementById('sankeySvg');
   if (!svg) return;
-  const VW = 1010, VH = 940, nodeW = 11, padT = 52, padB = 22, gap = 11;
-  const stageX = [8, 225, 430, 645, 838];
-  const headers = ['Channel','Interest','Index','Media Property','Program'];
-  const total = SK_FLOWS.reduce((s,f) => s + f[4], 0);
+  const VH = 1100, nodeW = 12, padT = 54, padB = 24, gap = 15;
+  const stageX = [8, 235, 470, 690];
+  const headers = ['Budget','Media type','Channel','Reach curve'];
+  const total = SK_FLOWS.reduce((s,f) => s + f[3], 0);
 
-  // node id for a flow at a given stage
-  const nodeAt = (f, s) => s===0 ? 'Audio Streaming' : s===1 ? f[0] : s===2 ? f[1] : s===3 ? f[2] : f[3];
-  // build ordered unique node list + value + branch per stage
+  const nodeAt = (f, s) => s===0 ? 'Total budget' : s===1 ? f[0] : s===2 ? f[1] : f[2];
+  // node color per stage
+  const nodeColor = (s, id) => s===0 ? 'url(#skTot)' : s===1 ? SK_MT[id] : s===2 ? SK_CH[id] : SK_CURVE[id];
+  // link color: budget→media uses media colour, later stages use channel colour
+  const linkColor = (f, s) => s===0 ? SK_MT[f[0]] : SK_CH[f[1]];
+
   const stages = [];
-  for (let s = 0; s < 5; s++) {
+  for (let s = 0; s < 4; s++) {
     const order = [], map = {};
-    SK_FLOWS.forEach(f => { const id = nodeAt(f,s); if (!(id in map)) { map[id] = {id, v:0, br:f[5]}; order.push(id); } map[id].v += f[4]; });
+    SK_FLOWS.forEach(f => { const id = nodeAt(f,s); if (!(id in map)) { map[id] = {id, v:0}; order.push(id); } map[id].v += f[3]; });
     stages.push(order.map(id => map[id]));
   }
 
-  // scale from busiest stage (most nodes)
   const maxNodes = Math.max(...stages.map(st => st.length));
   const scale = (VH - padT - padB - (maxNodes-1)*gap) / total;
 
-  // layout: stack each stage top-aligned
-  const pos = {}; // id -> {x,y,h,br,stage}
+  const pos = {};
   stages.forEach((st, s) => {
     let y = padT;
-    st.forEach(n => { const h = n.v*scale; pos[s+'|'+n.id] = {x:stageX[s], y, h, br:n.br, stage:s}; y += h + gap; });
+    st.forEach(n => { const h = n.v*scale; pos[s+'|'+n.id] = {x:stageX[s], y, h}; y += h + gap; });
   });
 
-  // build aggregated links between adjacent stages
   const linkMap = {}; const linkOrder = [];
-  for (let s = 0; s < 4; s++) {
+  for (let s = 0; s < 3; s++) {
     SK_FLOWS.forEach(f => {
       const a = s+'|'+nodeAt(f,s), b = (s+1)+'|'+nodeAt(f,s+1), k = a+'>'+b;
-      if (!(k in linkMap)) { linkMap[k] = {a, b, v:0, br:f[5], sA:s}; linkOrder.push(k); }
-      linkMap[k].v += f[4];
+      if (!(k in linkMap)) { linkMap[k] = {a, b, v:0, color:linkColor(f,s)}; linkOrder.push(k); }
+      linkMap[k].v += f[3];
     });
   }
   const links = linkOrder.map(k => linkMap[k]);
 
-  // source & target offsets
-  const outOff = {}, inOff = {};
-  // sort outgoing by target y, incoming by source y
+  const outOff = {};
   links.sort((p,q) => pos[p.a].y - pos[q.a].y || pos[p.b].y - pos[q.b].y);
   links.forEach(l => {
-    const src = pos[l.a], tgt = pos[l.b], t = l.v*scale;
-    if (outOff[l.a]==null) outOff[l.a] = src.y;
-    l.sy = outOff[l.a]; outOff[l.a] += t;
-    l.t = t;
+    if (outOff[l.a]==null) outOff[l.a] = pos[l.a].y;
+    l.t = l.v*scale; l.sy = outOff[l.a]; outOff[l.a] += l.t;
   });
-  // target offsets: order incoming by source y
   const byTarget = {};
   links.forEach(l => { (byTarget[l.b] = byTarget[l.b]||[]).push(l); });
   Object.keys(byTarget).forEach(b => {
@@ -1221,41 +1199,32 @@ function renderSankey() {
     byTarget[b].forEach(l => { l.ty = off; off += l.t; });
   });
 
-  const rect = (x,y,h,fill,op) => `<rect x="${x}" y="${y}" width="${nodeW}" height="${Math.max(h,1)}" rx="2" fill="${fill}" ${op?`opacity="${op}"`:''}/>`;
+  const rect = (x,y,h,fill) => `<rect x="${x}" y="${y}" width="${nodeW}" height="${Math.max(h,1)}" rx="2" fill="${fill}"/>`;
   const line = (x,y,s,fill,size,weight) => `<text x="${x}" y="${y}" fill="${fill}" font-family="Inter" font-size="${size}" font-weight="${weight||500}">${s}</text>`;
-  const band = (x0,y0,x1,y1,t,fill) => { const mx=(x0+x1)/2; return `<path class="sk-link" d="M${x0},${y0} C${mx},${y0} ${mx},${y1} ${x1},${y1} L${x1},${y1+t} C${mx},${y1+t} ${mx},${y0+t} ${x0},${y0+t} Z" fill="${fill}" opacity="0.42"/>`; };
+  const band = (x0,y0,x1,y1,t,fill) => { const mx=(x0+x1)/2; return `<path class="sk-link" d="M${x0},${y0} C${mx},${y0} ${mx},${y1} ${x1},${y1} L${x1},${y1+t} C${mx},${y1+t} ${mx},${y0+t} ${x0},${y0+t} Z" fill="${fill}" opacity="0.4"/>`; };
 
-  let out = `<defs><linearGradient id="skCh" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22d3ee"/><stop offset="45%" stop-color="#5b8a9a"/><stop offset="55%" stop-color="#9a6b6b"/><stop offset="100%" stop-color="#f87171"/></linearGradient></defs>`;
+  let out = `<defs><linearGradient id="skTot" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6366f1"/><stop offset="55%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#ec4899"/></linearGradient></defs>`;
+  headers.forEach((h,i) => { out += line(stageX[i], 28, h, 'var(--t3)', 12, 600); });
+  links.forEach(l => out += band(pos[l.a].x + nodeW, l.sy, pos[l.b].x, l.ty, l.t, l.color));
 
-  // headers
-  headers.forEach((h,i) => { out += line(stageX[i], 26, h, 'var(--t3)', 12, 600); });
-
-  // links (draw under nodes)
-  links.forEach(l => out += band(pos[l.a].x + nodeW, l.sy, pos[l.b].x, l.ty, l.t, SK_BR[l.br]));
-
-  // nodes + labels
   stages.forEach((st, s) => {
     st.forEach(n => {
       const p = pos[s+'|'+n.id];
-      const fill = s===0 ? 'url(#skCh)' : (s===1 ? (n.id==='Interested'?SK_BR.io:SK_BR.no) : SK_BR[n.br]);
-      out += rect(p.x, p.y, p.h, fill);
-      const cy = p.y + p.h/2;
+      out += rect(p.x, p.y, p.h, nodeColor(s, n.id));
+      const cy = p.y + p.h/2, tx = p.x + nodeW + 10;
+      const pct = Math.round(n.v/total*100);
       if (s===0) {
-        out += line(p.x, cy-4, 'Audio', 'var(--t1)', 13, 700);
-        out += line(p.x, cy+13, 'Streaming', 'var(--t1)', 13, 700);
+        out += line(tx, cy-4, 'Total budget', 'var(--t1)', 13, 700);
+        out += line(tx, cy+14, total+'k PLN', 'var(--t2)', 11, 600);
       } else if (s===1) {
-        out += line(p.x+nodeW+9, cy-1, n.id, 'var(--t1)', 12.5, 700);
-        out += line(p.x+nodeW+9, cy+14, Math.round(n.v/total*100)+'%', 'var(--t2)', 11, 500);
+        out += line(tx, cy-2, n.id, 'var(--t1)', 12.5, 700);
+        out += line(tx, cy+13, n.v+'k · '+pct+'%', 'var(--t3)', 10.5, 500);
       } else if (s===2) {
-        const [t1,t2] = SK_INDEX_LABEL[n.id].split('|');
-        out += line(p.x+nodeW+9, cy-1, t1, 'var(--t1)', 12, 700);
-        out += line(p.x+nodeW+9, cy+13, t2, 'var(--t3)', 10.5, 500);
-      } else if (s===3) {
-        const [nm,lx] = n.id.split('|');
-        out += line(p.x+nodeW+9, cy-1, nm, 'var(--t1)', 11.5, 600);
-        out += line(p.x+nodeW+9, cy+13, lx, 'var(--t3)', 10, 500);
+        out += line(tx, cy-2, n.id, 'var(--t1)', 12, 600);
+        out += line(tx, cy+13, n.v+'k · '+pct+'%', 'var(--t3)', 10, 500);
       } else {
-        out += line(p.x+nodeW+9, cy+3.5, n.id, 'var(--t1)', 11.5, 600);
+        out += line(tx, cy-2, n.id+' curve', 'var(--t1)', 11.5, 600);
+        out += line(tx, cy+13, n.v+'k · '+pct+'%', 'var(--t3)', 10, 500);
       }
     });
   });
